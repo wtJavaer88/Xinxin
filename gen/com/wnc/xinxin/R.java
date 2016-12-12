@@ -458,17 +458,19 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int base_action_bar_bg=0x7f020000;
         public static final int base_tabpager_indicator_selected=0x7f020001;
         public static final int ic_launcher=0x7f020002;
-        public static final int icon_add_fs=0x7f020003;
-        public static final int selector_tabtext=0x7f020004;
-        public static final int setbar_bg=0x7f020005;
-        public static final int tab_indicator=0x7f020006;
-        public static final int vpi__tab_indicator=0x7f020007;
-        public static final int vpi__tab_selected_focused_holo=0x7f020008;
-        public static final int vpi__tab_selected_holo=0x7f020009;
-        public static final int vpi__tab_selected_pressed_holo=0x7f02000a;
-        public static final int vpi__tab_unselected_focused_holo=0x7f02000b;
-        public static final int vpi__tab_unselected_holo=0x7f02000c;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02000d;
+        public static final int icon_fs_add=0x7f020003;
+        public static final int icon_fs_audio=0x7f020004;
+        public static final int icon_fs_video=0x7f020005;
+        public static final int selector_tabtext=0x7f020006;
+        public static final int setbar_bg=0x7f020007;
+        public static final int tab_indicator=0x7f020008;
+        public static final int vpi__tab_indicator=0x7f020009;
+        public static final int vpi__tab_selected_focused_holo=0x7f02000a;
+        public static final int vpi__tab_selected_holo=0x7f02000b;
+        public static final int vpi__tab_selected_pressed_holo=0x7f02000c;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02000d;
+        public static final int vpi__tab_unselected_holo=0x7f02000e;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02000f;
     }
     public static final class id {
         public static final int action_settings=0x7f050015;
@@ -480,19 +482,19 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int bt_test=0x7f050009;
         public static final int btnRecoder=0x7f05000e;
         public static final int btnRetry=0x7f05000f;
-        public static final int et_memo=0x7f05000b;
+        public static final int et_memo=0x7f05000a;
         public static final int hide=0x7f050007;
         public static final int imgview_add_fs=0x7f05000c;
         public static final int inshow=0x7f050006;
+        public static final int ll_piczone=0x7f05000b;
         public static final int none=0x7f050000;
-        public static final int pick_photo_btn=0x7f05000a;
         public static final int show=0x7f050005;
         public static final int surfaceView1=0x7f05000d;
-        public static final int textView1=0x7f050008;
         public static final int top=0x7f050004;
         public static final int triangle=0x7f050001;
         public static final int tv_msg=0x7f050010;
         public static final int underline=0x7f050002;
+        public static final int video_headll2=0x7f050008;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f080000;

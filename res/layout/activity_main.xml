@@ -8,25 +8,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/video_headll2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:orientation="horizontal" >
 
-    <Button
-        android:id="@+id/bt_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="测试" />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="#ffffffff"
+            android:text="取 消"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:layout_weight="4"
+            android:text="日记" />
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
 
-    <Button
-        android:id="@+id/pick_photo_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:text="测试2" />
+        <Button
+            android:id="@+id/bt_test"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="#ffffffff"
+            android:text="保 存"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/et_memo"
@@ -34,15 +55,26 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/bt_test"
         android:layout_marginTop="54dp"
-        android:ems="10" >
+        android:ems="10"
+        android:hint="说点什么" >
+
         <requestFocus />
     </EditText>
 
-     <ImageView
+    <AbsoluteLayout
+        android:id="@+id/ll_piczone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/et_memo"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ImageView
             android:id="@+id/imgview_add_fs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/et_memo"
-            android:src="@drawable/icon_add_fs" >
+            android:src="@drawable/icon_fs_add" >
         </ImageView>
+    </AbsoluteLayout>
+
 </RelativeLayout>

@@ -17,9 +17,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Selection;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AbsoluteLayout;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -39,7 +39,9 @@ public class MainActivity extends Activity implements OnClickListener,
         UncaughtExceptionHandler
 {
     EditText memoET;
-    ImageView imgView;
+    ImageView latest_imgView;
+    AbsoluteLayout picZoneLayout;
+
     Logger logger = Logger.getLogger(MainActivity.class);
     private final String[] picMenu = new String[]
     { "相机", "相册", "录音", "录像" };
@@ -67,10 +69,12 @@ public class MainActivity extends Activity implements OnClickListener,
     private void initView()
     {
         memoET = (EditText) findViewById(R.id.et_memo);
-        imgView = (ImageView) findViewById(R.id.imgview_add_fs);
+        latest_imgView = (ImageView) findViewById(R.id.imgview_add_fs);
+        picZoneLayout = (AbsoluteLayout) findViewById(R.id.ll_piczone);
+
         findViewById(R.id.bt_test).setOnClickListener(this);
-        findViewById(R.id.pick_photo_btn).setOnClickListener(this);
-        findViewById(R.id.imgview_add_fs).setOnClickListener(this);
+        findViewById(R.id.imgview_add_fs).setOnClickListener(
+                new PicAddClickListener());
     }
 
     @Override
@@ -80,12 +84,6 @@ public class MainActivity extends Activity implements OnClickListener,
         {
         case R.id.bt_test:
             new TestPro().testDb();
-            break;
-        case R.id.pick_photo_btn:
-            showPicMenu();
-            break;
-        case R.id.imgview_add_fs:
-            showPicMenu();
             break;
         default:
             break;
@@ -187,7 +185,7 @@ public class MainActivity extends Activity implements OnClickListener,
                     System.out.println("压缩成功! " + scaledImgPath);
                     imgName = new File(scaledImgPath).getName();
                 }
-                insertFileToMemo(imgName);
+                changePicZone(imgName);
             }
             else
             {
@@ -218,7 +216,7 @@ public class MainActivity extends Activity implements OnClickListener,
             {
                 // 压缩成功就代表已经备份了
                 System.out.println("压缩成功! " + scaledImgPath);
-                insertFileToMemo(new File(scaledImgPath).getName());
+                changePicZone(new File(scaledImgPath).getName());
             }
             else
             {
@@ -251,38 +249,56 @@ public class MainActivity extends Activity implements OnClickListener,
             System.out.println("返回的moviePath:" + moviePath);
             if (BasicFileUtil.isExistFile(moviePath))
             {
-                insertFileToMemo(BasicFileUtil.getFileName(moviePath));
+                changePicZone(BasicFileUtil.getFileName(moviePath));
             }
         }
     }
 
-    private void insertFileToMemo(String imgPath)
+    @SuppressWarnings("deprecation")
+    private void changePicZone(String imgPath)
     {
         if (BasicStringUtil.isNullString(imgPath))
         {
             return;
         }
-
-        imgView.setImageDrawable(Drawable.createFromPath(mediaDir + imgPath));
-        imgPath = " [" + imgPath + "] ";
-        try
+        if (imgPath.endsWith(".jpg"))
         {
-            // 获得光标的位置
-            int index = this.memoET.getSelectionStart();
-            // 将字符串转换为StringBuffer
-            StringBuffer sb = new StringBuffer(this.memoET.getText().toString());
-            // 将字符插入光标所在的位置
-            sb = sb.insert(index, imgPath);
-            this.memoET.setText(sb.toString());
-            // 设置光标的位置保持不变
-            Selection.setSelection(
-                    this.memoET.getText(),
-                    Math.min(index + imgPath.length(),
-                            sb.length() + imgPath.length()));
+            // curimgView.setBackgroundColor(Color.WHITE);
+            curimgView.setImageDrawable(Drawable.createFromPath(mediaDir
+                    + imgPath));
         }
-        catch (Exception ex)
+        else if (imgPath.endsWith(".amr"))
         {
-            ToastUtil.showShortToast(this, "下标操作错误! " + ex.getMessage());
+            curimgView.setBackgroundResource(R.drawable.icon_fs_audio);
+        }
+        else if (imgPath.endsWith(".3gp"))
+        {
+            curimgView.setBackgroundResource(R.drawable.icon_fs_video);
+        }
+        if (latest_imgView == curimgView)
+        {
+            latest_imgView = new ImageView(this);
+            latest_imgView.setBackgroundResource(R.drawable.icon_fs_add);
+            latest_imgView.setOnClickListener(new PicAddClickListener());
+            int childCount = picZoneLayout.getChildCount();
+            final int padding = 20;
+            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(
+                    300, 300, (300 + padding) * (childCount % 3),
+                    (300 + padding) * (childCount / 3));
+            latest_imgView.setLayoutParams(params);
+            picZoneLayout.addView(latest_imgView);
+        }
+    }
+
+    ImageView curimgView;
+
+    class PicAddClickListener implements OnClickListener
+    {
+        @Override
+        public void onClick(View arg0)
+        {
+            showPicMenu();
+            curimgView = (ImageView) arg0;
         }
     }
 
@@ -309,7 +325,7 @@ public class MainActivity extends Activity implements OnClickListener,
         }
         else
         {
-            insertFileToMemo(new File(destPicPath).getName());
+            changePicZone(new File(destPicPath).getName());
         }
     }
 
