@@ -9,7 +9,7 @@
     tools:context=".MainActivity" >
 
     <LinearLayout
-        android:id="@+id/video_headll2"
+        android:id="@+id/ll_fs_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -49,23 +49,39 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <EditText
+     <EditText
         android:id="@+id/et_memo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_test"
-        android:layout_marginTop="54dp"
+        android:layout_below="@+id/ll_fs_head"
+        android:layout_marginTop="10dp"
+        android:minLines="3"
+        android:gravity="left|top"  
         android:ems="10"
-        android:hint="说点什么" >
-
+        android:hint="说点什么吧" >
         <requestFocus />
     </EditText>
+    <com.wnc.xinxin.FlowLayout
+        android:id="@+id/tag_vessel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_memo"
+        android:layout_marginTop="5dp" >
+        <ImageView
+            android:id="@+id/add_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/mylablepen" />
+    </com.wnc.xinxin.FlowLayout>
+    
+   
 
     <AbsoluteLayout
         android:id="@+id/ll_piczone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/et_memo"
+        android:layout_below="@+id/tag_vessel"
         android:orientation="horizontal"
         android:padding="10dp" >
 

@@ -3,30 +3,44 @@ package com.wnc.xinxin.ui;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wnc.basic.BasicDateUtil;
 import com.wnc.basic.BasicFileUtil;
 import com.wnc.basic.BasicStringUtil;
+import com.wnc.xinxin.FlowLayout;
 import com.wnc.xinxin.R;
 import com.wnc.xinxin.TestPro;
 import common.app.SysInit;
@@ -41,6 +55,12 @@ public class MainActivity extends Activity implements OnClickListener,
     EditText memoET;
     ImageView latest_imgView;
     AbsoluteLayout picZoneLayout;
+    FlowLayout tag_vessel;
+    ImageView add_tag;
+    List<TextView> mTagList = new ArrayList<TextView>();
+    List<String> selTagList = new ArrayList<String>();// 保存已选中的标签
+    private final int TAG_SEL_COLOR = Color.RED;
+    private final int TAG_NOTSEL_COLOR = Color.GRAY;
 
     Logger logger = Logger.getLogger(MainActivity.class);
     private final String[] picMenu = new String[]
@@ -71,7 +91,16 @@ public class MainActivity extends Activity implements OnClickListener,
         memoET = (EditText) findViewById(R.id.et_memo);
         latest_imgView = (ImageView) findViewById(R.id.imgview_add_fs);
         picZoneLayout = (AbsoluteLayout) findViewById(R.id.ll_piczone);
-
+        this.tag_vessel = (FlowLayout) findViewById(R.id.tag_vessel);
+        this.add_tag = (ImageView) findViewById(R.id.add_tag);
+        this.add_tag.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0)
+            {
+                AddTagDialog();
+            }
+        });
         findViewById(R.id.bt_test).setOnClickListener(this);
         findViewById(R.id.imgview_add_fs).setOnClickListener(
                 new PicAddClickListener());
@@ -327,6 +356,210 @@ public class MainActivity extends Activity implements OnClickListener,
         {
             changePicZone(new File(destPicPath).getName());
         }
+    }
+
+    /**
+     * 添加标签的对话框
+     */
+    public void AddTagDialog()
+    {
+        final Dialog dlg = new Dialog(this, R.style.dialog);
+        dlg.show();
+        dlg.getWindow().setGravity(Gravity.CENTER);
+        dlg.getWindow().setLayout((int) (MyAppParams.getScreenWidth() * 0.8),
+                android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+        dlg.getWindow().setContentView(R.layout.setting_add_tags_dialg);
+        TextView add_tag_dialg_title = (TextView) dlg
+                .findViewById(R.id.add_tag_dialg_title);
+        final EditText add_tag_dialg_content = (EditText) dlg
+                .findViewById(R.id.add_tag_dialg_content);
+        TextView add_tag_dialg_no = (TextView) dlg
+                .findViewById(R.id.add_tag_dialg_no);
+        TextView add_tag_dialg_ok = (TextView) dlg
+                .findViewById(R.id.add_tag_dialg_ok);
+        add_tag_dialg_title.setText("添加个人标签");
+        add_tag_dialg_no.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                dlg.dismiss();
+            }
+        });
+
+        add_tag_dialg_ok.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                InputMethodManager imm = (InputMethodManager) MainActivity.this
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+
+                AddTag(add_tag_dialg_content.getText().toString(), true);
+                dlg.dismiss();
+            }
+        });
+    }
+
+    /**
+     * 添加标签,先要执行数据库操作
+     * 
+     * @param tag
+     * @param i
+     */
+    @SuppressLint("NewApi")
+    public void AddTag(String tag, boolean insertFlag)
+    {
+        if (insertFlag)
+        {
+            try
+            {
+                if (TagDao.insertTag(tag))
+                {
+                    ToastUtil.showShortToast(getApplicationContext(),
+                            "插入新标签成功!");
+                }
+                else
+                {
+                    ToastUtil.showShortToast(getApplicationContext(),
+                            "插入新标签失败!");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                String err = ex.getMessage();
+                if (err.contains("column name is not unique"))
+                {
+                    ToastUtil.showLongToast(this, "<" + tag + ">该标签已存在!");
+                }
+                else
+                {
+                    ToastUtil.showLongToast(this, ex.getMessage());
+                }
+                return;
+            }
+        }
+        final TextView mTag = new TextView(MainActivity.this);
+        mTag.setText(tag);
+        // mTag.setPadding(0, 15, 40, 15);
+        mTag.setGravity(Gravity.CENTER);
+        mTag.setTextSize(14);
+        mTag.setBackgroundDrawable(getResources().getDrawable(
+                R.drawable.mylable));
+        // mTag.setBackgroundColor(getResources().getColor(R.color.black));
+        mTag.setTextColor(this.TAG_NOTSEL_COLOR);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LayoutParams.WRAP_CONTENT, 80);
+        params.setMargins(0, 10, 20, 10);
+        this.mTagList.add(mTag);
+        this.tag_vessel.addView(mTag, this.mTagList.size(), params);
+
+        mTag.setOnClickListener(new OnClickListener()
+        {
+            // 利用点击事件在选中/不选中直接切换
+            @Override
+            public void onClick(View arg0)
+            {
+                if (mTag.getCurrentTextColor() == MainActivity.this.TAG_SEL_COLOR)
+                {
+                    mTag.setTextColor(MainActivity.this.TAG_NOTSEL_COLOR);
+                    MainActivity.this.selTagList.remove(mTag.getText()
+                            .toString());
+                    // To do disselect
+                }
+                else
+                {
+                    mTag.setTextColor(MainActivity.this.TAG_SEL_COLOR);
+                    MainActivity.this.selTagList.add(mTag.getText().toString());
+                    // to do select
+                }
+            }
+
+        });
+        mTag.setOnLongClickListener(new OnLongClickListener()
+        {
+
+            @Override
+            public boolean onLongClick(View v)
+            {
+                // 长按标签删除操作
+                final AlertDialog dlg = new AlertDialog.Builder(
+                        MainActivity.this).create();
+                dlg.show();
+                dlg.getWindow().setGravity(Gravity.CENTER);
+                dlg.getWindow().setLayout(
+                        (int) (MyAppParams.getScreenWidth() * 0.8),
+                        android.view.WindowManager.LayoutParams.WRAP_CONTENT);
+                dlg.getWindow().setContentView(R.layout.setting_add_tags_dialg);
+                TextView add_tag_dialg_title = (TextView) dlg
+                        .findViewById(R.id.add_tag_dialg_title);
+                EditText add_tag_dialg_content = (EditText) dlg
+                        .findViewById(R.id.add_tag_dialg_content);
+                TextView add_tag_dialg_no = (TextView) dlg
+                        .findViewById(R.id.add_tag_dialg_no);
+                TextView add_tag_dialg_ok = (TextView) dlg
+                        .findViewById(R.id.add_tag_dialg_ok);
+                add_tag_dialg_title.setText("标签删除确认");
+                add_tag_dialg_content.setText("您确定要删除“"
+                        + mTag.getText().toString() + "”这个标签吗？");
+                add_tag_dialg_no.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dlg.dismiss();
+                    }
+                });
+                add_tag_dialg_ok.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+
+                        for (int j = 0; j < MainActivity.this.mTagList.size(); j++)
+                        {
+                            Log.v("==", mTag.getText().toString()
+                                    + "=="
+                                    + MainActivity.this.mTagList.get(j)
+                                            .toString());
+                            if (mTag == MainActivity.this.mTagList.get(j))
+                            {
+                                try
+                                {
+                                    if (TagDao.deleteByName(mTag.getText()
+                                            .toString().trim()))
+                                    {
+                                        MainActivity.this.tag_vessel
+                                                .removeView(mTag);
+                                        MainActivity.this.mTagList.remove(j);
+                                        ToastUtil.showShortToast(
+                                                getApplicationContext(), "成功!");
+                                    }
+                                    else
+                                    {
+                                        ToastUtil.showShortToast(
+                                                getApplicationContext(),
+                                                "删除失败!");
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    ToastUtil.showShortToast(
+                                            getApplicationContext(),
+                                            ex.getMessage());
+                                }
+                            }
+                        }
+                        dlg.dismiss();
+                    }
+                });
+
+                return true;
+            }
+        });
     }
 
     @Override
