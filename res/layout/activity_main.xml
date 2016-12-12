@@ -9,14 +9,40 @@
     tools:context=".MainActivity" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
     <Button
-         android:id="@+id/bt_test"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="测试"
-        />
+        android:id="@+id/bt_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="测试" />
+
+    <Button
+        android:id="@+id/pick_photo_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:text="测试2" />
+
+    <EditText
+        android:id="@+id/et_memo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_test"
+        android:layout_marginTop="54dp"
+        android:ems="10" >
+        <requestFocus />
+    </EditText>
+
+     <ImageView
+            android:id="@+id/imgview_add_fs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_memo"
+            android:src="@drawable/icon_add_fs" >
+        </ImageView>
 </RelativeLayout>

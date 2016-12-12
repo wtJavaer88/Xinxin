@@ -8,7 +8,6 @@ public class Log4jUtil
 {
     public static void configLog(String logPath)
     {
-        System.out.println("configLog...");
         try
         {
             LogConfigurator logConfigurator = new LogConfigurator();

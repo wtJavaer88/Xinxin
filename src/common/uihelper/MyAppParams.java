@@ -22,6 +22,7 @@ public class MyAppParams
 
     private String backupDbPath;
     private String zipPath;
+    private String mediaPath;
 
     private static int screenWidth;
     private static int screenHeight;
@@ -32,10 +33,17 @@ public class MyAppParams
     {
         this.backupDbPath = workPath + "backupdb/";
         this.zipPath = workPath + "zip/";
+        this.mediaPath = workPath + "media/";
 
         BasicFileUtil.makeDirectory(this.backupDbPath);
         BasicFileUtil.makeDirectory(LOG_FOLDER);
         BasicFileUtil.makeDirectory(this.zipPath);
+        BasicFileUtil.makeDirectory(this.mediaPath);
+    }
+
+    public String getMediaPath()
+    {
+        return this.mediaPath;
     }
 
     public static MyAppParams getInstance()
