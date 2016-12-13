@@ -49,6 +49,7 @@
         </activity>
         
         <activity android:name="com.wnc.xinxin.ui.MovieActivity"></activity>
+        <activity android:name="com.wnc.xinxin.ui.MediaViewActivity"></activity>
         <activity android:name="com.wnc.xinxin.ui.MainActivity"></activity>
         
     </application>
