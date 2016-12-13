@@ -19,16 +19,13 @@
         android:layout_height="2dp"
         android:background="#6cd2c5" />
 
-    <EditText
-        android:id="@+id/add_tag_dialg_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:ems="10"
-        android:hint="请输入您的个人标签~~"
-        android:paddingBottom="16dp"
-        android:paddingLeft="12dp"
-        android:paddingTop="28dp" />
+    
+    <AutoCompleteTextView
+            android:id="@+id/autocomplete_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:completionThreshold="1"
+            android:hint="请输入关键字       " />
 
     <View
         android:layout_width="match_parent"

@@ -3,6 +3,7 @@ package com.wnc.xinxin;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.wnc.basic.BasicDateUtil;
 import com.wnc.basic.BasicFileUtil;
@@ -13,7 +14,8 @@ import com.wnc.xinxin.pojo.FsMedia;
 public class FsService
 {
 
-    public void save(String fs_desc, List<String> media_files, List<String> tags)
+    public boolean save(String fs_desc, List<String> media_files,
+            Set<String> tags)
     {
         FootStepInfo fsInfo = new FootStepInfo();
         fsInfo.setDesc(fs_desc);
@@ -34,13 +36,13 @@ public class FsService
             System.out.println(media.getCreate_time());
             medias.add(media);
         }
-        FsDao.insertComplicateFs(fsInfo, medias, null);
+        return FsDao.insertComplicateFs(fsInfo, medias, tags);
     }
 
     public List<FootStepInfo> findAll()
     {
         List<FootStepInfo> findAllFsBySql = FsDao
-                .findAllFsBySql("SELECT * FROM FOOTSTEPS limit 0,5");
+                .findAllFsBySql("SELECT * FROM FOOTSTEPS order by id asc limit 0,10");
         for (FootStepInfo footStepInfo : findAllFsBySql)
         {
             System.out.println(footStepInfo);

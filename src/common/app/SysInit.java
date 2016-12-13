@@ -1,10 +1,15 @@
 package common.app;
 
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+
 import android.app.Activity;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.wnc.basic.BasicDateUtil;
+import com.wnc.basic.BasicFileUtil;
 import common.db.DatabaseManager;
 import common.db.SQLiteHelperOfOpen;
 import common.uihelper.MyAppParams;
@@ -12,26 +17,42 @@ import common.uihelper.MyAppParams;
 public class SysInit
 {
 
-    public static void init(Activity context2)
+    public static void init(Activity context)
     {
         Log4jUtil.configLog(MyAppParams.LOG_FOLDER
                 + BasicDateUtil.getCurrentDateString() + ".txt");
-        SharedPreferenceUtil.init(context2);
-        MyAppParams.mainActivity = context2;
-        MyAppParams.getInstance().setPackageName(context2.getPackageName());
-        MyAppParams.getInstance().setResources(context2.getResources());
-        MyAppParams.getInstance()
-                .setAppPath(context2.getFilesDir().getParent());
-        MyAppParams.setScreenWidth(BasicPhoneUtil.getScreenWidth(context2));
-        MyAppParams.setScreenHeight(BasicPhoneUtil.getScreenHeight(context2));
+        SharedPreferenceUtil.init(context);
+        MyAppParams.mainActivity = context;
+        MyAppParams.getInstance().setPackageName(context.getPackageName());
+        MyAppParams.getInstance().setResources(context.getResources());
+        MyAppParams.getInstance().setAppPath(context.getFilesDir().getParent());
+        MyAppParams.setScreenWidth(BasicPhoneUtil.getScreenWidth(context));
+        MyAppParams.setScreenHeight(BasicPhoneUtil.getScreenHeight(context));
 
-        SQLiteOpenHelper myHelper = new SQLiteHelperOfOpen(context2,
-                MyAppParams.NEWS_DB, null, 1);
+        if (isFirstRun())
+        {
+        }
+        if (!BasicFileUtil.isExistFile(MyAppParams.XINXIN_DB))
+        {
+            try
+            {
+                BasicFileUtil.writeFileByte(
+                        MyAppParams.XINXIN_DB,
+                        IOUtils.toByteArray(context.getAssets().open(
+                                "xinxin.db")));
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        SQLiteOpenHelper myHelper = new SQLiteHelperOfOpen(context,
+                MyAppParams.XINXIN_DB, null, 1);
         DatabaseManager.initializeInstance(myHelper);
-        // NewsDao.test();
+
     }
 
-    static String FIRST_RUN = "isSrtlearnFirstRun";
+    static String FIRST_RUN = "isXinxinFirstRun";
 
     private static boolean isFirstRun()
     {

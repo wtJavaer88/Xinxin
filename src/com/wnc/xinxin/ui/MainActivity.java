@@ -4,7 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.log4j.Logger;
 
@@ -22,15 +26,20 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +52,8 @@ import com.wnc.basic.BasicStringUtil;
 import com.wnc.xinxin.FlowLayout;
 import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
+import com.wnc.xinxin.TagService;
+import com.wnc.xinxin.dao.TagDao;
 import common.app.ToastUtil;
 import common.app.UriUtil;
 import common.uihelper.MyAppParams;
@@ -53,6 +64,7 @@ public class MainActivity extends Activity implements OnClickListener,
 {
     EditText memoET;
     ImageView latest_imgView;
+    @SuppressWarnings("deprecation")
     AbsoluteLayout picZoneLayout;
     FlowLayout tag_vessel;
     ImageView add_tag;
@@ -72,6 +84,7 @@ public class MainActivity extends Activity implements OnClickListener,
     private final int VIDEO_RESULT = 400;
     private String mediaDir = MyAppParams.getInstance().getMediaPath();
     List<String> fs_files = new ArrayList<String>();
+    Set<String> tag_names = new HashSet<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -110,7 +123,8 @@ public class MainActivity extends Activity implements OnClickListener,
         {
         case R.id.bt_save:
             String fs_desc = memoET.getText().toString();
-            new FsService().save(fs_desc, fs_files, null);
+            boolean save = new FsService().save(fs_desc, fs_files, tag_names);
+            ToastUtil.showShortToast(this, save ? "保存成功" : "保存失败");
             break;
         case R.id.bt_back:
             // finish();
@@ -241,8 +255,8 @@ public class MainActivity extends Activity implements OnClickListener,
                     scaledImgPath, 1024, 1024, 60))
             {
                 // 压缩成功就代表已经备份了
-                System.out.println("压缩成功! " + scaledImgPath);
-                changePicZone(new File(scaledImgPath).getName());
+                logger.info("压缩成功! " + scaledImgPath);
+                changePicZone(scaledImgPath);
             }
             else
             {
@@ -287,12 +301,11 @@ public class MainActivity extends Activity implements OnClickListener,
         {
             return;
         }
-        fs_files.add(mediaDir + imgPath);
+        fs_files.add(imgPath);
         if (imgPath.endsWith(".jpg"))
         {
             // curimgView.setBackgroundColor(Color.WHITE);
-            curimgView.setImageDrawable(Drawable.createFromPath(mediaDir
-                    + imgPath));
+            curimgView.setImageDrawable(Drawable.createFromPath(imgPath));
         }
         else if (imgPath.endsWith(".amr"))
         {
@@ -337,6 +350,11 @@ public class MainActivity extends Activity implements OnClickListener,
     private void backupAndInsertMemo(String saveDir, String memoFilePath,
             String suffixType)
     {
+        if (memoFilePath.contains(saveDir))
+        {
+            changePicZone(memoFilePath);
+            return;
+        }
         System.out.println("备注文件:" + memoFilePath);
         String fileName = BasicFileUtil.getFileName(memoFilePath);
         String destPicPath = saveDir + fileName;
@@ -352,9 +370,11 @@ public class MainActivity extends Activity implements OnClickListener,
         }
         else
         {
-            changePicZone(new File(destPicPath).getName());
+            changePicZone(destPicPath);
         }
     }
+
+    Handler mHandler = new Handler();
 
     /**
      * 添加标签的对话框
@@ -363,19 +383,74 @@ public class MainActivity extends Activity implements OnClickListener,
     {
         final Dialog dlg = new Dialog(this, R.style.dialog);
         dlg.show();
-        dlg.getWindow().setGravity(Gravity.CENTER);
+        dlg.getWindow().setGravity(Gravity.TOP);
         dlg.getWindow().setLayout((int) (MyAppParams.getScreenWidth() * 0.8),
                 android.view.WindowManager.LayoutParams.WRAP_CONTENT);
         dlg.getWindow().setContentView(R.layout.setting_add_tags_dialg);
         TextView add_tag_dialg_title = (TextView) dlg
                 .findViewById(R.id.add_tag_dialg_title);
-        final EditText add_tag_dialg_content = (EditText) dlg
-                .findViewById(R.id.add_tag_dialg_content);
+        add_tag_dialg_title.setText("添加日记标签");
+        final AutoCompleteTextView actv = (AutoCompleteTextView) dlg
+                .findViewById(R.id.autocomplete_tag);
+        List<String> findAllTagNames = new TagService().findAllTagNames();
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, findAllTagNames);
+        actv.setAdapter(arrayAdapter);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                // InputMethodManager inputManager = (InputMethodManager) actv
+                // .getContext().getSystemService(
+                // Context.INPUT_METHOD_SERVICE);
+                // inputManager.showSoftInput(actv, 0);
+                System.out.println("定时器开始");
+                mHandler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        actv.showDropDown();
+                    }
+                });
+            }
+        }, 300);
+        actv.setOnTouchListener(new View.OnTouchListener()
+        {
+            // 按住和松开的标识
+            int touch_flag = 0;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                touch_flag++;
+                if (touch_flag % 3 == 1)
+                {
+                    // 手动调用
+                    actv.showDropDown();
+                }
+                return false;
+            }
+        });
+        actv.setOnItemClickListener(new OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id)
+            {
+                Object obj = parent.getItemAtPosition(position);
+                System.out.println("点击:" + obj);
+                AddTag(actv.getText().toString(), false);
+                dlg.dismiss();
+            }
+        });
         TextView add_tag_dialg_no = (TextView) dlg
                 .findViewById(R.id.add_tag_dialg_no);
         TextView add_tag_dialg_ok = (TextView) dlg
                 .findViewById(R.id.add_tag_dialg_ok);
-        add_tag_dialg_title.setText("添加个人标签");
         add_tag_dialg_no.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -395,7 +470,7 @@ public class MainActivity extends Activity implements OnClickListener,
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,
                         InputMethodManager.HIDE_NOT_ALWAYS);
 
-                AddTag(add_tag_dialg_content.getText().toString(), true);
+                AddTag(actv.getText().toString(), true);
                 dlg.dismiss();
             }
         });
@@ -408,9 +483,9 @@ public class MainActivity extends Activity implements OnClickListener,
      * @param i
      */
     @SuppressLint("NewApi")
-    public void AddTag(String tag, boolean insertFlag)
+    public void AddTag(String tag, boolean needInsertFlag)
     {
-        if (insertFlag)
+        if (needInsertFlag)
         {
             try
             {
@@ -440,6 +515,8 @@ public class MainActivity extends Activity implements OnClickListener,
                 return;
             }
         }
+        tag_names.add(tag);
+
         final TextView mTag = new TextView(MainActivity.this);
         mTag.setText(tag);
         // mTag.setPadding(0, 15, 40, 15);
@@ -461,17 +538,16 @@ public class MainActivity extends Activity implements OnClickListener,
             @Override
             public void onClick(View arg0)
             {
-                if (mTag.getCurrentTextColor() == MainActivity.this.TAG_SEL_COLOR)
+                if (mTag.getCurrentTextColor() == TAG_SEL_COLOR)
                 {
-                    mTag.setTextColor(MainActivity.this.TAG_NOTSEL_COLOR);
-                    MainActivity.this.selTagList.remove(mTag.getText()
-                            .toString());
+                    mTag.setTextColor(TAG_NOTSEL_COLOR);
+                    selTagList.remove(mTag.getText().toString());
                     // To do disselect
                 }
                 else
                 {
-                    mTag.setTextColor(MainActivity.this.TAG_SEL_COLOR);
-                    MainActivity.this.selTagList.add(mTag.getText().toString());
+                    mTag.setTextColor(TAG_SEL_COLOR);
+                    selTagList.add(mTag.getText().toString());
                     // to do select
                 }
             }
@@ -495,19 +571,33 @@ public class MainActivity extends Activity implements OnClickListener,
                 TextView add_tag_dialg_title = (TextView) dlg
                         .findViewById(R.id.add_tag_dialg_title);
                 EditText add_tag_dialg_content = (EditText) dlg
-                        .findViewById(R.id.add_tag_dialg_content);
+                        .findViewById(R.id.autocomplete_tag);
                 TextView add_tag_dialg_no = (TextView) dlg
                         .findViewById(R.id.add_tag_dialg_no);
                 TextView add_tag_dialg_ok = (TextView) dlg
                         .findViewById(R.id.add_tag_dialg_ok);
-                add_tag_dialg_title.setText("标签删除确认");
-                add_tag_dialg_content.setText("您确定要删除“"
+                add_tag_dialg_title.setText("标签移除/删除确认");
+                add_tag_dialg_content.setText("您确定要移除或删除“"
                         + mTag.getText().toString() + "”这个标签吗？");
+                add_tag_dialg_no.setText("移除");
+                add_tag_dialg_ok.setText("删除");
                 add_tag_dialg_no.setOnClickListener(new OnClickListener()
                 {
                     @Override
                     public void onClick(View v)
                     {
+                        for (int j = 0; j < mTagList.size(); j++)
+                        {
+                            if (mTag == mTagList.get(j))
+                            {
+                                tag_vessel.removeView(mTag);
+                                mTagList.remove(j);
+                                tag_names.remove(mTag.getText().toString()
+                                        .trim());
+                                ToastUtil.showShortToast(
+                                        getApplicationContext(), "移除成功!");
+                            }
+                        }
                         dlg.dismiss();
                     }
                 });
@@ -517,24 +607,22 @@ public class MainActivity extends Activity implements OnClickListener,
                     public void onClick(View v)
                     {
 
-                        for (int j = 0; j < MainActivity.this.mTagList.size(); j++)
+                        for (int j = 0; j < mTagList.size(); j++)
                         {
-                            Log.v("==", mTag.getText().toString()
-                                    + "=="
-                                    + MainActivity.this.mTagList.get(j)
-                                            .toString());
-                            if (mTag == MainActivity.this.mTagList.get(j))
+                            if (mTag == mTagList.get(j))
                             {
                                 try
                                 {
                                     if (TagDao.deleteByName(mTag.getText()
                                             .toString().trim()))
                                     {
-                                        MainActivity.this.tag_vessel
-                                                .removeView(mTag);
-                                        MainActivity.this.mTagList.remove(j);
+                                        tag_vessel.removeView(mTag);
+                                        mTagList.remove(j);
+                                        tag_names.remove(mTag.getText()
+                                                .toString().trim());
                                         ToastUtil.showShortToast(
-                                                getApplicationContext(), "成功!");
+                                                getApplicationContext(),
+                                                "删除成功!");
                                     }
                                     else
                                     {

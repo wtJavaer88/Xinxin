@@ -479,11 +479,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     public static final class id {
         public static final int action_settings=0x7f05001d;
         public static final int add_tag=0x7f050013;
-        public static final int add_tag_dialg_content=0x7f05001a;
         public static final int add_tag_dialg_no=0x7f05001b;
         public static final int add_tag_dialg_ok=0x7f05001c;
         public static final int add_tag_dialg_title=0x7f050019;
         public static final int al_piczone=0x7f050014;
+        public static final int autocomplete_tag=0x7f05001a;
         public static final int bottom=0x7f050003;
         public static final int bt_back=0x7f05000f;
         public static final int bt_save=0x7f050010;

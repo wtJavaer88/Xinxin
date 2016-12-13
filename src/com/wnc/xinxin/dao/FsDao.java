@@ -2,6 +2,7 @@ package com.wnc.xinxin.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -27,39 +28,18 @@ public class FsDao
         DatabaseManager.getInstance().closeDatabase();
     }
 
-    public synchronized static void insertFs(FootStepInfo fsInfo)
-    {
-        try
-        {
-            openDatabase();
-            database.execSQL(
-                    "INSERT INTO FOOTSTEPS(fs_desc,create_time,update_time) VALUES (?,?,?)",
-                    new Object[]
-                    { fsInfo.getDesc(), fsInfo.getCreate_time(),
-                            fsInfo.getUpdate_time() });
-        }
-        catch (Exception e)
-        {
-            log.error(fsInfo.getDesc(), e);
-        }
-        finally
-        {
-            closeDatabase();
-        }
-    }
-
-    public synchronized static void insertComplicateFs(FootStepInfo fsInfo,
-            List<FsMedia> medias, List<Integer> tagIDs)
+    public synchronized static boolean insertComplicateFs(FootStepInfo fsInfo,
+            List<FsMedia> medias, Set<String> tag_names)
     {
         try
         {
             openDatabase();
             database.beginTransaction();
             database.execSQL(
-                    "INSERT INTO FOOTSTEPS(fs_desc,create_time,update_time) VALUES (?,?,?)",
+                    "INSERT INTO FOOTSTEPS(fs_desc,tag_names,create_time,update_time) VALUES (?,?,?,?)",
                     new Object[]
-                    { fsInfo.getDesc(), fsInfo.getCreate_time(),
-                            fsInfo.getUpdate_time() });
+                    { fsInfo.getDesc(), tag_names.toString(),
+                            fsInfo.getCreate_time(), fsInfo.getUpdate_time() });
             int fs_id = getId(database);
             log.info("当前fs_id:" + fs_id);
             for (int i = 0; i < medias.size(); i++)
@@ -75,6 +55,7 @@ public class FsDao
                                 fsMedia.getCreate_time() });
             }
             database.setTransactionSuccessful();
+            return true;
         }
         catch (Exception e)
         {
@@ -85,6 +66,7 @@ public class FsDao
             database.endTransaction();
             closeDatabase();
         }
+        return false;
     }
 
     private static int getId(SQLiteDatabase database2)
@@ -111,8 +93,9 @@ public class FsDao
             while (!c.isAfterLast())
             {
                 info = new FootStepInfo();
-                info.setDesc(c.getString(c.getColumnIndex("fs_desc")));
                 info.setId(c.getInt(c.getColumnIndex("id")));
+                info.setDesc(c.getString(c.getColumnIndex("fs_desc")));
+                info.setTag_names(c.getString(c.getColumnIndex("tag_names")));
                 info.setCreate_time(c.getString(c.getColumnIndex("create_time")));
                 info.setUpdate_time(c.getString(c.getColumnIndex("update_time")));
                 list.add(info);

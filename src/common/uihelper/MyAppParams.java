@@ -15,7 +15,7 @@ public class MyAppParams
     private final static String workPath = Environment
             .getExternalStorageDirectory().getPath() + "/wnc/app/xinxin/";
 
-    public final static String NEWS_DB = workPath + "xinxin.db";
+    public final static String XINXIN_DB = workPath + "xinxin.db";
     public final static String LOG_FOLDER = workPath + "/logs/";
 
     public static Activity mainActivity;

@@ -25,7 +25,7 @@ public class ConfirmUtil
         TextView add_tag_dialg_title = (TextView) dlg
                 .findViewById(R.id.add_tag_dialg_title);
         TextView add_tag_dialg_content = (TextView) dlg
-                .findViewById(R.id.add_tag_dialg_content);
+                .findViewById(R.id.autocomplete_tag);
         TextView add_tag_dialg_no = (TextView) dlg
                 .findViewById(R.id.add_tag_dialg_no);
         TextView add_tag_dialg_ok = (TextView) dlg

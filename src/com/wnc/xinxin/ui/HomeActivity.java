@@ -24,6 +24,7 @@ import com.wnc.basic.BasicDateUtil;
 import com.wnc.xinxin.Config;
 import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
+import com.wnc.xinxin.TagService;
 import com.wnc.xinxin.pojo.FootStepInfo;
 import com.wnc.xinxin.pojo.FsMedia;
 import common.app.SysInit;
@@ -33,6 +34,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
     Logger logger = Logger.getLogger(MainActivity.class);
     LinearLayout ll_home, ll_start_record;
+    static List<Integer> isExistFs = new ArrayList<Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,6 +45,8 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         SysInit.init(HomeActivity.this);
 
         logger.info("start...");
+        new TagService().init();
+        new TagService().findAllTagNames();
         try
         {
             initView();
@@ -51,7 +55,6 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         {
             e.printStackTrace();
         }
-        // new FsService().deleteAll();
     }
 
     private void initView()
@@ -67,12 +70,27 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             }
         });
         ll_home = (LinearLayout) findViewById(R.id.ll_home);
+        minHomeDeep = ll_home.getChildCount();
+        refreshFs();
+    }
+
+    int minHomeDeep = 0;
+    final static float TextScale = 0.75f;
+    final static int MAX_ID = 10000;
+
+    private void refreshFs()
+    {
         List<FootStepInfo> findAll = new FsService().findAll();
+        System.out.println(isExistFs);
         for (FootStepInfo footStepInfo : findAll)
         {
-            ll_home.addView(getFsLayout(footStepInfo));
+            if (!isExistFs.contains(footStepInfo.getId()))
+            {
+                isExistFs.add(footStepInfo.getId());
+                ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+            }
         }
-        for (int i = 13; i >= 10; i--)
+        for (int i = 1300; i >= 10; i--)
         {
             // ll_home.addView(getFsLayout(getFsSample(i)));
         }
@@ -106,7 +124,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         outer_rl.setLayoutParams(lp);
         RelativeLayout inner_rl = getInnerRl(footStepInfo);
-        inner_rl.setId(10000 * footStepInfo.getId() + 2);
+        inner_rl.setId(MAX_ID * footStepInfo.getId() + 2);
         outer_rl.addView(inner_rl);
         TextView weekdayTv = getWeekDayTv(inner_rl, footStepInfo);
         outer_rl.addView(weekdayTv);
@@ -162,13 +180,13 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
     private RelativeLayout getInnerRl(FootStepInfo footStepInfo)
     {
         final RelativeLayout relativeLayout = new RelativeLayout(this);
-        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(200,
-                200);
+        RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
+                (int) (200 * TextScale), (int) (200 * TextScale));
         relativeLayout.setBackgroundResource(R.drawable.home_item_date_bg);
         relativeLayout.setLayoutParams(lp);
 
         TextView tv_day = new TextView(this);
-        tv_day.setId(10000 * footStepInfo.getId() + 1);
+        tv_day.setId(MAX_ID * footStepInfo.getId() + 1);
         RelativeLayout.LayoutParams lp_tv = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp_tv.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -176,7 +194,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         String date = footStepInfo.getCreate_time().replace("-", "")
                 .substring(0, 8);
         tv_day.setText(date.substring(6, 8));
-        tv_day.setTextSize(16);
+        tv_day.setTextSize(20 * TextScale);
         TextPaint paint = tv_day.getPaint();
         paint.setFakeBoldText(true);
 
@@ -187,7 +205,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         lp_tv2.addRule(RelativeLayout.BELOW, tv_day.getId());
         tv_month.setLayoutParams(lp_tv2);
         tv_month.setText(date.substring(0, 4) + "." + date.substring(4, 6));
-        tv_month.setTextSize(12);
+        tv_month.setTextSize(15 * TextScale);
 
         relativeLayout.addView(tv_day);
         relativeLayout.addView(tv_month);
@@ -200,6 +218,13 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         public void onClick(View arg0)
         {
         }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        refreshFs();
     }
 
     @Override
