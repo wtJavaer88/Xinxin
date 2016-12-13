@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_fs_head"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:id="@+id/bt_back"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
+			android:layout_alignParentLeft="true"
             android:background="#ffffffff"
             android:text="取 消"
             android:textColor="@color/black"
@@ -28,27 +28,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
+			android:layout_centerInParent="true"
             android:textSize="20dp"
             android:layout_weight="4"
             android:text="日记" />
-        <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
 
         <Button
             android:id="@+id/bt_test"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_gravity="center"
+			android:layout_alignParentRight="true"
             android:background="#ffffffff"
             android:text="保 存"
             android:textColor="@color/black"
             android:textSize="15dp"
             android:textStyle="bold" />
-    </LinearLayout>
+    </RelativeLayout>
 
      <EditText
         android:id="@+id/et_memo"
@@ -76,13 +71,39 @@
             android:src="@drawable/mylablepen" />
     </com.wnc.xinxin.FlowLayout>
     
+    <RelativeLayout
+        android:id="@+id/tag_vessel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tag_vessel"
+        android:background="@drawable/home_item_date_bg"
+         >
+          <TextView
+            android:id="@+id/tv_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:textSize="20dp"
+            android:text="今天" />
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerHorizontal="true"
+			  android:layout_below="@+id/tv_day"
+			  android:layout_marginTop="25sp"
+              android:text="2016.12"
+              android:textSize="15dp" />
+
+        </RelativeLayout>
+    
    
 
     <AbsoluteLayout
         android:id="@+id/ll_piczone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tag_vessel"
+        android:layout_below="@+id/tag_vessel2"
         android:orientation="horizontal"
         android:padding="10dp" >
 

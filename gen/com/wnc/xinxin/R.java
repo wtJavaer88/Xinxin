@@ -455,50 +455,54 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_title_indicator_top_padding=0x7f09000c;
     }
     public static final class drawable {
-        public static final int base_action_bar_bg=0x7f020000;
-        public static final int base_tabpager_indicator_selected=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int icon_fs_add=0x7f020003;
-        public static final int icon_fs_audio=0x7f020004;
-        public static final int icon_fs_video=0x7f020005;
-        public static final int mylable=0x7f020006;
-        public static final int mylablepen=0x7f020007;
-        public static final int selector_tabtext=0x7f020008;
-        public static final int setbar_bg=0x7f020009;
-        public static final int tab_indicator=0x7f02000a;
-        public static final int vpi__tab_indicator=0x7f02000b;
-        public static final int vpi__tab_selected_focused_holo=0x7f02000c;
-        public static final int vpi__tab_selected_holo=0x7f02000d;
-        public static final int vpi__tab_selected_pressed_holo=0x7f02000e;
-        public static final int vpi__tab_unselected_focused_holo=0x7f02000f;
-        public static final int vpi__tab_unselected_holo=0x7f020010;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f020011;
+        public static final int add_photo_3=0x7f020000;
+        public static final int base_action_bar_bg=0x7f020001;
+        public static final int base_tabpager_indicator_selected=0x7f020002;
+        public static final int home_item_date_bg=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int icon_fs_add=0x7f020005;
+        public static final int icon_fs_audio=0x7f020006;
+        public static final int icon_fs_video=0x7f020007;
+        public static final int mylable=0x7f020008;
+        public static final int mylablepen=0x7f020009;
+        public static final int selector_tabtext=0x7f02000a;
+        public static final int setbar_bg=0x7f02000b;
+        public static final int tab_indicator=0x7f02000c;
+        public static final int vpi__tab_indicator=0x7f02000d;
+        public static final int vpi__tab_selected_focused_holo=0x7f02000e;
+        public static final int vpi__tab_selected_holo=0x7f02000f;
+        public static final int vpi__tab_selected_pressed_holo=0x7f020010;
+        public static final int vpi__tab_unselected_focused_holo=0x7f020011;
+        public static final int vpi__tab_unselected_holo=0x7f020012;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f020013;
     }
     public static final class id {
-        public static final int action_settings=0x7f050018;
+        public static final int action_settings=0x7f05001a;
         public static final int add_tag=0x7f05000d;
-        public static final int add_tag_dialg_content=0x7f050015;
-        public static final int add_tag_dialg_no=0x7f050016;
-        public static final int add_tag_dialg_ok=0x7f050017;
-        public static final int add_tag_dialg_title=0x7f050014;
+        public static final int add_tag_dialg_content=0x7f050017;
+        public static final int add_tag_dialg_no=0x7f050018;
+        public static final int add_tag_dialg_ok=0x7f050019;
+        public static final int add_tag_dialg_title=0x7f050016;
         public static final int bottom=0x7f050003;
         public static final int bt_back=0x7f050009;
         public static final int bt_test=0x7f05000a;
-        public static final int btnRecoder=0x7f050011;
-        public static final int btnRetry=0x7f050012;
+        public static final int btnRecoder=0x7f050013;
+        public static final int btnRetry=0x7f050014;
         public static final int et_memo=0x7f05000b;
         public static final int hide=0x7f050007;
-        public static final int imgview_add_fs=0x7f05000f;
+        public static final int imgview_add_fs=0x7f050011;
         public static final int inshow=0x7f050006;
         public static final int ll_fs_head=0x7f050008;
-        public static final int ll_piczone=0x7f05000e;
+        public static final int ll_piczone=0x7f050010;
         public static final int none=0x7f050000;
         public static final int show=0x7f050005;
-        public static final int surfaceView1=0x7f050010;
+        public static final int surfaceView1=0x7f050012;
         public static final int tag_vessel=0x7f05000c;
+        public static final int tag_vessel2=0x7f05000e;
         public static final int top=0x7f050004;
         public static final int triangle=0x7f050001;
-        public static final int tv_msg=0x7f050013;
+        public static final int tv_day=0x7f05000f;
+        public static final int tv_msg=0x7f050015;
         public static final int underline=0x7f050002;
     }
     public static final class integer {
@@ -573,8 +577,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #CirclePageIndicator_android_background android:background}</code></td><td> View background </td></tr>
-           <tr><td><code>{@link #CirclePageIndicator_android_orientation android:orientation}</code></td><td> Orientation of the indicator.</td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_android_background com.wnc.xinxin:android_background}</code></td><td> View background </td></tr>
+           <tr><td><code>{@link #CirclePageIndicator_android_orientation com.wnc.xinxin:android_orientation}</code></td><td> Orientation of the indicator.</td></tr>
            <tr><td><code>{@link #CirclePageIndicator_centered com.wnc.xinxin:centered}</code></td><td> Whether or not the indicators should be centered.</td></tr>
            <tr><td><code>{@link #CirclePageIndicator_fillColor com.wnc.xinxin:fillColor}</code></td><td> Color of the filled circle that represents the current page.</td></tr>
            <tr><td><code>{@link #CirclePageIndicator_pageColor com.wnc.xinxin:pageColor}</code></td><td> Color of the filled circles that represents pages.</td></tr>
@@ -602,18 +606,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>
           @attr description
            View background 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#background}.
-          @attr name android:background
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_background}.
+          @attr name android:android_background
         */
         public static final int CirclePageIndicator_android_background = 1;
         /**
           <p>
           @attr description
            Orientation of the indicator. 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#orientation}.
-          @attr name android:orientation
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_orientation}.
+          @attr name android:android_orientation
         */
         public static final int CirclePageIndicator_android_orientation = 0;
         /**
@@ -629,7 +631,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:centered
+          @attr name android:centered
         */
         public static final int CirclePageIndicator_centered = 2;
         /**
@@ -646,7 +648,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:fillColor
+          @attr name android:fillColor
         */
         public static final int CirclePageIndicator_fillColor = 4;
         /**
@@ -663,7 +665,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:pageColor
+          @attr name android:pageColor
         */
         public static final int CirclePageIndicator_pageColor = 5;
         /**
@@ -681,7 +683,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:radius
+          @attr name android:radius
         */
         public static final int CirclePageIndicator_radius = 6;
         /**
@@ -697,7 +699,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:snap
+          @attr name android:snap
         */
         public static final int CirclePageIndicator_snap = 7;
         /**
@@ -714,7 +716,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:strokeColor
+          @attr name android:strokeColor
         */
         public static final int CirclePageIndicator_strokeColor = 8;
         /**
@@ -732,7 +734,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:strokeWidth
+          @attr name android:strokeWidth
         */
         public static final int CirclePageIndicator_strokeWidth = 3;
         /** Attributes that can be used with a LinePageIndicator.
@@ -741,7 +743,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #LinePageIndicator_android_background android:background}</code></td><td> View background </td></tr>
+           <tr><td><code>{@link #LinePageIndicator_android_background com.wnc.xinxin:android_background}</code></td><td> View background </td></tr>
            <tr><td><code>{@link #LinePageIndicator_centered com.wnc.xinxin:centered}</code></td><td> Whether or not the indicators should be centered.</td></tr>
            <tr><td><code>{@link #LinePageIndicator_gapWidth com.wnc.xinxin:gapWidth}</code></td><td> Width of the gap between each indicator line.</td></tr>
            <tr><td><code>{@link #LinePageIndicator_lineWidth com.wnc.xinxin:lineWidth}</code></td><td> Width of each indicator line.</td></tr>
@@ -765,9 +767,8 @@ containing a value of this type.
           <p>
           @attr description
            View background 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#background}.
-          @attr name android:background
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_background}.
+          @attr name android:android_background
         */
         public static final int LinePageIndicator_android_background = 0;
         /**
@@ -783,7 +784,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:centered
+          @attr name android:centered
         */
         public static final int LinePageIndicator_centered = 1;
         /**
@@ -801,7 +802,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:gapWidth
+          @attr name android:gapWidth
         */
         public static final int LinePageIndicator_gapWidth = 6;
         /**
@@ -819,7 +820,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:lineWidth
+          @attr name android:lineWidth
         */
         public static final int LinePageIndicator_lineWidth = 5;
         /**
@@ -836,7 +837,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:selectedColor
+          @attr name android:selectedColor
         */
         public static final int LinePageIndicator_selectedColor = 2;
         /**
@@ -854,7 +855,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:strokeWidth
+          @attr name android:strokeWidth
         */
         public static final int LinePageIndicator_strokeWidth = 3;
         /**
@@ -871,7 +872,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:unselectedColor
+          @attr name android:unselectedColor
         */
         public static final int LinePageIndicator_unselectedColor = 4;
         /** Attributes that can be used with a TitlePageIndicator.
@@ -880,9 +881,9 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #TitlePageIndicator_android_background android:background}</code></td><td> View background </td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_android_textColor android:textColor}</code></td><td> Color of regular titles.</td></tr>
-           <tr><td><code>{@link #TitlePageIndicator_android_textSize android:textSize}</code></td><td> Size of title text.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_android_background com.wnc.xinxin:android_background}</code></td><td> View background </td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_android_textColor com.wnc.xinxin:android_textColor}</code></td><td> Color of regular titles.</td></tr>
+           <tr><td><code>{@link #TitlePageIndicator_android_textSize com.wnc.xinxin:android_textSize}</code></td><td> Size of title text.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_clipPadding com.wnc.xinxin:clipPadding}</code></td><td> Screen edge padding.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_footerColor com.wnc.xinxin:footerColor}</code></td><td> Color of the footer line and indicator.</td></tr>
            <tr><td><code>{@link #TitlePageIndicator_footerIndicatorHeight com.wnc.xinxin:footerIndicatorHeight}</code></td><td> Height of the indicator above the footer line.</td></tr>
@@ -922,27 +923,24 @@ containing a value of this type.
           <p>
           @attr description
            View background 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#background}.
-          @attr name android:background
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_background}.
+          @attr name android:android_background
         */
         public static final int TitlePageIndicator_android_background = 2;
         /**
           <p>
           @attr description
            Color of regular titles. 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#textColor}.
-          @attr name android:textColor
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_textColor}.
+          @attr name android:android_textColor
         */
         public static final int TitlePageIndicator_android_textColor = 1;
         /**
           <p>
           @attr description
            Size of title text. 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#textSize}.
-          @attr name android:textSize
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_textSize}.
+          @attr name android:android_textSize
         */
         public static final int TitlePageIndicator_android_textSize = 0;
         /**
@@ -960,7 +958,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:clipPadding
+          @attr name android:clipPadding
         */
         public static final int TitlePageIndicator_clipPadding = 4;
         /**
@@ -977,7 +975,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerColor
+          @attr name android:footerColor
         */
         public static final int TitlePageIndicator_footerColor = 5;
         /**
@@ -995,7 +993,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerIndicatorHeight
+          @attr name android:footerIndicatorHeight
         */
         public static final int TitlePageIndicator_footerIndicatorHeight = 8;
         /**
@@ -1015,7 +1013,7 @@ containing a value of this type.
 <tr><td><code>underline</code></td><td>2</td><td></td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerIndicatorStyle
+          @attr name android:footerIndicatorStyle
         */
         public static final int TitlePageIndicator_footerIndicatorStyle = 7;
         /**
@@ -1033,7 +1031,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerIndicatorUnderlinePadding
+          @attr name android:footerIndicatorUnderlinePadding
         */
         public static final int TitlePageIndicator_footerIndicatorUnderlinePadding = 9;
         /**
@@ -1051,7 +1049,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerLineHeight
+          @attr name android:footerLineHeight
         */
         public static final int TitlePageIndicator_footerLineHeight = 6;
         /**
@@ -1069,7 +1067,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:footerPadding
+          @attr name android:footerPadding
         */
         public static final int TitlePageIndicator_footerPadding = 10;
         /**
@@ -1088,7 +1086,7 @@ containing a value of this type.
 <tr><td><code>top</code></td><td>1</td><td></td></tr>
 </table>
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:linePosition
+          @attr name android:linePosition
         */
         public static final int TitlePageIndicator_linePosition = 11;
         /**
@@ -1104,7 +1102,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:selectedBold
+          @attr name android:selectedBold
         */
         public static final int TitlePageIndicator_selectedBold = 12;
         /**
@@ -1121,7 +1119,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:selectedColor
+          @attr name android:selectedColor
         */
         public static final int TitlePageIndicator_selectedColor = 3;
         /**
@@ -1139,7 +1137,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:titlePadding
+          @attr name android:titlePadding
         */
         public static final int TitlePageIndicator_titlePadding = 13;
         /**
@@ -1157,7 +1155,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:topPadding
+          @attr name android:topPadding
         */
         public static final int TitlePageIndicator_topPadding = 14;
         /** Attributes that can be used with a UnderlinePageIndicator.
@@ -1166,7 +1164,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #UnderlinePageIndicator_android_background android:background}</code></td><td> View background </td></tr>
+           <tr><td><code>{@link #UnderlinePageIndicator_android_background com.wnc.xinxin:android_background}</code></td><td> View background </td></tr>
            <tr><td><code>{@link #UnderlinePageIndicator_fadeDelay com.wnc.xinxin:fadeDelay}</code></td><td> Length of the delay to fade the indicator.</td></tr>
            <tr><td><code>{@link #UnderlinePageIndicator_fadeLength com.wnc.xinxin:fadeLength}</code></td><td> Length of the indicator fade to transparent.</td></tr>
            <tr><td><code>{@link #UnderlinePageIndicator_fades com.wnc.xinxin:fades}</code></td><td> Whether or not the selected indicator fades.</td></tr>
@@ -1186,9 +1184,8 @@ containing a value of this type.
           <p>
           @attr description
            View background 
-          <p>This corresponds to the global attribute
-          resource symbol {@link android.R.attr#background}.
-          @attr name android:background
+          <p>This corresponds to the global attribute          resource symbol {@link com.wnc.xinxin.R.attr#android_background}.
+          @attr name android:android_background
         */
         public static final int UnderlinePageIndicator_android_background = 0;
         /**
@@ -1204,7 +1201,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:fadeDelay
+          @attr name android:fadeDelay
         */
         public static final int UnderlinePageIndicator_fadeDelay = 3;
         /**
@@ -1220,7 +1217,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:fadeLength
+          @attr name android:fadeLength
         */
         public static final int UnderlinePageIndicator_fadeLength = 4;
         /**
@@ -1236,7 +1233,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:fades
+          @attr name android:fades
         */
         public static final int UnderlinePageIndicator_fades = 2;
         /**
@@ -1253,7 +1250,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:selectedColor
+          @attr name android:selectedColor
         */
         public static final int UnderlinePageIndicator_selectedColor = 1;
         /** Attributes that can be used with a ViewPagerIndicator.
@@ -1289,7 +1286,7 @@ containing a value of this type.
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiCirclePageIndicatorStyle
+          @attr name android:vpiCirclePageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiCirclePageIndicatorStyle = 0;
         /**
@@ -1301,7 +1298,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiIconPageIndicatorStyle
+          @attr name android:vpiIconPageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiIconPageIndicatorStyle = 1;
         /**
@@ -1313,7 +1310,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiLinePageIndicatorStyle
+          @attr name android:vpiLinePageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiLinePageIndicatorStyle = 2;
         /**
@@ -1325,7 +1322,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiTabPageIndicatorStyle
+          @attr name android:vpiTabPageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiTabPageIndicatorStyle = 4;
         /**
@@ -1337,7 +1334,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiTitlePageIndicatorStyle
+          @attr name android:vpiTitlePageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiTitlePageIndicatorStyle = 3;
         /**
@@ -1349,7 +1346,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
           <p>This is a private symbol.
-          @attr name com.wnc.xinxin:vpiUnderlinePageIndicatorStyle
+          @attr name android:vpiUnderlinePageIndicatorStyle
         */
         public static final int ViewPagerIndicator_vpiUnderlinePageIndicatorStyle = 5;
     };
