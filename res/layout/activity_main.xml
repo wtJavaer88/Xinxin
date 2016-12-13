@@ -73,8 +73,8 @@
     
     <RelativeLayout
         android:id="@+id/tag_vessel2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_below="@+id/tag_vessel"
         android:background="@drawable/home_item_date_bg"
          >
@@ -83,17 +83,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
-			android:textSize="20dp"
-            android:text="今天" />
+			android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="13" />
 
           <TextView
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:layout_centerHorizontal="true"
 			  android:layout_below="@+id/tv_day"
-			  android:layout_marginTop="25sp"
+			  android:layout_marginTop="0dp"
               android:text="2016.12"
-              android:textSize="15dp" />
+              android:textSize="10dp" />
 
         </RelativeLayout>
     
