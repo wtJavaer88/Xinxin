@@ -6,7 +6,7 @@ public class FsMedia
     private String media_name;
     private String absulute_path;
     private String media_type;
-    private int media_size;
+    private long media_size;
     private String create_time;
 
     public String getMedia_name()
@@ -29,12 +29,12 @@ public class FsMedia
         this.media_type = media_type;
     }
 
-    public int getMedia_size()
+    public long getMedia_size()
     {
         return media_size;
     }
 
-    public void setMedia_size(int media_size)
+    public void setMedia_size(long media_size)
     {
         this.media_size = media_size;
     }

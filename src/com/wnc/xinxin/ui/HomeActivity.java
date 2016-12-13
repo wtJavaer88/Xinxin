@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextPaint;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.wnc.basic.BasicDateUtil;
 import com.wnc.xinxin.Config;
+import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
 import com.wnc.xinxin.pojo.FootStepInfo;
 import com.wnc.xinxin.pojo.FsMedia;
@@ -30,7 +32,7 @@ import common.uihelper.MyAppParams;
 public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
     Logger logger = Logger.getLogger(MainActivity.class);
-    LinearLayout ll_home;
+    LinearLayout ll_home, ll_start_record;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,15 +51,30 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         {
             e.printStackTrace();
         }
+        // new FsService().deleteAll();
     }
 
-    @SuppressWarnings("deprecation")
     private void initView()
     {
+        ll_start_record = (LinearLayout) findViewById(R.id.ll_start_record);
+        ll_start_record.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0)
+            {
+                System.out.println("onclick...start");
+                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+            }
+        });
         ll_home = (LinearLayout) findViewById(R.id.ll_home);
+        List<FootStepInfo> findAll = new FsService().findAll();
+        for (FootStepInfo footStepInfo : findAll)
+        {
+            ll_home.addView(getFsLayout(footStepInfo));
+        }
         for (int i = 13; i >= 10; i--)
         {
-            ll_home.addView(getFsLayout(getFsSample(i)));
+            // ll_home.addView(getFsLayout(getFsSample(i)));
         }
     }
 

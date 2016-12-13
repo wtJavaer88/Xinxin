@@ -477,34 +477,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vpi__tab_unselected_pressed_holo=0x7f020013;
     }
     public static final class id {
-        public static final int action_settings=0x7f05001c;
-        public static final int add_tag=0x7f050012;
-        public static final int add_tag_dialg_content=0x7f050019;
-        public static final int add_tag_dialg_no=0x7f05001a;
-        public static final int add_tag_dialg_ok=0x7f05001b;
-        public static final int add_tag_dialg_title=0x7f050018;
-        public static final int al_piczone=0x7f050013;
+        public static final int action_settings=0x7f05001d;
+        public static final int add_tag=0x7f050013;
+        public static final int add_tag_dialg_content=0x7f05001a;
+        public static final int add_tag_dialg_no=0x7f05001b;
+        public static final int add_tag_dialg_ok=0x7f05001c;
+        public static final int add_tag_dialg_title=0x7f050019;
+        public static final int al_piczone=0x7f050014;
         public static final int bottom=0x7f050003;
-        public static final int bt_back=0x7f05000e;
-        public static final int bt_test=0x7f05000f;
-        public static final int btnRecoder=0x7f050015;
-        public static final int btnRetry=0x7f050016;
-        public static final int et_memo=0x7f050010;
+        public static final int bt_back=0x7f05000f;
+        public static final int bt_save=0x7f050010;
+        public static final int btnRecoder=0x7f050016;
+        public static final int btnRetry=0x7f050017;
+        public static final int et_fs_desc=0x7f050011;
         public static final int hide=0x7f050007;
         public static final int imgview_add_fs=0x7f05000c;
         public static final int inshow=0x7f050006;
-        public static final int ll_fs_head=0x7f05000d;
+        public static final int ll_fs_head=0x7f05000e;
         public static final int ll_home=0x7f050008;
+        public static final int ll_start_record=0x7f05000d;
         public static final int none=0x7f050000;
         public static final int rl_section=0x7f050009;
         public static final int show=0x7f050005;
-        public static final int surfaceView1=0x7f050014;
-        public static final int tag_vessel=0x7f050011;
+        public static final int surfaceView1=0x7f050015;
+        public static final int tag_vessel=0x7f050012;
         public static final int top=0x7f050004;
         public static final int triangle=0x7f050001;
         public static final int tv_day=0x7f05000a;
         public static final int tv_month=0x7f05000b;
-        public static final int tv_msg=0x7f050017;
+        public static final int tv_msg=0x7f050018;
         public static final int underline=0x7f050002;
     }
     public static final class integer {

@@ -41,8 +41,8 @@ import com.wnc.basic.BasicDateUtil;
 import com.wnc.basic.BasicFileUtil;
 import com.wnc.basic.BasicStringUtil;
 import com.wnc.xinxin.FlowLayout;
+import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
-import com.wnc.xinxin.TestPro;
 import common.app.ToastUtil;
 import common.app.UriUtil;
 import common.uihelper.MyAppParams;
@@ -71,6 +71,7 @@ public class MainActivity extends Activity implements OnClickListener,
     private final int VOICE_RESULT = 300;
     private final int VIDEO_RESULT = 400;
     private String mediaDir = MyAppParams.getInstance().getMediaPath();
+    List<String> fs_files = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,7 +84,7 @@ public class MainActivity extends Activity implements OnClickListener,
 
     private void initView()
     {
-        memoET = (EditText) findViewById(R.id.et_memo);
+        memoET = (EditText) findViewById(R.id.et_fs_desc);
         latest_imgView = (ImageView) findViewById(R.id.imgview_add_fs);
         picZoneLayout = (AbsoluteLayout) findViewById(R.id.al_piczone);
         this.tag_vessel = (FlowLayout) findViewById(R.id.tag_vessel);
@@ -96,7 +97,7 @@ public class MainActivity extends Activity implements OnClickListener,
                 AddTagDialog();
             }
         });
-        findViewById(R.id.bt_test).setOnClickListener(this);
+        findViewById(R.id.bt_save).setOnClickListener(this);
         findViewById(R.id.bt_back).setOnClickListener(this);
         findViewById(R.id.imgview_add_fs).setOnClickListener(
                 new PicAddClickListener());
@@ -107,20 +108,17 @@ public class MainActivity extends Activity implements OnClickListener,
     {
         switch (arg0.getId())
         {
-        case R.id.bt_test:
-            new TestPro().testDb();
+        case R.id.bt_save:
+            String fs_desc = memoET.getText().toString();
+            new FsService().save(fs_desc, fs_files, null);
             break;
         case R.id.bt_back:
-            new TestPro().testDb2();
+            // finish();
+            new FsService().findAll();
             break;
         default:
             break;
         }
-    }
-
-    private void addfs()
-    {
-
     }
 
     private void showPicMenu()
@@ -289,6 +287,7 @@ public class MainActivity extends Activity implements OnClickListener,
         {
             return;
         }
+        fs_files.add(mediaDir + imgPath);
         if (imgPath.endsWith(".jpg"))
         {
             // curimgView.setBackgroundColor(Color.WHITE);
