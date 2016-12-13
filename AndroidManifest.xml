@@ -14,7 +14,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -27,12 +26,6 @@
     <!-- 蓝牙录音检测耳机状态 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     
-        <!-- 获取当前运行任务 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-    
-	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
-	
-
     <!-- 获取当前运行任务 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
@@ -46,7 +39,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.wnc.xinxin.ui.MainActivity"
+            android:name="com.wnc.xinxin.ui.HomeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,6 +49,7 @@
         </activity>
         
         <activity android:name="com.wnc.xinxin.ui.MovieActivity"></activity>
+        <activity android:name="com.wnc.xinxin.ui.MainActivity"></activity>
         
     </application>
 
