@@ -33,24 +33,40 @@
             android:text="1/2"
             android:textSize="20dp" />
 
-        <Button
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+        <CheckBox
+            android:id="@+id/cb_sel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:background="#ffffffff"
-            android:text="保 存"            
-            android:visibility="gone"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textStyle="bold" />
+            android:layout_alignParentTop="true"
+            android:checked="true"
+            android:text="" />
+        
     </RelativeLayout>
 
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/rl_img_head"
+        >
     <ImageView
         android:id="@+id/imgview_view_pic"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/rl_img_head"
         android:layout_centerInParent="true" >
     </ImageView>
 
+    <TextView
+        android:id="@+id/tv_fs_memo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imgview_view_pic"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="TextView" />
+	     
+        
+    </RelativeLayout>
+   
 </RelativeLayout>

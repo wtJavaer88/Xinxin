@@ -1,9 +1,14 @@
 package com.wnc.xinxin.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class FootStepInfo
+public class FootStepInfo implements Serializable
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -3274963893488139409L;
     private int id;
     private String desc;
     private String tag_names;
