@@ -32,7 +32,7 @@ import common.uihelper.MyAppParams;
 
 public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
-    Logger logger = Logger.getLogger(MainActivity.class);
+    Logger logger = Logger.getLogger(HomeActivity.class);
     LinearLayout ll_home, ll_start_record;
     List<FootStepInfo> findAll = new ArrayList<FootStepInfo>();
     static List<Integer> isExistFs = new ArrayList<Integer>();
@@ -46,8 +46,9 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         SysInit.init(HomeActivity.this);
 
         logger.info("start...");
-        new TagService().init();
-        new TagService().findAllTagNames();
+        final TagService tagService = new TagService();
+        tagService.init();
+        tagService.findAllTagNames();
         try
         {
             initView();

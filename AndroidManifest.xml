@@ -36,10 +36,10 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" 
+        android:theme="@android:style/Theme.NoTitleBar" >
         <activity
-            android:name="com.wnc.xinxin.ui.HomeActivity"
+            android:name="com.king.photo.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +51,23 @@
         <activity android:name="com.wnc.xinxin.ui.MovieActivity"></activity>
         <activity android:name="com.wnc.xinxin.ui.MediaViewActivity"></activity>
         <activity android:name="com.wnc.xinxin.ui.MainActivity"></activity>
+         <activity
+            android:name="com.king.photo.activity.PhotoActivity"
+            android:screenOrientation="portrait" />
         
+        <activity
+            android:name="com.king.photo.activity.AlbumActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name="com.king.photo.activity.ImageFile" >
+        </activity>
+        <activity
+            android:name="com.king.photo.activity.ShowAllPhoto" >
+        </activity>
+        <activity
+            android:name="com.king.photo.activity.GalleryActivity">
+        </activity>
     </application>
 
 </manifest>
