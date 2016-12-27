@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wnc.xinxin.R;
-import com.wnc.xinxin.TagService;
 import common.uihelper.gesture.CtrlableHorGestureDetectorListener;
 import common.uihelper.gesture.FlingPoint;
 import common.uihelper.gesture.MyCtrlableGestureDetector;
@@ -46,8 +45,6 @@ public class MediaViewActivity extends Activity implements
         Thread.setDefaultUncaughtExceptionHandler(this);
         this.gestureDetector = new GestureDetector(this,
                 new MyCtrlableGestureDetector(this, 0.15, 0, this, null));
-        new TagService().init();
-        new TagService().findAllTagNames();
         try
         {
             initView();

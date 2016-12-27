@@ -29,6 +29,7 @@ import com.king.photo.util.ImageItem;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
 import com.wnc.xinxin.R;
+import com.wnc.xinxin.ui.MainActivity;
 
 /**
  * 这个是进入相册显示所有图片的界面

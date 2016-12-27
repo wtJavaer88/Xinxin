@@ -24,6 +24,7 @@ import com.king.photo.util.Bimp;
 import com.king.photo.util.ImageItem;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
+import com.wnc.xinxin.ui.MainActivity;
 /**
  * 这个是显示一个文件夹里面的所有图片时的界面
  *

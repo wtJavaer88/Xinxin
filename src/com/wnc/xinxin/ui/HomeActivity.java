@@ -8,9 +8,11 @@ import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextPaint;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout;
@@ -20,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.king.photo.util.Bimp;
+import com.king.photo.util.PublicWay;
+import com.king.photo.util.Res;
 import com.wnc.basic.BasicDateUtil;
 import com.wnc.xinxin.Config;
 import com.wnc.xinxin.FsService;
@@ -36,6 +41,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
     LinearLayout ll_home, ll_start_record;
     List<FootStepInfo> findAll = new ArrayList<FootStepInfo>();
     static List<Integer> isExistFs = new ArrayList<Integer>();
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,9 +49,10 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_test);
         Thread.setDefaultUncaughtExceptionHandler(this);
+        Res.init(this);
         SysInit.init(HomeActivity.this);
-
         logger.info("start...");
+
         final TagService tagService = new TagService();
         tagService.init();
         tagService.findAllTagNames();
@@ -68,6 +75,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             public void onClick(View arg0)
             {
                 System.out.println("onclick...start");
+                MainActivity.setInsertMode(true);
                 startActivity(new Intent(HomeActivity.this, MainActivity.class));
             }
         });
@@ -82,20 +90,32 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 
     private void refreshFs()
     {
-        findAll = new FsService().findAll();
-        System.out.println(isExistFs);
-        for (FootStepInfo footStepInfo : findAll)
+        handler.post(new Runnable()
         {
-            if (!isExistFs.contains(footStepInfo.getId()))
+
+            @Override
+            public void run()
             {
-                isExistFs.add(footStepInfo.getId());
-                ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+                final long s = System.currentTimeMillis();
+                System.out.println("开始查数据库:" + s);
+                findAll = new FsService().findAll();
+                System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
+                for (FootStepInfo footStepInfo : findAll)
+                {
+                    if (!isExistFs.contains(footStepInfo.getId()))
+                    {
+                        // System.out.println("开始一次业务!..."
+                        // + System.currentTimeMillis());
+                        isExistFs.add(footStepInfo.getId());
+                        ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+                        // System.out.println("结束一次业务!..."
+                        // + System.currentTimeMillis());
+
+                    }
+                }
             }
-        }
-        for (int i = 1300; i >= 10; i--)
-        {
-            // ll_home.addView(getFsLayout(getFsSample(i)));
-        }
+        });
+
     }
 
     private FootStepInfo getFsSample(int index)
@@ -155,8 +175,11 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             // imgView.setImageResource(R.drawable.icon_fs_add);
             imgView.setTag(new ImgTag(footStepInfo, i));
             imgView.setOnClickListener(fsViewClickListener);
-            imgView.setImageDrawable(Drawable.createFromPath(footStepInfo
-                    .getMedias().get(i).getAbsulute_path()));
+            // imgView.setImageDrawable(Drawable.createFromPath(footStepInfo
+            // .getMedias().get(i).getAbsulute_path()));
+            imgView.setImageBitmap(BitmapFactory.decodeFile(footStepInfo
+                    .getMedias().get(i).getAbsulute_path(),
+                    Bimp.getBitmapOption(2)));
             absoluteLayout.addView(imgView);
         }
         return absoluteLayout;
@@ -256,16 +279,20 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         public void onClick(View arg0)
         {
             ImgTag imgTag = ((ImgTag) arg0.getTag());
-            // System.out.println("该日记的图片总数:" +
-            // imgTag.getFootStepInfo().getMedias().size());
-            // System.out.println("你点击的是第" + imgTag.getIndex() + "个");
+            System.out.println("该日记的图片总数:"
+                    + imgTag.getFootStepInfo().getMedias().size());
+            System.out.println("你点击的是第" + imgTag.getIndex() + "个");
+
             ArrayList<String> imgs = new ArrayList<String>();
             for (FsMedia media : imgTag.getFootStepInfo().getMedias())
             {
                 imgs.add(media.getAbsulute_path());
             }
-            startActivity(new Intent(HomeActivity.this, MediaViewActivity.class)
+            MainActivity.setInsertMode(false);
+            Bimp.fs_id = imgTag.getFootStepInfo().getId();
+            startActivity(new Intent(HomeActivity.this, MainActivity.class)
                     .putExtra("memo", imgTag.getFootStepInfo().getDesc())
+                    .putExtra("tags", imgTag.getFootStepInfo().getTag_names())
                     .putExtra("index", imgTag.getIndex())
                     .putStringArrayListExtra("medias", imgs));
         }
@@ -282,5 +309,22 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
     public void uncaughtException(Thread arg0, Throwable ex)
     {
         logger.error("uncaughtException   ", ex);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            for (int i = 0; i < PublicWay.activityList.size(); i++)
+            {
+                if (null != PublicWay.activityList.get(i))
+                {
+                    PublicWay.activityList.get(i).finish();
+                }
+            }
+            System.exit(0);
+        }
+        return true;
     }
 }

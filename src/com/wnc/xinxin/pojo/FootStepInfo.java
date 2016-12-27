@@ -11,6 +11,7 @@ public class FootStepInfo implements Serializable
     private static final long serialVersionUID = -3274963893488139409L;
     private int id;
     private String desc;
+    private boolean is_deleted;
     private String tag_names;
     private String create_time;
     private String update_time;
@@ -82,5 +83,15 @@ public class FootStepInfo implements Serializable
     public void setTag_names(String tag_names)
     {
         this.tag_names = tag_names;
+    }
+
+    public boolean isIs_deleted()
+    {
+        return is_deleted;
+    }
+
+    public void setIs_deleted(boolean is_deleted)
+    {
+        this.is_deleted = is_deleted;
     }
 }

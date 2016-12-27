@@ -5,33 +5,45 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <RelativeLayout
+     <RelativeLayout
+        android:id="@+id/ll_fs_head"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/black" >
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:orientation="horizontal" >
 
+        <Button
+            android:id="@+id/bt_back"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+			android:layout_alignParentLeft="true"
+        	android:background="@color/black"
+            android:text="取 消"
+            android:textColor="@color/white"
+			android:textSize="20sp"
+            android:textStyle="bold" />
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="写动态"
-            android:textColor="#ffffff"
-            android:textSize="20sp" />
+			android:layout_centerInParent="true"
+            android:textSize="25sp"
+            android:textColor="@color/white"
+            android:text="写动态" />
 
-        <TextView
-            android:id="@+id/activity_selectimg_send"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/bt_save"
+            android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
-            android:gravity="center"
-            android:text="发送"
-            android:textColor="@drawable/text_while"
-            android:textSize="20sp" />
+			android:layout_alignParentRight="true"
+        	android:background="@color/black"
+            android:text="保 存"
+            android:textColor="@color/white"
+			android:textSize="20sp"
+            android:textStyle="bold" />
     </RelativeLayout>
-
     <EditText
+        android:id="@+id/et_fs_desc"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
         android:layout_margin="8dp"
@@ -40,6 +52,20 @@
         android:background="@null" >
     </EditText>
 
+    <com.wnc.xinxin.FlowLayout
+        android:id="@+id/tag_vessel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_fs_desc"
+        android:layout_marginTop="5dp" >
+        <ImageView
+            android:id="@+id/add_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:src="@drawable/mylablepen" />
+    </com.wnc.xinxin.FlowLayout>
+    
     <GridView 
         android:id="@+id/noScrollgridview"
         android:layout_width="290dp"

@@ -24,6 +24,7 @@ import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
 import com.king.photo.zoom.PhotoView;
 import com.king.photo.zoom.ViewPagerFixed;
+import com.wnc.xinxin.ui.MainActivity;
 
 /**
  * 这个是用于进行图片浏览时的界面

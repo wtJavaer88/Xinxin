@@ -963,7 +963,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class id {
         public static final int action_settings=0x7f05004c;
-        public static final int activity_selectimg_send=0x7f05001d;
         public static final int add_tag=0x7f050013;
         public static final int add_tag_dialg_no=0x7f05004a;
         public static final int add_tag_dialg_ok=0x7f05004b;
@@ -997,22 +996,22 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int imgview_add_fs=0x7f05000c;
         public static final int imgview_view_pic=0x7f050018;
         public static final int inshow=0x7f050006;
-        public static final int item_grida_image=0x7f050024;
-        public static final int item_popupwindows_Photo=0x7f050022;
-        public static final int item_popupwindows_camera=0x7f050021;
-        public static final int item_popupwindows_cancel=0x7f050023;
+        public static final int item_grida_image=0x7f050023;
+        public static final int item_popupwindows_Photo=0x7f050021;
+        public static final int item_popupwindows_camera=0x7f050020;
+        public static final int item_popupwindows_cancel=0x7f050022;
         public static final int ll_fs_head=0x7f05000e;
         public static final int ll_home=0x7f050008;
-        public static final int ll_popup=0x7f050020;
+        public static final int ll_popup=0x7f05001f;
         public static final int ll_start_record=0x7f05000d;
         public static final int myGrid=0x7f05002c;
         public static final int myText=0x7f05002d;
         public static final int name=0x7f05003a;
-        public static final int noScrollgridview=0x7f05001e;
+        public static final int noScrollgridview=0x7f05001d;
         public static final int no_picture_confirm=0x7f050034;
         public static final int none=0x7f050000;
         public static final int ok_button=0x7f05002b;
-        public static final int parent=0x7f05001f;
+        public static final int parent=0x7f05001e;
         public static final int preview=0x7f05002a;
         public static final int rl_img_head=0x7f050015;
         public static final int rl_section=0x7f050009;
@@ -1038,6 +1037,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int tv_img_pos=0x7f050016;
         public static final int tv_month=0x7f05000b;
         public static final int tv_msg=0x7f050025;
+        public static final int tv_view_tag_name=0x7f050024;
         public static final int underline=0x7f050002;
     }
     public static final class integer {
@@ -1056,15 +1056,16 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_selectimg=0x7f030005;
         public static final int item_popupwindows=0x7f030006;
         public static final int item_published_grida=0x7f030007;
-        public static final int message_popup_dialog=0x7f030008;
-        public static final int plugin_camera_album=0x7f030009;
-        public static final int plugin_camera_gallery=0x7f03000a;
-        public static final int plugin_camera_image_file=0x7f03000b;
-        public static final int plugin_camera_no_image_file=0x7f03000c;
-        public static final int plugin_camera_select_folder=0x7f03000d;
-        public static final int plugin_camera_select_imageview=0x7f03000e;
-        public static final int plugin_camera_show_all_photo=0x7f03000f;
-        public static final int setting_add_tags_dialg=0x7f030010;
+        public static final int item_tag=0x7f030008;
+        public static final int message_popup_dialog=0x7f030009;
+        public static final int plugin_camera_album=0x7f03000a;
+        public static final int plugin_camera_gallery=0x7f03000b;
+        public static final int plugin_camera_image_file=0x7f03000c;
+        public static final int plugin_camera_no_image_file=0x7f03000d;
+        public static final int plugin_camera_select_folder=0x7f03000e;
+        public static final int plugin_camera_select_imageview=0x7f03000f;
+        public static final int plugin_camera_show_all_photo=0x7f030010;
+        public static final int setting_add_tags_dialg=0x7f030011;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;

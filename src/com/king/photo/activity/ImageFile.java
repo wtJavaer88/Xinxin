@@ -16,6 +16,7 @@ import com.king.photo.adapter.FolderAdapter;
 import com.king.photo.util.Bimp;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
+import com.wnc.xinxin.ui.MainActivity;
 
 /**
  * 这个类主要是用来进行显示包含图片的文件夹

@@ -101,7 +101,7 @@ public class FsDao
                 list.add(info);
                 List<FsMedia> findMedias = findMedias(info);
                 info.setMedias(findMedias);
-                System.out.println("找到的媒体数:" + findMedias.size());
+                // System.out.println("找到的媒体数:" + findMedias.size());
                 c.moveToNext();
             }
         }
@@ -158,6 +158,49 @@ public class FsDao
         openDatabase();
         database.execSQL("DELETE FROM FOOTSTEPS");
         closeDatabase();
+    }
+
+    public static boolean updateComplicateFs(FootStepInfo fsInfo,
+            List<FsMedia> medias, Set<String> tag_names)
+    {
+        int fs_id = fsInfo.getId();
+        System.out.println("fsInfo id:" + fs_id);
+        try
+        {
+            openDatabase();
+            database.beginTransaction();
+            database.execSQL(
+                    "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=? WHERE ID=?",
+                    new Object[]
+                    { fsInfo.getDesc(), tag_names.toString(),
+                            fsInfo.getUpdate_time(), fs_id });
+            database.delete("FS_MEDIAS", "FS_ID=?", new String[]
+            { fs_id + "" });
+            for (int i = 0; i < medias.size(); i++)
+            {
+                FsMedia fsMedia = medias.get(i);
+                database.execSQL(
+                        "INSERT INTO FS_MEDIAS(fs_id,mediapath_id,media_name,media_size,media_type,sn,create_time) VALUES (?,?,?,?,?,?,?)",
+                        new Object[]
+                        { fs_id, fsMedia.getMediapath_id(),
+                                fsMedia.getMedia_name(),
+                                fsMedia.getMedia_size(),
+                                fsMedia.getMedia_type(), i + 1,
+                                fsMedia.getCreate_time() });
+            }
+            database.setTransactionSuccessful();
+            return true;
+        }
+        catch (Exception e)
+        {
+            log.error(fsInfo.getDesc(), e);
+        }
+        finally
+        {
+            database.endTransaction();
+            closeDatabase();
+        }
+        return false;
     }
 
 }

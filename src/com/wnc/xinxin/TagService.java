@@ -29,7 +29,7 @@ public class TagService
 
     public void init()
     {
-        TagDao.deleteAll();
+        // TagDao.deleteAll();
         TagDao.insertTag("快乐");
         TagDao.insertTag("睡眠");
         TagDao.insertTag("游戏");
