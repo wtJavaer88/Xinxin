@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -17,7 +16,7 @@ import android.widget.ImageView;
 
 import com.wnc.xinxin.ui.MainActivity;
 
-public class BitmapCache extends Activity
+public class BitmapCache
 {
 
     public Handler h = new Handler();

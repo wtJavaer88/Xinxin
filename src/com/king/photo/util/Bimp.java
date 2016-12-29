@@ -24,7 +24,12 @@ public class Bimp
         for (ImageItem item : tempSelectBitmap)
         {
             Bitmap bitmap = item.getBitmap();
-            bitmap = null;
+            if (!bitmap.isRecycled())
+            {
+                bitmap.recycle(); // 回收图片所占的内存
+                bitmap = null;
+                System.gc(); // 提醒系统及时回收
+            }
         }
         tempSelectBitmap.clear();
         System.gc();
