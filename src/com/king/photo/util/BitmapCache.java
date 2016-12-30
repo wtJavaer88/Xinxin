@@ -1,9 +1,5 @@
 package com.king.photo.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.util.HashMap;
 
@@ -23,7 +19,7 @@ public class BitmapCache
     public final String TAG = getClass().getSimpleName();
     private HashMap<String, SoftReference<Bitmap>> imageCache = new HashMap<String, SoftReference<Bitmap>>();
 
-    public void put(String path, Bitmap bmp)
+    private void put(String path, Bitmap bmp)
     {
         if (!TextUtils.isEmpty(path) && bmp != null)
         {
@@ -66,12 +62,15 @@ public class BitmapCache
             {
                 if (callback != null)
                 {
-                    callback.imageLoad(iv, bmp, sourcePath);
+                    callback.imageLoad(iv, bmp);
                 }
                 iv.setImageBitmap(bmp);
                 Log.d(TAG, "hit cache");
                 return;
             }
+            // 如果已经被回收了, 重新生成
+            Log.e(TAG, "recreate cache");
+
         }
         iv.setImageBitmap(null);
 
@@ -90,12 +89,12 @@ public class BitmapCache
                         thumb = BitmapFactory.decodeFile(thumbPath);
                         if (thumb == null)
                         {
-                            thumb = revitionImageSize(sourcePath);
+                            thumb = Bimp.revitionImageSize(sourcePath, 256);
                         }
                     }
                     else
                     {
-                        thumb = revitionImageSize(sourcePath);
+                        thumb = Bimp.revitionImageSize(sourcePath, 256);
                     }
                 }
                 catch (Exception e)
@@ -106,7 +105,7 @@ public class BitmapCache
                 {
                     thumb = MainActivity.bimap;
                 }
-                Log.e(TAG, "-------thumb------" + thumb);
+                Log.d(TAG, "-------thumb creating------" + thumb);
                 put(path, thumb);
 
                 if (callback != null)
@@ -116,7 +115,7 @@ public class BitmapCache
                         @Override
                         public void run()
                         {
-                            callback.imageLoad(iv, thumb, sourcePath);
+                            callback.imageLoad(iv, thumb);
                         }
                     });
                 }
@@ -125,36 +124,10 @@ public class BitmapCache
 
     }
 
-    public Bitmap revitionImageSize(String path) throws IOException
-    {
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-                new File(path)));
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(in, null, options);
-        in.close();
-        int i = 0;
-        Bitmap bitmap = null;
-        while (true)
-        {
-            if ((options.outWidth >> i <= 256)
-                    && (options.outHeight >> i <= 256))
-            {
-                in = new BufferedInputStream(
-                        new FileInputStream(new File(path)));
-                options.inSampleSize = (int) Math.pow(2.0D, i);
-                options.inJustDecodeBounds = false;
-                bitmap = BitmapFactory.decodeStream(in, null, options);
-                break;
-            }
-            i += 1;
-        }
-        return bitmap;
-    }
-
     public interface ImageCallback
     {
         public void imageLoad(ImageView imageView, Bitmap bitmap,
                 Object... params);
     }
+
 }

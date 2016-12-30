@@ -43,7 +43,8 @@ public class Bimp
         return options;
     }
 
-    public static Bitmap revitionImageSize(String path) throws IOException
+    public static Bitmap revitionImageSize(String path, int size)
+            throws IOException
     {
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(
                 new File(path)));
@@ -55,8 +56,8 @@ public class Bimp
         Bitmap bitmap = null;
         while (true)
         {
-            if ((options.outWidth >> i <= 1000)
-                    && (options.outHeight >> i <= 1000))
+            if ((options.outWidth >> i <= size)
+                    && (options.outHeight >> i <= size))
             {
                 in = new BufferedInputStream(
                         new FileInputStream(new File(path)));

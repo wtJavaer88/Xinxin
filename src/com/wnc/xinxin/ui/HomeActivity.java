@@ -1,5 +1,6 @@
 package com.wnc.xinxin.ui;
 
+import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +9,8 @@ import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.TextPaint;
 import android.view.KeyEvent;
@@ -23,31 +24,43 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.king.photo.util.Bimp;
+import com.king.photo.util.BitmapCache;
+import com.king.photo.util.BitmapCache.ImageCallback;
+import com.king.photo.util.PhotoImageCallback;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
 import com.wnc.basic.BasicDateUtil;
-import com.wnc.xinxin.Config;
 import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
 import com.wnc.xinxin.TagService;
 import com.wnc.xinxin.pojo.FootStepInfo;
 import com.wnc.xinxin.pojo.FsMedia;
 import common.app.SysInit;
-import common.uihelper.MyAppParams;
 
 public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
     Logger logger = Logger.getLogger(HomeActivity.class);
-    LinearLayout ll_home, ll_start_record;
+    LinearLayout ll_home;
     List<FootStepInfo> findAll = new ArrayList<FootStepInfo>();
     static List<Integer> isExistFs = new ArrayList<Integer>();
     Handler handler = new Handler();
+    BitmapCache bitmapCache;
+    List<String> camera_pics = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_test);
+        bitmapCache = new BitmapCache();
+
+        for (File f : new File(Environment.getExternalStorageDirectory()
+                .getPath() + "/DCIM/Camera/").listFiles())
+        {
+            logger.info(f.getAbsolutePath());
+            camera_pics.add(f.getAbsolutePath());
+        }
+
         Thread.setDefaultUncaughtExceptionHandler(this);
         Res.init(this);
         SysInit.init(HomeActivity.this);
@@ -66,19 +79,21 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         }
     }
 
+    OnClickListener startNewFsListener = new OnClickListener()
+    {
+        @Override
+        public void onClick(View arg0)
+        {
+            System.out.println("onclick...start");
+            MainActivity.setInsertMode(true);
+            startActivity(new Intent(HomeActivity.this, MainActivity.class));
+        }
+    };
+
     private void initView()
     {
-        ll_start_record = (LinearLayout) findViewById(R.id.ll_start_record);
-        ll_start_record.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View arg0)
-            {
-                System.out.println("onclick...start");
-                MainActivity.setInsertMode(true);
-                startActivity(new Intent(HomeActivity.this, MainActivity.class));
-            }
-        });
+        findViewById(R.id.start_bt).setOnClickListener(startNewFsListener);
+        findViewById(R.id.start_tv).setOnClickListener(startNewFsListener);
         ll_home = (LinearLayout) findViewById(R.id.ll_home);
         minHomeDeep = ll_home.getChildCount();
         refreshFs();
@@ -87,6 +102,30 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
     int minHomeDeep = 0;
     final static float TextScale = 0.75f;
     final static int MAX_ID = 10000;
+
+    private void refreshFs_test()
+    {
+        handler.post(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                final long s = System.currentTimeMillis();
+                System.out.println("开始查数据库:" + s);
+                findAll = new FsService().findAll();
+                System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
+                for (FootStepInfo footStepInfo : findAll)
+                {
+                    for (int i = 0; i < 500; i++)
+                    {
+                        ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+                    }
+                }
+            }
+        });
+
+    }
 
     private void refreshFs()
     {
@@ -104,39 +143,13 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 {
                     if (!isExistFs.contains(footStepInfo.getId()))
                     {
-                        // System.out.println("开始一次业务!..."
-                        // + System.currentTimeMillis());
                         isExistFs.add(footStepInfo.getId());
                         ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
-                        // System.out.println("结束一次业务!..."
-                        // + System.currentTimeMillis());
-
                     }
                 }
             }
         });
 
-    }
-
-    private FootStepInfo getFsSample(int index)
-    {
-        FootStepInfo footStepInfo = new FootStepInfo();
-        footStepInfo.setId(index);
-        footStepInfo.setCreate_time("2016-12-" + index + " 11:11:11");
-        List<FsMedia> medias = new ArrayList<FsMedia>();
-        for (int i = 0; i < 3; i++)
-        {
-            FsMedia media = new FsMedia();
-            media.setMedia_name("media" + (i + 1));
-            media.setMedia_size(100 * i);
-            media.setMediapath_id(Config.MEDIAPATH_ID);
-            media.setMedia_type("jpg");
-            media.setAbsulute_path(MyAppParams.getInstance().getWorkPath() + i
-                    + ".jpg");
-            medias.add(media);
-        }
-        footStepInfo.setMedias(medias);
-        return footStepInfo;
     }
 
     private RelativeLayout getFsLayout(FootStepInfo footStepInfo)
@@ -145,12 +158,20 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         outer_rl.setLayoutParams(lp);
-        RelativeLayout inner_rl = getInnerRl(footStepInfo);
-        inner_rl.setId(MAX_ID * footStepInfo.getId() + 2);
-        outer_rl.addView(inner_rl);
-        TextView weekdayTv = getWeekDayTv(inner_rl, footStepInfo);
+
+        TextView tv = new TextView(this);
+        tv.setId(footStepInfo.getId());
+        outer_rl.addView(tv);
+        // 包含月和日, 并为其后的星期和图片区做坐标参考
+        RelativeLayout monthday_rl = getInnerRl(tv, footStepInfo);
+        monthday_rl.setId(MAX_ID * footStepInfo.getId() + 2);
+        outer_rl.addView(monthday_rl);
+
+        // 星期区
+        TextView weekdayTv = getWeekDayTv(monthday_rl, footStepInfo);
         outer_rl.addView(weekdayTv);
-        AbsoluteLayout absoluteLayout = getPicZone(inner_rl, footStepInfo);
+        // 图片区
+        AbsoluteLayout absoluteLayout = getPicZone(monthday_rl, footStepInfo);
         outer_rl.addView(absoluteLayout);
         return outer_rl;
     }
@@ -172,18 +193,32 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                     300, 300, (300 + padding) * (i % 3), (300 + padding)
                             * (i / 3));
             imgView.setLayoutParams(params);
-            // imgView.setImageResource(R.drawable.icon_fs_add);
             imgView.setTag(new ImgTag(footStepInfo, i));
             imgView.setOnClickListener(fsViewClickListener);
-            // imgView.setImageDrawable(Drawable.createFromPath(footStepInfo
-            // .getMedias().get(i).getAbsulute_path()));
-            imgView.setImageBitmap(BitmapFactory.decodeFile(footStepInfo
-                    .getMedias().get(i).getAbsulute_path(),
-                    Bimp.getBitmapOption(2)));
+            String absulute_path = footStepInfo.getMedias().get(i)
+                    .getAbsulute_path();
+            // 多图测试
+            // absulute_path = camera_pics.get((int) (Math.random() *
+            // camera_pics
+            // .size()));
+            // logger.info(absulute_path);
+            // try
+            // {
+            // imgView.setImageBitmap(Bimp.revitionImageSize(absulute_path,
+            // 300));
+            // }
+            // catch (IOException e)
+            // {
+            // e.printStackTrace();
+            // }
+
+            bitmapCache.displayBmp(imgView, null, absulute_path, callback);
             absoluteLayout.addView(imgView);
         }
         return absoluteLayout;
     }
+
+    ImageCallback callback = new PhotoImageCallback();
 
     class ImgTag
     {
@@ -237,11 +272,13 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         return tv_weekday;
     }
 
-    private RelativeLayout getInnerRl(FootStepInfo footStepInfo)
+    private RelativeLayout getInnerRl(TextView tv, FootStepInfo footStepInfo)
     {
         final RelativeLayout relativeLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 (int) (200 * TextScale), (int) (200 * TextScale));
+        lp.addRule(RelativeLayout.BELOW, tv.getId());
+        lp.topMargin = 40;
         relativeLayout.setBackgroundResource(R.drawable.home_item_date_bg);
         relativeLayout.setLayoutParams(lp);
 
@@ -269,6 +306,15 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 
         relativeLayout.addView(tv_day);
         relativeLayout.addView(tv_month);
+
+        relativeLayout.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View arg0)
+            {
+                System.out.println("点击日期...");
+            }
+        });
         return relativeLayout;
     }
 
@@ -290,7 +336,15 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             }
             MainActivity.setInsertMode(false);
             Bimp.fs_id = imgTag.getFootStepInfo().getId();
-            startActivity(new Intent(HomeActivity.this, MainActivity.class)
+            // 进入记录页面
+            // startActivity(new Intent(HomeActivity.this, MainActivity.class)
+            // .putExtra("memo", imgTag.getFootStepInfo().getDesc())
+            // .putExtra("tags", imgTag.getFootStepInfo().getTag_names())
+            // .putExtra("index", imgTag.getIndex())
+            // .putStringArrayListExtra("medias", imgs));
+
+            // 进入图片浏览模块
+            startActivity(new Intent(HomeActivity.this, MediaViewActivity.class)
                     .putExtra("memo", imgTag.getFootStepInfo().getDesc())
                     .putExtra("tags", imgTag.getFootStepInfo().getTag_names())
                     .putExtra("index", imgTag.getIndex())
