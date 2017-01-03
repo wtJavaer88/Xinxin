@@ -194,7 +194,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                             * (i / 3));
             imgView.setLayoutParams(params);
             imgView.setTag(new ImgTag(footStepInfo, i));
-            imgView.setOnClickListener(fsViewClickListener);
+            imgView.setOnClickListener(mediaViewClickListener);
             String absulute_path = footStepInfo.getMedias().get(i)
                     .getAbsulute_path();
             // 多图测试
@@ -272,13 +272,16 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         return tv_weekday;
     }
 
-    private RelativeLayout getInnerRl(TextView tv, FootStepInfo footStepInfo)
+    private RelativeLayout getInnerRl(TextView tv,
+            final FootStepInfo footStepInfo)
     {
         final RelativeLayout relativeLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 (int) (200 * TextScale), (int) (200 * TextScale));
         lp.addRule(RelativeLayout.BELOW, tv.getId());
+        // 设置上下间隔,看起来美观点
         lp.topMargin = 40;
+        lp.bottomMargin = 20;
         relativeLayout.setBackgroundResource(R.drawable.home_item_date_bg);
         relativeLayout.setLayoutParams(lp);
 
@@ -307,18 +310,37 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         relativeLayout.addView(tv_day);
         relativeLayout.addView(tv_month);
 
-        relativeLayout.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View arg0)
-            {
-                System.out.println("点击日期...");
-            }
-        });
+        relativeLayout
+                .setOnClickListener(new FsEditClickListener(footStepInfo));
         return relativeLayout;
     }
 
-    OnClickListener fsViewClickListener = new OnClickListener()
+    class FsEditClickListener implements OnClickListener
+    {
+        FootStepInfo footStepInfo;
+
+        public FsEditClickListener(FootStepInfo footStepInfo)
+        {
+            this.footStepInfo = footStepInfo;
+        }
+
+        @Override
+        public void onClick(View arg0)
+        {
+            ArrayList<String> imgs = new ArrayList<String>();
+            for (FsMedia media : footStepInfo.getMedias())
+            {
+                imgs.add(media.getAbsulute_path());
+            }
+            // 进入编辑模块
+            startActivity(new Intent(HomeActivity.this, MainActivity.class)
+                    .putExtra("memo", footStepInfo.getDesc())
+                    .putExtra("tags", footStepInfo.getTag_names())
+                    .putStringArrayListExtra("medias", imgs));
+        }
+    };
+
+    OnClickListener mediaViewClickListener = new OnClickListener()
     {
 
         @Override
