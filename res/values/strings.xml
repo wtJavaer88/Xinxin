@@ -15,4 +15,6 @@
     <string name="unfinished">完成</string> 
     <string name="camera_cancel">取消</string>
     <string name="no_photo">相册没有图片</string>
+     <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

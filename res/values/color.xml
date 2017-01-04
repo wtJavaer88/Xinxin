@@ -152,6 +152,7 @@
  <color name="none_color">#00000000</color>
  <color name="plugin_camera_black">#000000</color>
  <color name="albumback">#E1E0DE</color>
+ <color name="black_50">#aa000000</color>
  
  
  <color name="style_red">#ff4c41</color>
