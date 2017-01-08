@@ -1,9 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/usersetting"
+        android:icon="@drawable/biz_tie_user_avater_default_common"
         android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-
+        android:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/backup"
+        android:icon="@drawable/backup_cloud"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"/>
 </menu>

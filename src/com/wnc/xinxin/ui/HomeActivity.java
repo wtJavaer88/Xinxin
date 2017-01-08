@@ -7,13 +7,22 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.text.TextPaint;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsoluteLayout;
@@ -30,7 +39,9 @@ import com.king.photo.util.PhotoImageCallback;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
 import com.wnc.basic.BasicDateUtil;
+import com.wnc.xinxin.BackUPTest;
 import com.wnc.xinxin.FsService;
+import com.wnc.xinxin.ProgressWheel;
 import com.wnc.xinxin.R;
 import com.wnc.xinxin.TagService;
 import com.wnc.xinxin.pojo.FootStepInfo;
@@ -41,9 +52,46 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
     Logger logger = Logger.getLogger(HomeActivity.class);
     LinearLayout ll_home;
-    List<FootStepInfo> findAll = new ArrayList<FootStepInfo>();
     static List<Integer> isExistFs = new ArrayList<Integer>();
-    Handler handler = new Handler();
+    Handler handler = new Handler()
+    {
+        @Override
+        public void dispatchMessage(android.os.Message msg)
+        {
+            final int what = msg.what;
+            if (what == 100 || what == 101)
+            {
+                final TextView textView = (TextView) dialog
+                        .findViewById(R.id.tvBUResult);
+                if (what == 100)
+                {
+                    ((ProgressWheel) dialog.findViewById(R.id.progressBar))
+                            .stopSpinning();
+
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText("备份成功");
+                }
+                if (what == 101)
+                {
+                    ((ProgressWheel) dialog.findViewById(R.id.progressBar))
+                            .stopSpinning();
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText("备份失败");
+                }
+            }
+            else if (what == 10)
+            {
+                for (FootStepInfo footStepInfo : (List<FootStepInfo>) msg.obj)
+                {
+                    if (!isExistFs.contains(footStepInfo.getId()))
+                    {
+                        isExistFs.add(footStepInfo.getId());
+                        ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+                    }
+                }
+            }
+        };
+    };
     BitmapCache bitmapCache;
     List<String> camera_pics = new ArrayList<String>();
 
@@ -69,14 +117,139 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         final TagService tagService = new TagService();
         tagService.init();
         tagService.findAllTagNames();
-        try
+        initActionBar();
+        initDrawerLayout();
+        initView();
+    }
+
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
+
+    private void initDrawerLayout()
+    {
+        drawerLayout = (DrawerLayout) super.findViewById(R.id.drawer_layout);
+        drawerLayout.setScrimColor(Color.TRANSPARENT);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,
+                R.drawable.back_move_details_normal, R.string.drawer_open,
+                R.string.drawer_close)
         {
-            initView();
-        }
-        catch (Exception e)
+            @Override
+            public void onDrawerClosed(View drawerView)
+            {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView)
+            {
+                super.onDrawerOpened(drawerView);
+            }
+
+        };
+        drawerLayout.setDrawerListener(toggle);
+    }
+
+    private void toggleLeftSliding()
+    {// 该方法控制左侧边栏的显示和隐藏
+        if (drawerLayout.isDrawerOpen(Gravity.START))
         {
-            e.printStackTrace();
+            drawerLayout.closeDrawer(Gravity.START);
         }
+        else
+        {
+            drawerLayout.openDrawer(Gravity.START);
+        }
+    }
+
+    private void toggleRightSliding()
+    {// 该方法控制右侧边栏的显示和隐藏
+        if (drawerLayout.isDrawerOpen(Gravity.END))
+        {
+            drawerLayout.closeDrawer(Gravity.END);
+        }
+        else
+        {
+            drawerLayout.openDrawer(Gravity.END);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    Dialog dialog;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+        case android.R.id.home:
+            toggleLeftSliding();
+            break;
+        case R.id.usersetting:
+            toggleRightSliding();
+            break;
+        case R.id.backup:
+            dialog = new Dialog(this, R.style.CustomDialogStyle);
+            showDialog();
+            new Thread(new Runnable()
+            {
+
+                @Override
+                public void run()
+                {
+                    boolean ret = new BackUPTest().testTwo();
+                    if (ret)
+                    {
+                        handler.sendEmptyMessage(100);
+                    }
+                    else
+                    {
+                        handler.sendEmptyMessage(101);
+                    }
+                }
+            }).start();
+            break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void showDialog()
+    {
+        dialog.setContentView(R.layout.common_wdailog);
+        dialog.setCanceledOnTouchOutside(true);
+        ProgressWheel progressWheel = (ProgressWheel) dialog
+                .findViewById(R.id.progressBar);
+        progressWheel.setVisibility(View.VISIBLE);
+        progressWheel.spin();
+        dialog.show();
+    }
+
+    ActionBar actionBar;
+
+    private void initActionBar()
+    {
+        actionBar = super.getActionBar();
+        actionBar.show();
+        actionBar.setDisplayShowHomeEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.com_btn);
+        actionBar.setDisplayShowCustomEnabled(true);
+        TextView tvTitle = new TextView(this);
+        tvTitle.setText("时 光 机");
+        tvTitle.setTextColor(Color.WHITE);
+        tvTitle.setTextSize(18);
+        tvTitle.setGravity(Gravity.CENTER);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT);
+        tvTitle.setLayoutParams(params);
+        actionBar.setCustomView(tvTitle);
     }
 
     OnClickListener startNewFsListener = new OnClickListener()
@@ -113,7 +286,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             {
                 final long s = System.currentTimeMillis();
                 System.out.println("开始查数据库:" + s);
-                findAll = new FsService().findAll();
+                List<FootStepInfo> findAll = new FsService().findAll();
                 System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
                 for (FootStepInfo footStepInfo : findAll)
                 {
@@ -129,7 +302,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 
     private void refreshFs()
     {
-        handler.post(new Runnable()
+        new Thread(new Runnable()
         {
 
             @Override
@@ -137,18 +310,14 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             {
                 final long s = System.currentTimeMillis();
                 System.out.println("开始查数据库:" + s);
-                findAll = new FsService().findAll();
+                List<FootStepInfo> findAll = new FsService().findAll();
                 System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
-                for (FootStepInfo footStepInfo : findAll)
-                {
-                    if (!isExistFs.contains(footStepInfo.getId()))
-                    {
-                        isExistFs.add(footStepInfo.getId());
-                        ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
-                    }
-                }
+                Message msg = new Message();
+                msg.what = 10;
+                msg.obj = findAll;
+                handler.sendMessage(msg);
             }
-        });
+        }).start();
 
     }
 
@@ -194,7 +363,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                             * (i / 3));
             imgView.setLayoutParams(params);
             imgView.setTag(new ImgTag(footStepInfo, i));
-            imgView.setOnClickListener(fsViewClickListener);
+            imgView.setOnClickListener(mediaViewClickListener);
             String absulute_path = footStepInfo.getMedias().get(i)
                     .getAbsulute_path();
             // 多图测试
@@ -272,13 +441,16 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         return tv_weekday;
     }
 
-    private RelativeLayout getInnerRl(TextView tv, FootStepInfo footStepInfo)
+    private RelativeLayout getInnerRl(TextView tv,
+            final FootStepInfo footStepInfo)
     {
         final RelativeLayout relativeLayout = new RelativeLayout(this);
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(
                 (int) (200 * TextScale), (int) (200 * TextScale));
         lp.addRule(RelativeLayout.BELOW, tv.getId());
+        // 设置上下间隔,看起来美观点
         lp.topMargin = 40;
+        lp.bottomMargin = 20;
         relativeLayout.setBackgroundResource(R.drawable.home_item_date_bg);
         relativeLayout.setLayoutParams(lp);
 
@@ -307,18 +479,37 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         relativeLayout.addView(tv_day);
         relativeLayout.addView(tv_month);
 
-        relativeLayout.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View arg0)
-            {
-                System.out.println("点击日期...");
-            }
-        });
+        relativeLayout
+                .setOnClickListener(new FsEditClickListener(footStepInfo));
         return relativeLayout;
     }
 
-    OnClickListener fsViewClickListener = new OnClickListener()
+    class FsEditClickListener implements OnClickListener
+    {
+        FootStepInfo footStepInfo;
+
+        public FsEditClickListener(FootStepInfo footStepInfo)
+        {
+            this.footStepInfo = footStepInfo;
+        }
+
+        @Override
+        public void onClick(View arg0)
+        {
+            ArrayList<String> imgs = new ArrayList<String>();
+            for (FsMedia media : footStepInfo.getMedias())
+            {
+                imgs.add(media.getAbsulute_path());
+            }
+            // 进入编辑模块
+            startActivity(new Intent(HomeActivity.this, MainActivity.class)
+                    .putExtra("memo", footStepInfo.getDesc())
+                    .putExtra("tags", footStepInfo.getTag_names())
+                    .putStringArrayListExtra("medias", imgs));
+        }
+    };
+
+    OnClickListener mediaViewClickListener = new OnClickListener()
     {
 
         @Override
