@@ -1,9 +1,8 @@
 package com.wnc.xinxin.ui;
 
-import com.wnc.xinxin.R;
-import com.wnc.xinxin.R.id;
-import com.wnc.xinxin.R.layout;
-import common.uihelper.MovieRecorder;
+import java.lang.Thread.UncaughtExceptionHandler;
+
+import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,7 +19,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-public class MovieActivity extends Activity
+import com.wnc.xinxin.R;
+import common.app.ToastUtil;
+import common.uihelper.MovieRecorder;
+
+public class MovieActivity extends Activity implements UncaughtExceptionHandler
 {
     private static final String LOG_TAG = MovieActivity.class.getSimpleName();
 
@@ -41,6 +44,7 @@ public class MovieActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(this);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -168,5 +172,14 @@ public class MovieActivity extends Activity
         intent.putExtra(RECORDED_PATH, this.mRecorder.getRecordedFile());// 放入返回值
         setResult(0, intent);// 放入回传的值,并添加一个Code,方便区分返回的数据
         finish();
+    }
+
+    Logger logger = Logger.getLogger(MainActivity.class);
+
+    @Override
+    public void uncaughtException(Thread arg0, Throwable ex)
+    {
+        logger.error("uncaughtException   ", ex);
+        ToastUtil.showLongToast(this, "系统发生异常!");
     }
 }
