@@ -1,5 +1,7 @@
 package com.wnc.xinxin.ui;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,10 +23,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -50,11 +55,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.king.photo.activity.AlbumActivity;
 import com.king.photo.activity.GalleryActivity;
 import com.king.photo.util.Bimp;
-import com.king.photo.util.FileUtils;
 import com.king.photo.util.ImageItem;
 import com.king.photo.util.PublicWay;
 import com.wnc.basic.BasicDateUtil;
@@ -67,6 +72,7 @@ import com.wnc.xinxin.TagService;
 import com.wnc.xinxin.dao.TagDao;
 import common.app.ToastUtil;
 import common.uihelper.MyAppParams;
+import common.utils.BitmapUtil;
 import common.utils.ImageCompressUtil;
 
 /**
@@ -207,7 +213,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
         RelativeLayout parent = (RelativeLayout) view.findViewById(R.id.parent);
         Button bt1 = (Button) view.findViewById(R.id.item_popupwindows_camera);
         Button bt2 = (Button) view.findViewById(R.id.item_popupwindows_Photo);
-        Button bt3 = (Button) view.findViewById(R.id.item_popupwindows_cancel);
+        Button bt3 = (Button) view.findViewById(R.id.item_popupwindows_video);
         parent.setOnClickListener(new OnClickListener()
         {
 
@@ -254,6 +260,10 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             {
                 pop.dismiss();
                 ll_popup.clearAnimation();
+                // TODO video
+                Intent intent = new Intent(MainActivity.this,
+                        MovieActivity.class);
+                startActivityForResult(intent, VIDEO_RESULT);
             }
         });
 
@@ -472,11 +482,33 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
     }
 
     private static final int TAKE_PICTURE = 0x000001;
+    private static final int VIDEO_RESULT = 0x000010;
+
+    File mPhotoFile;
 
     public void photo()
     {
-        Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCameraIntent, TAKE_PICTURE);
+
+        mPhotoFile = new File(MyAppParams.getInstance().getMediaPath(),
+                BasicDateUtil.getCurrentDateTimeString() + ".jpg");
+        mPhotoFile.delete();
+        if (!mPhotoFile.exists())
+        {
+            try
+            {
+                mPhotoFile.createNewFile();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                Toast.makeText(getApplication(), "照片创建失败!", Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+        }
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
+        startActivityForResult(intent, TAKE_PICTURE);
     }
 
     @Override
@@ -487,13 +519,59 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
         case TAKE_PICTURE:
             if (Bimp.tempSelectBitmap.size() < 9 && resultCode == RESULT_OK)
             {
+                if (this.mPhotoFile != null && this.mPhotoFile.exists())
+                {
+                    System.out.println("mPhotoFile::" + this.mPhotoFile);
 
-                String fileName = String.valueOf(System.currentTimeMillis());
-                Bitmap bm = (Bitmap) data.getExtras().get("data");
-                FileUtils.saveBitmap(bm, fileName);
+                    String scaledImgPath = MyAppParams.getInstance()
+                            .getMediaPath()
+                            + System.currentTimeMillis()
+                            + "_s.jpg";
+                    if (ImageCompressUtil.transImageToMaxSize(
+                            mPhotoFile.getAbsolutePath(), scaledImgPath, 1024,
+                            1024, 60))
+                    {
+                        System.out.println("压缩成功! " + scaledImgPath);
 
+                        ImageItem takePhoto = new ImageItem();
+                        takePhoto.setBitmap(BitmapFactory
+                                .decodeStream(getClass().getResourceAsStream(
+                                        scaledImgPath)));
+                        takePhoto.setImagePath(scaledImgPath);
+                        Bimp.tempSelectBitmap.add(takePhoto);
+                    }
+                }
+                else
+                {
+                    System.out.println("img Err!");
+                }
+
+            }
+            break;
+        case VIDEO_RESULT:
+            String moviePath = data.getStringExtra(MovieActivity.RECORDED_PATH);
+            System.out.println("返回的moviePath:" + moviePath);
+            if (BasicFileUtil.isExistFile(moviePath))
+            {
+                Bitmap bitmap = null;
+                bitmap = ThumbnailUtils.createVideoThumbnail(moviePath,
+                        Images.Thumbnails.MICRO_KIND);
+                bitmap = ThumbnailUtils.extractThumbnail(bitmap, 256, 256,
+                        ThumbnailUtils.OPTIONS_RECYCLE_INPUT);
+                // Bitmap textBitmap = BitmapUtil.drawTextToCenter(this, bitmap,
+                // "视频", 8, Color.RED);
+                Bitmap watermarkBitmap = BitmapUtil.createWaterMaskCenter(
+                        bitmap, BitmapFactory.decodeResource(getResources(),
+                                R.drawable.icon_video_shorcut));
+
+                final String savePath = MyAppParams.getInstance()
+                        .getMediaPath()
+                        + BasicFileUtil.getFileName(moviePath)
+                        + ".jpg";
+                BitmapUtil.saveMyBitmap(watermarkBitmap, savePath);
                 ImageItem takePhoto = new ImageItem();
-                takePhoto.setBitmap(bm);
+                takePhoto.setBitmap(watermarkBitmap);
+                takePhoto.setImagePath(savePath);
                 Bimp.tempSelectBitmap.add(takePhoto);
             }
             break;

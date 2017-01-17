@@ -120,6 +120,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         initActionBar();
         initDrawerLayout();
         initView();
+
     }
 
     DrawerLayout drawerLayout;
