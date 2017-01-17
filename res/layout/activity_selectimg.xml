@@ -48,8 +48,9 @@
         android:layout_height="100dp"
         android:layout_margin="8dp"
         android:gravity="left|top"
+        android:textColor="@+color/black"
         android:hint="说点什么吧..."       
-        android:background="@null" >
+        >
     </EditText>
 
     <com.wnc.xinxin.FlowLayout
