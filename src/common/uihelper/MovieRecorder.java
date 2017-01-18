@@ -40,7 +40,7 @@ public class MovieRecorder extends Thread
         try
         {
             // 暂停500ms再自动运行
-            Thread.sleep(500);
+            Thread.sleep(200);
         }
         catch (InterruptedException e1)
         {

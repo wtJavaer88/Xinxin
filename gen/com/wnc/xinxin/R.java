@@ -658,146 +658,149 @@ containing a value of this type.
         public static final int icon_shanchu_focused=0x7f020029;
         public static final int icon_shanchu_unfocused=0x7f02002a;
         public static final int icon_video_shorcut=0x7f02002b;
-        public static final int mylable=0x7f02002c;
-        public static final int mylablepen=0x7f02002d;
-        public static final int plubin_camera_del_focused=0x7f02002e;
-        public static final int plugin_camera_album_back=0x7f02002f;
-        public static final int plugin_camera_albumbackground=0x7f020030;
-        public static final int plugin_camera_back_btn=0x7f020031;
-        public static final int plugin_camera_back_btn_pressed=0x7f020032;
-        public static final int plugin_camera_bottom_bar=0x7f020033;
-        public static final int plugin_camera_cancel=0x7f020034;
-        public static final int plugin_camera_cancel_pressed=0x7f020035;
-        public static final int plugin_camera_choose_back=0x7f020036;
-        public static final int plugin_camera_choosed=0x7f020037;
-        public static final int plugin_camera_del_state=0x7f020038;
-        public static final int plugin_camera_del_unfocused=0x7f020039;
-        public static final int plugin_camera_filenum=0x7f02003a;
-        public static final int plugin_camera_no_pictures=0x7f02003b;
-        public static final int plugin_camera_ok_btn_state=0x7f02003c;
-        public static final int plugin_camera_pic_choose_selector=0x7f02003d;
-        public static final int plugin_camera_preview_focused=0x7f02003e;
-        public static final int plugin_camera_preview_pressed=0x7f02003f;
-        public static final int plugin_camera_preview_unselected=0x7f020040;
-        public static final int plugin_camera_send_focused=0x7f020041;
-        public static final int plugin_camera_send_pressed=0x7f020042;
-        public static final int plugin_camera_send_unselected=0x7f020043;
-        public static final int plugin_camera_title_bar=0x7f020044;
-        public static final int plugin_camera_title_btn_back=0x7f020045;
-        public static final int plugin_camera_title_btn_cancel=0x7f020046;
-        public static final int plugin_camera_title_btn_preview=0x7f020047;
-        public static final int selector_tabtext=0x7f020048;
-        public static final int setbar_bg=0x7f020049;
-        public static final int share_ico=0x7f02004a;
-        public static final int tab_indicator=0x7f02004b;
-        public static final int text_while=0x7f02004c;
+        public static final int icon_video_shorcut2=0x7f02002c;
+        public static final int mylable=0x7f02002d;
+        public static final int mylablepen=0x7f02002e;
+        public static final int plubin_camera_del_focused=0x7f02002f;
+        public static final int plugin_camera_album_back=0x7f020030;
+        public static final int plugin_camera_albumbackground=0x7f020031;
+        public static final int plugin_camera_back_btn=0x7f020032;
+        public static final int plugin_camera_back_btn_pressed=0x7f020033;
+        public static final int plugin_camera_bottom_bar=0x7f020034;
+        public static final int plugin_camera_cancel=0x7f020035;
+        public static final int plugin_camera_cancel_pressed=0x7f020036;
+        public static final int plugin_camera_choose_back=0x7f020037;
+        public static final int plugin_camera_choosed=0x7f020038;
+        public static final int plugin_camera_del_state=0x7f020039;
+        public static final int plugin_camera_del_unfocused=0x7f02003a;
+        public static final int plugin_camera_filenum=0x7f02003b;
+        public static final int plugin_camera_no_pictures=0x7f02003c;
+        public static final int plugin_camera_ok_btn_state=0x7f02003d;
+        public static final int plugin_camera_pic_choose_selector=0x7f02003e;
+        public static final int plugin_camera_preview_focused=0x7f02003f;
+        public static final int plugin_camera_preview_pressed=0x7f020040;
+        public static final int plugin_camera_preview_unselected=0x7f020041;
+        public static final int plugin_camera_send_focused=0x7f020042;
+        public static final int plugin_camera_send_pressed=0x7f020043;
+        public static final int plugin_camera_send_unselected=0x7f020044;
+        public static final int plugin_camera_title_bar=0x7f020045;
+        public static final int plugin_camera_title_btn_back=0x7f020046;
+        public static final int plugin_camera_title_btn_cancel=0x7f020047;
+        public static final int plugin_camera_title_btn_preview=0x7f020048;
+        public static final int selector_tabtext=0x7f020049;
+        public static final int setbar_bg=0x7f02004a;
+        public static final int share_ico=0x7f02004b;
+        public static final int tab_indicator=0x7f02004c;
+        public static final int text_while=0x7f02004d;
     }
     public static final class id {
-        public static final int add_tag=0x7f0a000f;
-        public static final int add_tag_dialg_no=0x7f0a0065;
-        public static final int add_tag_dialg_ok=0x7f0a0066;
-        public static final int add_tag_dialg_title=0x7f0a0063;
-        public static final int al_piczone=0x7f0a0010;
-        public static final int autocomplete_tag=0x7f0a0064;
-        public static final int back=0x7f0a0042;
-        public static final int backup=0x7f0a0068;
-        public static final int bottom_layout=0x7f0a0044;
-        public static final int bt_back=0x7f0a000b;
-        public static final int bt_save=0x7f0a000c;
-        public static final int btnRecoder=0x7f0a0017;
-        public static final int btnRetry=0x7f0a0018;
-        public static final int cancel=0x7f0a0043;
-        public static final int cb_sel=0x7f0a0013;
-        public static final int choose_back=0x7f0a0053;
-        public static final int choosedbt=0x7f0a0059;
-        public static final int drawer_layout=0x7f0a0005;
-        public static final int et_fs_desc=0x7f0a000d;
-        public static final int file=0x7f0a0050;
-        public static final int fileGridView=0x7f0a004e;
-        public static final int file_back=0x7f0a0051;
-        public static final int file_image=0x7f0a0052;
-        public static final int filenum=0x7f0a0054;
-        public static final int gallery01=0x7f0a004c;
-        public static final int gallery_back=0x7f0a0049;
-        public static final int gallery_del=0x7f0a004a;
-        public static final int headerTitle=0x7f0a004d;
-        public static final int headview=0x7f0a0041;
-        public static final int image_view=0x7f0a0056;
-        public static final int img_0=0x7f0a0035;
-        public static final int img_1=0x7f0a0032;
-        public static final int img_3=0x7f0a0038;
-        public static final int img_4=0x7f0a003b;
-        public static final int img_5=0x7f0a003e;
-        public static final int imgview_add_fs=0x7f0a0004;
-        public static final int imgview_view_pic=0x7f0a0014;
-        public static final int item_0=0x7f0a0034;
-        public static final int item_1=0x7f0a0030;
-        public static final int item_3=0x7f0a0037;
-        public static final int item_4=0x7f0a003a;
-        public static final int item_5=0x7f0a003d;
-        public static final int item_6=0x7f0a0040;
-        public static final int item_grida_image=0x7f0a0021;
-        public static final int item_popupwindows_Photo=0x7f0a001f;
-        public static final int item_popupwindows_camera=0x7f0a001e;
-        public static final int item_popupwindows_video=0x7f0a0020;
-        public static final int ll_fs_head=0x7f0a000a;
+        public static final int add_tag=0x7f0a0011;
+        public static final int add_tag_dialg_no=0x7f0a0067;
+        public static final int add_tag_dialg_ok=0x7f0a0068;
+        public static final int add_tag_dialg_title=0x7f0a0065;
+        public static final int al_piczone=0x7f0a0012;
+        public static final int autocomplete_tag=0x7f0a0066;
+        public static final int back=0x7f0a0044;
+        public static final int backup=0x7f0a006a;
+        public static final int bottom_layout=0x7f0a0046;
+        public static final int bt_back=0x7f0a000d;
+        public static final int bt_save=0x7f0a000e;
+        public static final int btnRecoder=0x7f0a0019;
+        public static final int btnRetry=0x7f0a001a;
+        public static final int cancel=0x7f0a0045;
+        public static final int cb_sel=0x7f0a0015;
+        public static final int choose_back=0x7f0a0055;
+        public static final int choosedbt=0x7f0a005b;
+        public static final int drawer_layout=0x7f0a0007;
+        public static final int et_fs_desc=0x7f0a000f;
+        public static final int file=0x7f0a0052;
+        public static final int fileGridView=0x7f0a0050;
+        public static final int file_back=0x7f0a0053;
+        public static final int file_image=0x7f0a0054;
+        public static final int filenum=0x7f0a0056;
+        public static final int gallery01=0x7f0a004e;
+        public static final int gallery_back=0x7f0a004b;
+        public static final int gallery_del=0x7f0a004c;
+        public static final int headerTitle=0x7f0a004f;
+        public static final int headview=0x7f0a0043;
+        public static final int image_view=0x7f0a0058;
+        public static final int img_0=0x7f0a0037;
+        public static final int img_1=0x7f0a0034;
+        public static final int img_3=0x7f0a003a;
+        public static final int img_4=0x7f0a003d;
+        public static final int img_5=0x7f0a0040;
+        public static final int imgview_add_fs=0x7f0a0006;
+        public static final int imgview_view_pic=0x7f0a0016;
+        public static final int item_0=0x7f0a0036;
+        public static final int item_1=0x7f0a0032;
+        public static final int item_3=0x7f0a0039;
+        public static final int item_4=0x7f0a003c;
+        public static final int item_5=0x7f0a003f;
+        public static final int item_6=0x7f0a0042;
+        public static final int item_grida_image=0x7f0a0023;
+        public static final int item_popupwindows_Photo=0x7f0a0021;
+        public static final int item_popupwindows_camera=0x7f0a0020;
+        public static final int item_popupwindows_video=0x7f0a0022;
+        public static final int ll_fs_head=0x7f0a000c;
         public static final int ll_home=0x7f0a0000;
-        public static final int ll_popup=0x7f0a001d;
-        public static final int logout_layout=0x7f0a0029;
-        public static final int mobie_btn=0x7f0a002b;
-        public static final int myGrid=0x7f0a0047;
-        public static final int myText=0x7f0a0048;
-        public static final int name=0x7f0a0055;
-        public static final int navigation_list=0x7f0a002f;
-        public static final int news=0x7f0a0024;
-        public static final int noScrollgridview=0x7f0a0019;
-        public static final int no_picture_confirm=0x7f0a004f;
-        public static final int ok_button=0x7f0a0046;
-        public static final int parent=0x7f0a001c;
-        public static final int pic=0x7f0a0026;
-        public static final int preview=0x7f0a0045;
-        public static final int progressBar=0x7f0a001a;
-        public static final int qzone_btn=0x7f0a002c;
-        public static final int read=0x7f0a0025;
-        public static final int relative1=0x7f0a0023;
-        public static final int right_sliding=0x7f0a0009;
-        public static final int rl_img_head=0x7f0a0011;
+        public static final int ll_popup=0x7f0a001f;
+        public static final int logout_layout=0x7f0a002b;
+        public static final int mobie_btn=0x7f0a002d;
+        public static final int myGrid=0x7f0a0049;
+        public static final int myText=0x7f0a004a;
+        public static final int name=0x7f0a0057;
+        public static final int navigation_list=0x7f0a0031;
+        public static final int news=0x7f0a0026;
+        public static final int noScrollgridview=0x7f0a001b;
+        public static final int no_picture_confirm=0x7f0a0051;
+        public static final int ok_button=0x7f0a0048;
+        public static final int parent=0x7f0a001e;
+        public static final int pic=0x7f0a0028;
+        public static final int preview=0x7f0a0047;
+        public static final int progressBar=0x7f0a001c;
+        public static final int qzone_btn=0x7f0a002e;
+        public static final int read=0x7f0a0027;
+        public static final int relative1=0x7f0a0025;
+        public static final int right_sliding=0x7f0a000b;
+        public static final int rl_img_head=0x7f0a0013;
         public static final int rl_section=0x7f0a0001;
-        public static final int rl_start_record=0x7f0a0006;
-        public static final int send_button=0x7f0a004b;
-        public static final int showallphoto_back=0x7f0a005b;
-        public static final int showallphoto_bottom_layout=0x7f0a005e;
-        public static final int showallphoto_cancel=0x7f0a005d;
-        public static final int showallphoto_headtitle=0x7f0a005c;
-        public static final int showallphoto_headview=0x7f0a005a;
-        public static final int showallphoto_myGrid=0x7f0a0061;
-        public static final int showallphoto_ok_button=0x7f0a0060;
-        public static final int showallphoto_preview=0x7f0a005f;
-        public static final int showallphoto_progressbar=0x7f0a0062;
-        public static final int start_bt=0x7f0a0007;
-        public static final int start_tv=0x7f0a0008;
-        public static final int surfaceView1=0x7f0a0016;
-        public static final int tag_vessel=0x7f0a000e;
-        public static final int title_0=0x7f0a0036;
-        public static final int title_1=0x7f0a0033;
-        public static final int title_3=0x7f0a0039;
-        public static final int title_4=0x7f0a003c;
-        public static final int title_5=0x7f0a003f;
-        public static final int toggle=0x7f0a0057;
-        public static final int toggle_button=0x7f0a0058;
-        public static final int tvBUResult=0x7f0a001b;
+        public static final int rl_start_record=0x7f0a0008;
+        public static final int send_button=0x7f0a004d;
+        public static final int showallphoto_back=0x7f0a005d;
+        public static final int showallphoto_bottom_layout=0x7f0a0060;
+        public static final int showallphoto_cancel=0x7f0a005f;
+        public static final int showallphoto_headtitle=0x7f0a005e;
+        public static final int showallphoto_headview=0x7f0a005c;
+        public static final int showallphoto_myGrid=0x7f0a0063;
+        public static final int showallphoto_ok_button=0x7f0a0062;
+        public static final int showallphoto_preview=0x7f0a0061;
+        public static final int showallphoto_progressbar=0x7f0a0064;
+        public static final int start_bt=0x7f0a0009;
+        public static final int start_tv=0x7f0a000a;
+        public static final int surfaceView1=0x7f0a0018;
+        public static final int tag_vessel=0x7f0a0010;
+        public static final int title_0=0x7f0a0038;
+        public static final int title_1=0x7f0a0035;
+        public static final int title_3=0x7f0a003b;
+        public static final int title_4=0x7f0a003e;
+        public static final int title_5=0x7f0a0041;
+        public static final int toggle=0x7f0a0059;
+        public static final int toggle_button=0x7f0a005a;
+        public static final int tvBUResult=0x7f0a001d;
         public static final int tv_day=0x7f0a0002;
-        public static final int tv_fs_memo=0x7f0a0015;
-        public static final int tv_img_pos=0x7f0a0012;
+        public static final int tv_fs_memo=0x7f0a0017;
+        public static final int tv_img_pos=0x7f0a0014;
+        public static final int tv_memo=0x7f0a0005;
         public static final int tv_month=0x7f0a0003;
-        public static final int tv_msg=0x7f0a0028;
-        public static final int tv_view_tag_name=0x7f0a0022;
-        public static final int unlog_info=0x7f0a002a;
-        public static final int user_text=0x7f0a002e;
-        public static final int usersetting=0x7f0a0067;
-        public static final int vedio=0x7f0a0027;
-        public static final int view_msg_layout=0x7f0a0031;
-        public static final int weibo_btn=0x7f0a002d;
+        public static final int tv_msg=0x7f0a002a;
+        public static final int tv_view_tag_name=0x7f0a0024;
+        public static final int tv_weekday=0x7f0a0004;
+        public static final int unlog_info=0x7f0a002c;
+        public static final int user_text=0x7f0a0030;
+        public static final int usersetting=0x7f0a0069;
+        public static final int vedio=0x7f0a0029;
+        public static final int view_msg_layout=0x7f0a0033;
+        public static final int weibo_btn=0x7f0a002f;
     }
     public static final class layout {
         public static final int activity_home=0x7f030000;
@@ -932,7 +935,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barColor
+          @attr name android:barColor
         */
         public static final int ProgressWheel_barColor = 3;
         /**
@@ -948,7 +951,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barLength
+          @attr name android:barLength
         */
         public static final int ProgressWheel_barLength = 11;
         /**
@@ -964,7 +967,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barWidth
+          @attr name android:barWidth
         */
         public static final int ProgressWheel_barWidth = 10;
         /**
@@ -979,7 +982,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:circleColor
+          @attr name android:circleColor
         */
         public static final int ProgressWheel_circleColor = 8;
         /**
@@ -995,7 +998,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:circleRadius
+          @attr name android:circleRadius
         */
         public static final int ProgressWheel_circleRadius = 9;
         /**
@@ -1010,7 +1013,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:contourColor
+          @attr name android:contourColor
         */
         public static final int ProgressWheel_contourColor = 12;
         /**
@@ -1026,7 +1029,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:contourSize
+          @attr name android:contourSize
         */
         public static final int ProgressWheel_contourSize = 13;
         /**
@@ -1040,7 +1043,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:delayMillis
+          @attr name android:delayMillis
         */
         public static final int ProgressWheel_delayMillis = 7;
         /**
@@ -1055,7 +1058,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:rimColor
+          @attr name android:rimColor
         */
         public static final int ProgressWheel_rimColor = 4;
         /**
@@ -1071,7 +1074,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:rimWidth
+          @attr name android:rimWidth
         */
         public static final int ProgressWheel_rimWidth = 5;
         /**
@@ -1087,7 +1090,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:spinSpeed
+          @attr name android:spinSpeed
         */
         public static final int ProgressWheel_spinSpeed = 6;
         /**
@@ -1101,7 +1104,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:text
+          @attr name android:text
         */
         public static final int ProgressWheel_text = 0;
         /**
@@ -1116,7 +1119,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:textColor
+          @attr name android:textColor
         */
         public static final int ProgressWheel_textColor = 1;
         /**
@@ -1132,7 +1135,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:textSize
+          @attr name android:textSize
         */
         public static final int ProgressWheel_textSize = 2;
     };

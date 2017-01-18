@@ -101,6 +101,7 @@ public class FsDao
                 list.add(info);
                 List<FsMedia> findMedias = findMedias(info);
                 info.setMedias(findMedias);
+                System.out.println(info.getId());
                 // System.out.println("找到的媒体数:" + findMedias.size());
                 c.moveToNext();
             }

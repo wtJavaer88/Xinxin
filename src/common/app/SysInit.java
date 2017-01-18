@@ -31,6 +31,15 @@ public class SysInit
 
         if (isFirstRun())
         {
+            if (BasicFileUtil.isExistFile(MyAppParams.XINXIN_DB))
+            {
+                BasicFileUtil.CopyFile(
+                        MyAppParams.XINXIN_DB,
+                        MyAppParams.getInstance().getBackupDbPath()
+                                + System.currentTimeMillis() + ".db");
+                BasicFileUtil.deleteFile(MyAppParams.XINXIN_DB);
+            }
+
         }
         if (!BasicFileUtil.isExistFile(MyAppParams.XINXIN_DB))
         {
@@ -46,6 +55,7 @@ public class SysInit
                 e.printStackTrace();
             }
         }
+
         SQLiteOpenHelper myHelper = new SQLiteHelperOfOpen(context,
                 MyAppParams.XINXIN_DB, null, 1);
         DatabaseManager.initializeInstance(myHelper);

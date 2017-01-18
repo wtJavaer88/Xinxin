@@ -97,7 +97,7 @@ public class AlbumActivity extends Activity
         @Override
         public void onClick(View v)
         {
-            if (Bimp.tempSelectBitmap.size() > 0)
+            if (Bimp.getTempSelectBitmap().size() > 0)
             {
                 intent.putExtra("position", "1");
                 intent.setClass(AlbumActivity.this, GalleryActivity.class);
@@ -139,7 +139,7 @@ public class AlbumActivity extends Activity
         @Override
         public void onClick(View v)
         {
-            Bimp.tempSelectBitmap.clear();
+            Bimp.getTempSelectBitmap().clear();
             intent.setClass(mContext, MainActivity.class);
             startActivity(intent);
         }
@@ -168,13 +168,13 @@ public class AlbumActivity extends Activity
         Bundle bundle = intent.getExtras();
         gridView = (GridView) findViewById(Res.getWidgetID("myGrid"));
         gridImageAdapter = new AlbumGridViewAdapter(this, dataList,
-                Bimp.tempSelectBitmap);
+                Bimp.getTempSelectBitmap());
         gridView.setAdapter(gridImageAdapter);
         tv = (TextView) findViewById(Res.getWidgetID("myText"));
         gridView.setEmptyView(tv);
         okButton = (Button) findViewById(Res.getWidgetID("ok_button"));
         okButton.setText(Res.getString("finish") + "("
-                + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                + Bimp.getTempSelectBitmap().size() + "/" + PublicWay.num + ")");
     }
 
     private void initListener()
@@ -188,7 +188,7 @@ public class AlbumActivity extends Activity
                     public void onItemClick(final ToggleButton toggleButton,
                             int position, boolean isChecked, Button chooseBt)
                     {
-                        if (Bimp.tempSelectBitmap.size() >= PublicWay.num)
+                        if (Bimp.getTempSelectBitmap().size() >= PublicWay.num)
                         {
                             toggleButton.setChecked(false);
                             chooseBt.setVisibility(View.GONE);
@@ -203,17 +203,17 @@ public class AlbumActivity extends Activity
                         if (isChecked)
                         {
                             chooseBt.setVisibility(View.VISIBLE);
-                            Bimp.tempSelectBitmap.add(dataList.get(position));
+                            Bimp.addImageItem(dataList.get(position));
                             okButton.setText(Res.getString("finish") + "("
-                                    + Bimp.tempSelectBitmap.size() + "/"
+                                    + Bimp.getTempSelectBitmap().size() + "/"
                                     + PublicWay.num + ")");
                         }
                         else
                         {
-                            Bimp.tempSelectBitmap.remove(dataList.get(position));
+                            Bimp.removeImageItem(dataList.get(position));
                             chooseBt.setVisibility(View.GONE);
                             okButton.setText(Res.getString("finish") + "("
-                                    + Bimp.tempSelectBitmap.size() + "/"
+                                    + Bimp.getTempSelectBitmap().size() + "/"
                                     + PublicWay.num + ")");
                         }
                         isShowOkBt();
@@ -226,11 +226,12 @@ public class AlbumActivity extends Activity
 
     private boolean removeOneData(ImageItem imageItem)
     {
-        if (Bimp.tempSelectBitmap.contains(imageItem))
+        if (Bimp.getTempSelectBitmap().contains(imageItem))
         {
-            Bimp.tempSelectBitmap.remove(imageItem);
+            Bimp.removeImageItem(imageItem);
             okButton.setText(Res.getString("finish") + "("
-                    + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                    + Bimp.getTempSelectBitmap().size() + "/" + PublicWay.num
+                    + ")");
             return true;
         }
         return false;
@@ -238,10 +239,11 @@ public class AlbumActivity extends Activity
 
     public void isShowOkBt()
     {
-        if (Bimp.tempSelectBitmap.size() > 0)
+        if (Bimp.getTempSelectBitmap().size() > 0)
         {
             okButton.setText(Res.getString("finish") + "("
-                    + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                    + Bimp.getTempSelectBitmap().size() + "/" + PublicWay.num
+                    + ")");
             preview.setPressed(true);
             okButton.setPressed(true);
             preview.setClickable(true);
@@ -252,7 +254,8 @@ public class AlbumActivity extends Activity
         else
         {
             okButton.setText(Res.getString("finish") + "("
-                    + Bimp.tempSelectBitmap.size() + "/" + PublicWay.num + ")");
+                    + Bimp.getTempSelectBitmap().size() + "/" + PublicWay.num
+                    + ")");
             preview.setPressed(false);
             preview.setClickable(false);
             okButton.setPressed(false);
