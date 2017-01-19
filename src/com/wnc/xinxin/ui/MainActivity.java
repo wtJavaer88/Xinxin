@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.widget.fancyy.CalenderPopupWindow;
+import net.widget.fancyy.KCalendar.OnCalendarCompleteListener;
+
 import org.apache.log4j.Logger;
 
 import android.annotation.SuppressLint;
@@ -144,8 +147,11 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
 
     private static void clearStatics()
     {
+        Bimp.imageChanged = false;
+        Bimp.need_save = false;
         Bimp.memo = "";
         Bimp.tags = "[]";
+        Bimp.day = "";
     }
 
     private void initData()
@@ -179,11 +185,29 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             {
                 Bimp.tags = intent.getStringExtra("tags");
             }
+            if (intent.getStringExtra("day") != null)
+            {
+                Bimp.day = intent.getStringExtra("day");
+            }
         }
     }
 
+    Button calendarBt;
+
     public void InitView()
     {
+        calendarBt = (Button) findViewById(R.id.bt_date_sel);
+        calendarBt.setOnClickListener(this);
+        if (isInsertMode())
+        {
+            calendarBt.setText(BasicDateUtil.getCurrentDateTimeString()
+                    .substring(0, 10));
+        }
+        else if (BasicStringUtil.isNotNullString(Bimp.day))
+        {
+            calendarBt.setText(Bimp.day);
+        }
+
         memoET = (EditText) findViewById(R.id.et_fs_desc);
         memoET.setText(Bimp.memo);
 
@@ -254,8 +278,6 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
                         AlbumActivity.class);
 
                 checkNeedSave();
-
-                System.out.println("Bimp.memo:" + Bimp.memo);
                 startActivity(intent);
                 overridePendingTransition(R.anim.activity_translate_in,
                         R.anim.activity_translate_out);
@@ -501,6 +523,10 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
                 AddTag(tag, false);
             }
         }
+        if (BasicStringUtil.isNotNullString(Bimp.day))
+        {
+            calendarBt.setText(Bimp.day);
+        }
     }
 
     private static final int TAKE_PICTURE = 0x000001;
@@ -544,7 +570,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             {
                 if (this.mPhotoFile != null && this.mPhotoFile.exists())
                 {
-                    setNeedSave(true);
+                    Bimp.setImageChanged(true);
                     System.out.println("mPhotoFile::" + this.mPhotoFile);
 
                     String scaledImgPath = MyAppParams.getInstance()
@@ -577,7 +603,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             System.out.println("返回的moviePath:" + moviePath);
             if (BasicFileUtil.isExistFile(moviePath))
             {
-                setNeedSave(true);
+                Bimp.setImageChanged(true);
                 Bitmap bitmap = null;
                 bitmap = ThumbnailUtils.createVideoThumbnail(moviePath,
                         Images.Thumbnails.MICRO_KIND);
@@ -894,14 +920,16 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
     }
 
     @Override
-    public void onClick(View arg0)
+    public void onClick(final View arg0)
     {
         switch (arg0.getId())
         {
         case R.id.bt_save:
-            checkNeedSave();
+            // checkNeedSave();
             List<String> fs_files = new ArrayList<String>();
             String fs_desc = memoET.getText().toString();
+            String fs_day = ((Button) findViewById(R.id.bt_date_sel)).getText()
+                    .toString();
             for (ImageItem item : Bimp.getTempSelectBitmap())
             {
                 // copy这些文件到临时目录
@@ -913,16 +941,21 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
 
             if (isInsertMode())
             {
-                result = new FsService().save(fs_desc, fs_files, tag_names);
+                result = new FsService().save(fs_day, fs_desc, fs_files,
+                        tag_names);
             }
             else
             {
-                result = new FsService().update(Bimp.fs_id, fs_desc, fs_files,
-                        tag_names);
+                result = new FsService().update(Bimp.fs_id, fs_day, fs_desc,
+                        fs_files, tag_names);
             }
             if (result)
             {
                 setNeedSave(false);
+                Bimp.day = fs_day;
+                Bimp.memo = fs_desc;
+                Bimp.tags = tag_names.toString();
+                Bimp.setImageChanged(false);
             }
             ToastUtil.showShortToast(this, result ? "保存成功" : "保存失败");
             break;
@@ -930,6 +963,20 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             quit();
             finish();
             // new FsService().findAll();
+            break;
+        case R.id.bt_date_sel:
+            CalenderPopupWindow calenderPopupWindow = new CalenderPopupWindow(
+                    MainActivity.this, this.calendarBt.getText().toString(),
+                    new OnCalendarCompleteListener()
+                    {
+
+                        @Override
+                        public void onCalendarComplete(String dateStr)
+                        {
+                            calendarBt.setText(dateStr);
+                        }
+                    });
+            calenderPopupWindow.showAtLocation(arg0, Gravity.BOTTOM, 0, 0);
             break;
         default:
             break;
@@ -968,7 +1015,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
         if (keyCode == KeyEvent.KEYCODE_BACK)
         {
             checkNeedSave();
-            if (!Bimp.need_save)
+            if (!Bimp.need_save && !Bimp.isImageChanged())
             {
                 quit();
             }
@@ -983,18 +1030,35 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
 
     private void checkNeedSave()
     {
+        setNeedSave(false);
+        if (!calendarBt.getText().toString().equals(Bimp.day))
+        {
+            System.out.println("ns dayET");
+            setNeedSave(true);
+        }
         if (!memoET.getText().toString().equals(Bimp.memo))
         {
             System.out.println("ns memoET");
             setNeedSave(true);
         }
-        if (!tag_names.toString().equals(Bimp.tags))
+        System.out.println(tag_names.toString() + " / " + Bimp.tags);
+        if (tag_names.toString().replace(" ", "").length() != Bimp.tags
+                .replace(" ", "").length())
         {
-            System.out.println("ns tags");
+            System.out.println("长度不一致..");
             setNeedSave(true);
         }
-        Bimp.memo = memoET.getText().toString();
-        Bimp.tags = tag_names.toString();
+        else
+        {
+            for (String t : tag_names)
+            {
+                if (!Bimp.tags.contains(t.trim()))
+                {
+                    System.out.println("不包含.." + t);
+                    setNeedSave(true);
+                }
+            }
+        }
     }
 
     private void quit()

@@ -14,23 +14,35 @@ public class Bimp
 {
     public static int max = 0;
     public static String memo = "";
+    public static String day = "";
     public static String tags = "[]";
     public static int fs_id = 0;
     // 是否有已修改的数据没保存
     public static boolean need_save = false;
+    public static boolean imageChanged = false;
 
     private static ArrayList<ImageItem> tempSelectBitmap = new ArrayList<ImageItem>(); // 选择的图片的临时列表
+
+    public static void setImageChanged(boolean b)
+    {
+        imageChanged = b;
+    }
+
+    public static boolean isImageChanged()
+    {
+        return imageChanged;
+    }
 
     public static void addImageItem(ImageItem item)
     {
         tempSelectBitmap.add(item);
-        need_save = true;
+        imageChanged = true;
     }
 
     public static void removeImageItem(ImageItem item)
     {
         tempSelectBitmap.remove(item);
-        need_save = true;
+        imageChanged = true;
     }
 
     public static void removeImageItem(int index)
@@ -41,7 +53,7 @@ public class Bimp
 
     public static void clearAllBitmap()
     {
-        need_save = false;
+        imageChanged = false;
         for (ImageItem item : getTempSelectBitmap())
         {
             Bitmap bitmap = item.getBitmap();

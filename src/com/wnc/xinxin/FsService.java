@@ -14,11 +14,12 @@ import com.wnc.xinxin.pojo.FsMedia;
 public class FsService
 {
 
-    public boolean save(String fs_desc, List<String> media_files,
+    public boolean save(String day, String fs_desc, List<String> media_files,
             Set<String> tags)
     {
         FootStepInfo fsInfo = new FootStepInfo();
         fsInfo.setDesc(fs_desc);
+        fsInfo.setDay(day);
         fsInfo.setCreate_time(BasicDateUtil.getCurrentDateTimeString());
         fsInfo.setUpdate_time(BasicDateUtil.getCurrentDateTimeString());
 
@@ -60,11 +61,12 @@ public class FsService
         FsDao.deleteAll();
     }
 
-    public boolean update(int id, String fs_desc, List<String> media_files,
-            Set<String> tags)
+    public boolean update(int id, String day, String fs_desc,
+            List<String> media_files, Set<String> tags)
     {
         FootStepInfo fsInfo = new FootStepInfo();
         fsInfo.setId(id);
+        fsInfo.setDay(day);
         fsInfo.setDesc(fs_desc);
         fsInfo.setUpdate_time(BasicDateUtil.getCurrentDateTimeString());
 

@@ -59,6 +59,15 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/et_fs_desc"
         android:layout_marginTop="5dp" >
+   		 <Button 
+	        android:id="@+id/bt_date_sel"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:background="@+color/white"
+	        android:textColor="@+color/black"
+	        android:layout_marginRight="10dp"
+	        android:text=""
+	        />
         <ImageView
             android:id="@+id/add_tag"
             android:layout_width="wrap_content"
@@ -66,11 +75,12 @@
             android:padding="15dp"
             android:src="@drawable/mylablepen" />
     </com.wnc.xinxin.FlowLayout>
-    
+   
     <GridView 
         android:id="@+id/noScrollgridview"
         android:layout_width="290dp"
         android:layout_height="350dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:horizontalSpacing="3dp"        
         android:numColumns="4"

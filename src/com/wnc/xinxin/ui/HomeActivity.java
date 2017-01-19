@@ -529,6 +529,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             startActivity(new Intent(HomeActivity.this, MainActivity.class)
                     .putExtra("memo", footStepInfo.getDesc())
                     .putExtra("tags", footStepInfo.getTag_names())
+                    .putExtra("day", footStepInfo.getDay())
                     .putStringArrayListExtra("medias", imgs));
         }
     };

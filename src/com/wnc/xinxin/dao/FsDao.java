@@ -36,9 +36,9 @@ public class FsDao
             openDatabase();
             database.beginTransaction();
             database.execSQL(
-                    "INSERT INTO FOOTSTEPS(fs_desc,tag_names,create_time,update_time) VALUES (?,?,?,?)",
+                    "INSERT INTO FOOTSTEPS(day,fs_desc,tag_names,create_time,update_time) VALUES (?,?,?,?,?)",
                     new Object[]
-                    { fsInfo.getDesc(), tag_names.toString(),
+                    { fsInfo.getDay(), fsInfo.getDesc(), tag_names.toString(),
                             fsInfo.getCreate_time(), fsInfo.getUpdate_time() });
             int fs_id = getId(database);
             log.info("当前fs_id:" + fs_id);
@@ -94,6 +94,7 @@ public class FsDao
             {
                 info = new FootStepInfo();
                 info.setId(c.getInt(c.getColumnIndex("id")));
+                info.setDay(c.getString(c.getColumnIndex("day")));
                 info.setDesc(c.getString(c.getColumnIndex("fs_desc")));
                 info.setTag_names(c.getString(c.getColumnIndex("tag_names")));
                 info.setCreate_time(c.getString(c.getColumnIndex("create_time")));
@@ -171,10 +172,10 @@ public class FsDao
             openDatabase();
             database.beginTransaction();
             database.execSQL(
-                    "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=? WHERE ID=?",
+                    "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=?,DAY=? WHERE ID=?",
                     new Object[]
                     { fsInfo.getDesc(), tag_names.toString(),
-                            fsInfo.getUpdate_time(), fs_id });
+                            fsInfo.getUpdate_time(), fsInfo.getDay(), fs_id });
             database.delete("FS_MEDIAS", "FS_ID=?", new String[]
             { fs_id + "" });
             for (int i = 0; i < medias.size(); i++)

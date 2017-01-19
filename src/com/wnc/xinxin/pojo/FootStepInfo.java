@@ -13,6 +13,7 @@ public class FootStepInfo implements Serializable
     private String desc;
     private boolean is_deleted;
     private String tag_names;
+    private String day;
     private String create_time;
     private String update_time;
     private List<FsMedia> medias;
@@ -93,5 +94,15 @@ public class FootStepInfo implements Serializable
     public void setIs_deleted(boolean is_deleted)
     {
         this.is_deleted = is_deleted;
+    }
+
+    public String getDay()
+    {
+        return day;
+    }
+
+    public void setDay(String day)
+    {
+        this.day = day;
     }
 }
