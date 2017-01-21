@@ -202,6 +202,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
         {
             calendarBt.setText(BasicDateUtil.getCurrentDateTimeString()
                     .substring(0, 10));
+            Bimp.day = calendarBt.getText().toString();
         }
         else if (BasicStringUtil.isNotNullString(Bimp.day))
         {

@@ -205,7 +205,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 @Override
                 public void run()
                 {
-                    boolean ret = new BackUPTest().testTwo();
+                    boolean ret = new BackUPTest().testThree();
                     if (ret)
                     {
                         handler.sendEmptyMessage(100);
