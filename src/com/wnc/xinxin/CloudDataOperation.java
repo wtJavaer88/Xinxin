@@ -15,6 +15,8 @@ import com.wnc.basic.BasicDateUtil;
 import com.wnc.basic.BasicFileUtil;
 import com.wnc.xinxin.pojo.FootStepInfo;
 import com.wnc.xinxin.pojo.FsMedia;
+import com.wnc.xinxin.service.FsService;
+
 import common.uihelper.MyAppParams;
 import common.utils.FileTypeUtil;
 import common.utils.ZipUtils;

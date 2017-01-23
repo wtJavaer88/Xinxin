@@ -314,11 +314,16 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 			ImageView imageView = this.mImageView.get();
 			// System.out.println("高度:" +
 			// imageView.getDrawable().getIntrinsicHeight());
-			// System.out.println("路径:" + imageView.getTag());
+			System.out.println("路径:" + imageView.getTag());
 			String imgPath = (String) imageView.getTag();
 			if (FileUtils.isVideoThumbPic(imgPath))
 			{
 				Intent videoFileIntent = MyIntentUtil.getVideoFileIntent(imgPath.replace(".jpg", ""));
+				imageView.getContext().startActivity(videoFileIntent);
+			}
+			else if (FileUtils.isVoiceThumbPic(imgPath))
+			{
+				Intent videoFileIntent = MyIntentUtil.getAudioFileIntent(imgPath.replace(".jpg", ""));
 				imageView.getContext().startActivity(videoFileIntent);
 			}
 			float scale = getScale();

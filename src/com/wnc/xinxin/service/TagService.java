@@ -1,4 +1,4 @@
-package com.wnc.xinxin;
+package com.wnc.xinxin.service;
 
 import java.util.ArrayList;
 import java.util.List;

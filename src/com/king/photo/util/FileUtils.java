@@ -16,6 +16,11 @@ public class FileUtils
 		return pic.endsWith(".mp4.jpg");
 	}
 
+	public static boolean isVoiceThumbPic(String pic)
+	{
+		return pic.endsWith(".amr.jpg");
+	}
+
 	public static String SDPATH = Environment.getExternalStorageDirectory() + "/Photo_LJ/";
 
 	public static void saveBitmap(Bitmap bm, String picName)
