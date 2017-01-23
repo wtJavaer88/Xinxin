@@ -30,6 +30,9 @@
     <!-- 获取当前运行任务 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    
     <uses-sdk
         android:minSdkVersion="11"
         android:targetSdkVersion="17" />

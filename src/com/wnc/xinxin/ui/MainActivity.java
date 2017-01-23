@@ -26,6 +26,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -75,6 +76,8 @@ import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.R;
 import com.wnc.xinxin.TagService;
 import com.wnc.xinxin.dao.TagDao;
+import com.wnc.xinxin.pojo.FootStepInfo;
+import com.wnc.xinxin.pojo.FsMedia;
 import common.app.MyIntentUtil;
 import common.app.ToastUtil;
 import common.uihelper.MyAppParams;
@@ -157,12 +160,16 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
     private void initData()
     {
         final Intent intent = getIntent();
-        if (intent != null)
+        if (intent != null && intent.getSerializableExtra("fsinfo") != null)
         {
-            List<String> medias = intent.getStringArrayListExtra("medias");
-            if (medias == null)
+            final FootStepInfo fsInfo = (FootStepInfo) intent
+                    .getSerializableExtra("fsinfo");
+            Bimp.fs_uuid = fsInfo.getUuid();
+            System.out.println(fsInfo);
+            List<String> medias = new ArrayList<String>();
+            for (FsMedia media : fsInfo.getMedias())
             {
-                return;
+                medias.add(media.getMedia_fullpath());
             }
             long s = System.currentTimeMillis();
             System.out.println("medias加载开始:" + s);
@@ -177,22 +184,23 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             }
             System.out
                     .println("medias加载耗时:" + (System.currentTimeMillis() - s));
-            if (intent.getStringExtra("memo") != null)
+            if (fsInfo.getFs_desc() != null)
             {
-                Bimp.memo = intent.getStringExtra("memo");
+                Bimp.memo = fsInfo.getFs_desc();
             }
-            if (intent.getStringExtra("tags") != null)
+            if (fsInfo.getTag_names() != null)
             {
-                Bimp.tags = intent.getStringExtra("tags");
+                Bimp.tags = fsInfo.getTag_names();
             }
-            if (intent.getStringExtra("day") != null)
+            if (fsInfo.getDay() != null)
             {
-                Bimp.day = intent.getStringExtra("day");
+                Bimp.day = fsInfo.getDay();
             }
         }
     }
 
     Button calendarBt;
+    Dialog dialog;
 
     public void InitView()
     {
@@ -204,10 +212,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
                     .substring(0, 10));
             Bimp.day = calendarBt.getText().toString();
         }
-        else if (BasicStringUtil.isNotNullString(Bimp.day))
-        {
-            calendarBt.setText(Bimp.day);
-        }
+        calendarBt.setText(Bimp.day);
 
         memoET = (EditText) findViewById(R.id.et_fs_desc);
         memoET.setText(Bimp.memo);
@@ -249,13 +254,13 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
         Button bt1 = (Button) view.findViewById(R.id.item_popupwindows_camera);
         Button bt2 = (Button) view.findViewById(R.id.item_popupwindows_Photo);
         Button bt3 = (Button) view.findViewById(R.id.item_popupwindows_video);
+        Button bt4 = (Button) view.findViewById(R.id.item_popupwindows_voice);
         parent.setOnClickListener(new OnClickListener()
         {
 
             @Override
             public void onClick(View v)
             {
-                // TODO Auto-generated method stub
                 pop.dismiss();
                 ll_popup.clearAnimation();
             }
@@ -293,10 +298,62 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             {
                 pop.dismiss();
                 ll_popup.clearAnimation();
-                // TODO video
                 Intent intent = new Intent(MainActivity.this,
                         MovieActivity.class);
                 startActivityForResult(intent, VIDEO_RESULT);
+            }
+        });
+        bt4.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                pop.dismiss();
+                dialog = new Dialog(MainActivity.this,
+                        R.style.CustomDialogStyle);
+                dialog.setContentView(R.layout.recordvoice_dailog);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+                Button bt = (Button) dialog.findViewById(R.id.bt_voice_record);
+                Button bt_stop = (Button) dialog
+                        .findViewById(R.id.bt_voice_stop);
+                final MediaRecorder mRecorder = new MediaRecorder();
+
+                bt.setOnClickListener(new OnClickListener()
+                {
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        try
+                        {
+                            File soundFile = new File(MyAppParams.getInstance()
+                                    .getMediaPath() + "/sound.amr");
+                            mRecorder
+                                    .setAudioSource(MediaRecorder.AudioSource.MIC);
+                            mRecorder
+                                    .setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                            mRecorder
+                                    .setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                            mRecorder.setOutputFile(soundFile.getAbsolutePath());
+                            mRecorder.prepare();
+                            mRecorder.start();
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                bt_stop.setOnClickListener(new OnClickListener()
+                {
+
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        mRecorder.stop();
+                        mRecorder.release();
+                    }
+                });
             }
         });
 
@@ -947,7 +1004,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             }
             else
             {
-                result = new FsService().update(Bimp.fs_id, fs_day, fs_desc,
+                result = new FsService().update(Bimp.fs_uuid, fs_day, fs_desc,
                         fs_files, tag_names);
             }
             if (result)
@@ -1072,6 +1129,15 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             {
                 PublicWay.activityList.get(i).finish();
             }
+        }
+        closeDialog();
+    }
+
+    private void closeDialog()
+    {
+        if (dialog != null)
+        {
+            dialog.dismiss();
         }
     }
 

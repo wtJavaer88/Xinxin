@@ -3,7 +3,9 @@ package com.wnc.xinxin.ui;
 import java.io.File;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -32,7 +34,6 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.king.photo.util.Bimp;
 import com.king.photo.util.BitmapCache;
 import com.king.photo.util.BitmapCache.ImageCallback;
 import com.king.photo.util.FileUtils;
@@ -40,7 +41,7 @@ import com.king.photo.util.PhotoImageCallback;
 import com.king.photo.util.PublicWay;
 import com.king.photo.util.Res;
 import com.wnc.basic.BasicDateUtil;
-import com.wnc.xinxin.BackUPTest;
+import com.wnc.xinxin.CloudDataOperation;
 import com.wnc.xinxin.FsService;
 import com.wnc.xinxin.ProgressWheel;
 import com.wnc.xinxin.R;
@@ -54,7 +55,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 {
     Logger logger = Logger.getLogger(HomeActivity.class);
     LinearLayout ll_home;
-    static List<Integer> isExistFs = new ArrayList<Integer>();
+    static Map<String, FootStepInfo> isExistFs = new HashMap<String, FootStepInfo>();
     Handler handler = new Handler()
     {
         @Override
@@ -85,10 +86,20 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             {
                 for (FootStepInfo footStepInfo : (List<FootStepInfo>) msg.obj)
                 {
-                    if (!isExistFs.contains(footStepInfo.getId()))
+                    final String uuid = footStepInfo.getUuid();
+                    if (!isExistFs.containsKey(uuid))
                     {
-                        isExistFs.add(footStepInfo.getId());
+                        isExistFs.put(uuid, footStepInfo);
                         ll_home.addView(getFsLayout(footStepInfo), minHomeDeep);
+                    }
+                    else
+                    {
+                        FootStepInfo footStepInfo2 = isExistFs.get(uuid);
+                        footStepInfo2.setMedias(footStepInfo.getMedias());
+                        footStepInfo2.setDay(footStepInfo.getDay());
+                        footStepInfo2.setFs_desc(footStepInfo.getFs_desc());
+                        footStepInfo2.setTag_names(footStepInfo.getTag_names());
+                        updateFsLayout(footStepInfo);
                     }
                 }
             }
@@ -198,14 +209,15 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             break;
         case R.id.backup:
             dialog = new Dialog(this, R.style.CustomDialogStyle);
-            showDialog();
+            showBackupDialog();
             new Thread(new Runnable()
             {
 
                 @Override
                 public void run()
                 {
-                    boolean ret = new BackUPTest().testThree();
+                    // boolean ret = new BackUPTest().testThree();
+                    boolean ret = new CloudDataOperation().upload();
                     if (ret)
                     {
                         handler.sendEmptyMessage(100);
@@ -222,9 +234,9 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         return super.onOptionsItemSelected(item);
     }
 
-    public void showDialog()
+    public void showBackupDialog()
     {
-        dialog.setContentView(R.layout.common_wdailog);
+        dialog.setContentView(R.layout.backup_dailog);
         dialog.setCanceledOnTouchOutside(true);
         ProgressWheel progressWheel = (ProgressWheel) dialog
                 .findViewById(R.id.progressBar);
@@ -314,6 +326,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 final long s = System.currentTimeMillis();
                 System.out.println("开始查数据库:" + s);
                 List<FootStepInfo> findAll = new FsService().findAll();
+                System.out.println("findAll:" + findAll);
                 System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
                 Message msg = new Message();
                 msg.what = 10;
@@ -322,6 +335,69 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             }
         }).start();
 
+    }
+
+    private final static int memo_offset = -1;
+    private final static int weekday_offset = -2;
+    private final static int day_offset = 1;
+    private final static int month_offset = 2;
+    private final static int monthday_rl_offset = 3;
+    private final static int absoluteLayout_offset = 4;
+
+    // private final static int memo_offset = -1;
+
+    private int generateId(FootStepInfo footStepInfo, int offset)
+    {
+        return MAX_ID * footStepInfo.getId() + offset;
+    }
+
+    /**
+     * 根据一个新的实例来更新布局
+     * 
+     * @param footStepInfo
+     */
+    private void updateFsLayout(FootStepInfo footStepInfo)
+    {
+        TextView memoTv = (TextView) findViewById(generateId(footStepInfo,
+                memo_offset));
+        System.out.println("memoTv:" + memoTv.getText().toString());
+        memoTv.setText(footStepInfo.getFs_desc());
+
+        TextView wdTv = (TextView) findViewById(generateId(footStepInfo,
+                weekday_offset));
+        System.out.println("wdTv:" + wdTv.getText().toString());
+
+        String weekdaystr = "星期六";
+        weekdaystr = BasicDateUtil.getGBWeekString(
+                footStepInfo.getDay().replace("-", "").substring(0, 8))
+                .replace("七", "天");
+        wdTv.setText(weekdaystr);
+
+        TextView tv_day = (TextView) findViewById(generateId(footStepInfo,
+                day_offset));
+        TextView tv_month = (TextView) findViewById(generateId(footStepInfo,
+                month_offset));
+        String date = footStepInfo.getDay().replace("-", "").substring(0, 8);
+        tv_day.setText(date.substring(6, 8));
+        tv_month.setText(date.substring(0, 4) + "." + date.substring(4, 6));
+        AbsoluteLayout absoluteLayout = (AbsoluteLayout) findViewById(generateId(
+                footStepInfo, absoluteLayout_offset));
+        absoluteLayout.removeAllViewsInLayout();
+        int padding = 20;
+        for (int i = 0; i < footStepInfo.getMedias().size(); i++)
+        {
+            ImageView imgView = new ImageView(this);
+            AbsoluteLayout.LayoutParams params = new AbsoluteLayout.LayoutParams(
+                    300, 300, (300 + padding) * (i % 3), (300 + padding)
+                            * (i / 3));
+            imgView.setLayoutParams(params);
+            imgView.setTag(new ImgTag(footStepInfo, i));
+            imgView.setOnClickListener(mediaViewClickListener);
+            String absulute_path = footStepInfo.getMedias().get(i)
+                    .getMedia_fullpath();
+            bitmapCache.displayBmp(imgView, null, absulute_path, callback);
+            absoluteLayout.addView(imgView);
+        }
     }
 
     private RelativeLayout getFsLayout(FootStepInfo footStepInfo)
@@ -336,7 +412,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         outer_rl.addView(tv);
         // 包含月和日, 并为其后的星期和图片区做坐标参考
         RelativeLayout monthday_rl = getInnerRl(tv, footStepInfo);
-        monthday_rl.setId(MAX_ID * footStepInfo.getId() + 2);
+        monthday_rl.setId(generateId(footStepInfo, monthday_rl_offset));
         outer_rl.addView(monthday_rl);
 
         // 星期区
@@ -344,7 +420,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         outer_rl.addView(weekdayTv);
 
         // 备注区
-        TextView memoTv = getMemoDayTv(weekdayTv, footStepInfo);
+        TextView memoTv = getMemoTv(weekdayTv, footStepInfo);
         outer_rl.addView(memoTv);
         // 图片区
         AbsoluteLayout absoluteLayout = getPicZone(monthday_rl, footStepInfo);
@@ -357,6 +433,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             FootStepInfo footStepInfo)
     {
         AbsoluteLayout absoluteLayout = new AbsoluteLayout(this);
+        absoluteLayout.setId(generateId(footStepInfo, absoluteLayout_offset));
         RelativeLayout.LayoutParams lp_al = new RelativeLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         lp_al.addRule(RelativeLayout.BELOW, inner_rl.getId());
@@ -372,22 +449,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             imgView.setTag(new ImgTag(footStepInfo, i));
             imgView.setOnClickListener(mediaViewClickListener);
             String absulute_path = footStepInfo.getMedias().get(i)
-                    .getAbsulute_path();
-            // 多图测试
-            // absulute_path = camera_pics.get((int) (Math.random() *
-            // camera_pics
-            // .size()));
-            // logger.info(absulute_path);
-            // try
-            // {
-            // imgView.setImageBitmap(Bimp.revitionImageSize(absulute_path,
-            // 300));
-            // }
-            // catch (IOException e)
-            // {
-            // e.printStackTrace();
-            // }
-
+                    .getMedia_fullpath();
             bitmapCache.displayBmp(imgView, null, absulute_path, callback);
             absoluteLayout.addView(imgView);
         }
@@ -429,16 +491,17 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 
     }
 
-    private TextView getMemoDayTv(TextView weekdayTv, FootStepInfo footStepInfo)
+    private TextView getMemoTv(TextView weekdayTv, FootStepInfo footStepInfo)
     {
         TextView tv_memo = new TextView(this);
+        tv_memo.setId(generateId(footStepInfo, memo_offset));
         RelativeLayout.LayoutParams lp_tv = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp_tv.addRule(RelativeLayout.ALIGN_BOTTOM, weekdayTv.getId());
         lp_tv.addRule(RelativeLayout.RIGHT_OF, weekdayTv.getId());
         lp_tv.leftMargin = 30;
         tv_memo.setTextSize(12);
-        tv_memo.setText(footStepInfo.getDesc());
+        tv_memo.setText(footStepInfo.getFs_desc());
         tv_memo.setLayoutParams(lp_tv);
         return tv_memo;
     }
@@ -453,10 +516,10 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         lp_tv.addRule(RelativeLayout.RIGHT_OF, inner_rl.getId());
         lp_tv.bottomMargin = 30;
         tv_weekday.setTextSize(12);
-        tv_weekday.setId(MAX_ID * footStepInfo.getId() + 3);
+        tv_weekday.setId(generateId(footStepInfo, weekday_offset));
         String weekdaystr = "星期六";
         weekdaystr = BasicDateUtil.getGBWeekString(
-                footStepInfo.getCreate_time().replace("-", "").substring(0, 8))
+                footStepInfo.getDay().replace("-", "").substring(0, 8))
                 .replace("七", "天");
         tv_weekday.setText(weekdaystr);
         tv_weekday.setLayoutParams(lp_tv);
@@ -477,19 +540,20 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         relativeLayout.setLayoutParams(lp);
 
         TextView tv_day = new TextView(this);
-        tv_day.setId(MAX_ID * footStepInfo.getId() + 1);
+        tv_day.setId(generateId(footStepInfo, day_offset));
         RelativeLayout.LayoutParams lp_tv = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp_tv.addRule(RelativeLayout.CENTER_IN_PARENT);
         tv_day.setLayoutParams(lp_tv);
-        String date = footStepInfo.getCreate_time().replace("-", "")
-                .substring(0, 8);
+        String date = footStepInfo.getDay().replace("-", "").substring(0, 8);
         tv_day.setText(date.substring(6, 8));
         tv_day.setTextSize(20 * TextScale);
         TextPaint paint = tv_day.getPaint();
         paint.setFakeBoldText(true);
 
         TextView tv_month = new TextView(this);
+        tv_month.setId(generateId(footStepInfo, month_offset));
+
         RelativeLayout.LayoutParams lp_tv2 = new RelativeLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         lp_tv2.addRule(RelativeLayout.CENTER_HORIZONTAL);
@@ -518,19 +582,11 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         @Override
         public void onClick(View arg0)
         {
-            ArrayList<String> imgs = new ArrayList<String>();
-            for (FsMedia media : footStepInfo.getMedias())
-            {
-                imgs.add(media.getAbsulute_path());
-            }
-            Bimp.fs_id = footStepInfo.getId();
+
             MainActivity.setInsertMode(false);
             // 进入编辑模块
             startActivity(new Intent(HomeActivity.this, MainActivity.class)
-                    .putExtra("memo", footStepInfo.getDesc())
-                    .putExtra("tags", footStepInfo.getTag_names())
-                    .putExtra("day", footStepInfo.getDay())
-                    .putStringArrayListExtra("medias", imgs));
+                    .putExtra("fsinfo", footStepInfo));
         }
     };
 
@@ -548,7 +604,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
             ArrayList<String> imgs = new ArrayList<String>();
             for (FsMedia media : imgTag.getFootStepInfo().getMedias())
             {
-                imgs.add(media.getAbsulute_path());
+                imgs.add(media.getMedia_fullpath());
             }
             MainActivity.setInsertMode(false);
             // 进入记录页面
@@ -569,7 +625,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 // 进入图片浏览模块
                 startActivity(new Intent(HomeActivity.this,
                         MediaViewActivity.class)
-                        .putExtra("memo", imgTag.getFootStepInfo().getDesc())
+                        .putExtra("memo", imgTag.getFootStepInfo().getFs_desc())
                         .putExtra("tags",
                                 imgTag.getFootStepInfo().getTag_names())
                         .putExtra("index", imgTag.getIndex())

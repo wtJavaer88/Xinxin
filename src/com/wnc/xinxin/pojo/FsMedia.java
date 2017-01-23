@@ -1,13 +1,42 @@
 package com.wnc.xinxin.pojo;
 
-public class FsMedia
+import java.io.Serializable;
+
+public class FsMedia implements Serializable
 {
-    private int mediapath_id;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 8001226207947247024L;
+    private int id;
+    private String fs_uuid;
     private String media_name;
-    private String absulute_path;
+    private String media_fullpath;
     private String media_type;
+    private int sn;
     private long media_size;
     private String create_time;
+    private int is_deleted;
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
+    }
+
+    public String getFs_uuid()
+    {
+        return fs_uuid;
+    }
+
+    public void setFs_uuid(String fs_uuid)
+    {
+        this.fs_uuid = fs_uuid;
+    }
 
     public String getMedia_name()
     {
@@ -17,6 +46,16 @@ public class FsMedia
     public void setMedia_name(String media_name)
     {
         this.media_name = media_name;
+    }
+
+    public String getMedia_fullpath()
+    {
+        return media_fullpath;
+    }
+
+    public void setMedia_fullpath(String media_fullpath)
+    {
+        this.media_fullpath = media_fullpath;
     }
 
     public String getMedia_type()
@@ -29,6 +68,16 @@ public class FsMedia
         this.media_type = media_type;
     }
 
+    public int getSn()
+    {
+        return sn;
+    }
+
+    public void setSn(int sn)
+    {
+        this.sn = sn;
+    }
+
     public long getMedia_size()
     {
         return media_size;
@@ -37,15 +86,6 @@ public class FsMedia
     public void setMedia_size(long media_size)
     {
         this.media_size = media_size;
-    }
-
-    @Override
-    public String toString()
-    {
-        return "FsMedia [mediapath_id=" + mediapath_id + ", media_name="
-                + media_name + ", absulute_path=" + absulute_path
-                + ", media_type=" + media_type + ", media_size=" + media_size
-                + ", create_time=" + create_time + "]";
     }
 
     public String getCreate_time()
@@ -58,23 +98,24 @@ public class FsMedia
         this.create_time = create_time;
     }
 
-    public int getMediapath_id()
+    public int getIs_deleted()
     {
-        return mediapath_id;
+        return is_deleted;
     }
 
-    public void setMediapath_id(int mediapath_id)
+    public void setIs_deleted(int is_deleted)
     {
-        this.mediapath_id = mediapath_id;
+        this.is_deleted = is_deleted;
     }
 
-    public String getAbsulute_path()
+    @Override
+    public String toString()
     {
-        return absulute_path;
+        return "FsMedia [id=" + id + ", media_name=" + media_name
+                + ", media_fullpath=" + media_fullpath + ", media_type="
+                + media_type + ", sn=" + sn + ", media_size=" + media_size
+                + ", create_time=" + create_time + ", is_deleted=" + is_deleted
+                + "]";
     }
 
-    public void setAbsulute_path(String absulute_path)
-    {
-        this.absulute_path = absulute_path;
-    }
 }

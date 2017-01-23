@@ -1,7 +1,6 @@
 package com.wnc.xinxin;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Collection;
 
 import org.apache.http.Header;
@@ -67,7 +66,7 @@ public class BackUPTest
             final long stime = System.currentTimeMillis();
             RequestParams params = new RequestParams();
             urlpath = "http://192.168.56.1:8081/rest/file/mbupload";
-            String testFile = "test/3.zip";
+            String testFile = "test/upload_data.zip";
             // testFile = "test/voa.db";
             File file = new File(MyAppParams.getInstance().getWorkPath()
                     + testFile);
@@ -76,14 +75,7 @@ public class BackUPTest
 
             SyncHttpClient client = new SyncHttpClient();
             params.put("userName", "wnc");
-            try
-            {
-                params.put("file", file);
-            }
-            catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
+            params.put("file", file);
             client.post(urlpath, params, new AsyncHttpResponseHandler()
             {
 

@@ -16,7 +16,7 @@ public class Bimp
     public static String memo = "";
     public static String day = "";
     public static String tags = "[]";
-    public static int fs_id = 0;
+    public static String fs_uuid = "";
     // 是否有已修改的数据没保存
     public static boolean need_save = false;
     public static boolean imageChanged = false;
