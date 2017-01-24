@@ -963,7 +963,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barColor
+          @attr name android:barColor
         */
         public static final int ProgressWheel_barColor = 3;
         /**
@@ -979,7 +979,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barLength
+          @attr name android:barLength
         */
         public static final int ProgressWheel_barLength = 11;
         /**
@@ -995,7 +995,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:barWidth
+          @attr name android:barWidth
         */
         public static final int ProgressWheel_barWidth = 10;
         /**
@@ -1010,7 +1010,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:circleColor
+          @attr name android:circleColor
         */
         public static final int ProgressWheel_circleColor = 8;
         /**
@@ -1026,7 +1026,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:circleRadius
+          @attr name android:circleRadius
         */
         public static final int ProgressWheel_circleRadius = 9;
         /**
@@ -1041,7 +1041,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:contourColor
+          @attr name android:contourColor
         */
         public static final int ProgressWheel_contourColor = 12;
         /**
@@ -1057,7 +1057,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:contourSize
+          @attr name android:contourSize
         */
         public static final int ProgressWheel_contourSize = 13;
         /**
@@ -1071,7 +1071,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:delayMillis
+          @attr name android:delayMillis
         */
         public static final int ProgressWheel_delayMillis = 7;
         /**
@@ -1086,7 +1086,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:rimColor
+          @attr name android:rimColor
         */
         public static final int ProgressWheel_rimColor = 4;
         /**
@@ -1102,7 +1102,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:rimWidth
+          @attr name android:rimWidth
         */
         public static final int ProgressWheel_rimWidth = 5;
         /**
@@ -1118,7 +1118,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:spinSpeed
+          @attr name android:spinSpeed
         */
         public static final int ProgressWheel_spinSpeed = 6;
         /**
@@ -1132,7 +1132,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:text
+          @attr name android:text
         */
         public static final int ProgressWheel_text = 0;
         /**
@@ -1147,7 +1147,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:textColor
+          @attr name android:textColor
         */
         public static final int ProgressWheel_textColor = 1;
         /**
@@ -1163,7 +1163,7 @@ in (inches), mm (millimeters).
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.wnc.xinxin:textSize
+          @attr name android:textSize
         */
         public static final int ProgressWheel_textSize = 2;
     };

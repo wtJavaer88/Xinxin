@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.apache.http.Header;
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSONObject;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -16,40 +18,62 @@ import com.wnc.basic.BasicFileUtil;
 import com.wnc.xinxin.pojo.FootStepInfo;
 import com.wnc.xinxin.pojo.FsMedia;
 import com.wnc.xinxin.service.FsService;
-
 import common.uihelper.MyAppParams;
 import common.utils.FileTypeUtil;
+import common.utils.UrlPicDownloader;
 import common.utils.ZipUtils;
 
 public class CloudDataOperation
 {
     SyncHttpClient client = new SyncHttpClient();
-    private boolean up_flag = false;
+    private boolean up_flag;
+    private boolean down_flag;
+    private String lastUploadTime;
 
     public CloudDataOperation()
     {
+        up_flag = false;
+        lastUploadTime = "";
+    }
 
+    public String queryLastUploadTime()
+    {
+        String urlpath = Config.DOMAIN + "/rest/cloud/queryUTime";
+        RequestParams params = new RequestParams();
+        params.put("user_id", Config.LOGIN_ID);
+        params.put("device_id", Config.DEVICE_ID);
+        client.post(urlpath, params, new AsyncHttpResponseHandler()
+        {
+            @Override
+            public void onFailure(int arg0, Header[] arg1, byte[] arg2,
+                    Throwable arg3)
+            {
+
+            }
+
+            @Override
+            public void onSuccess(int arg0, Header[] arg1, byte[] arg2)
+            {
+                lastUploadTime = new String(arg2);
+            }
+        });
+        return lastUploadTime;
     }
 
     public boolean upload()
     {
-
         try
         {
+            queryLastUploadTime();
+            System.out.println("cloud:" + lastUploadTime);
             File file = freshDataToFile();
-            String urlpath = "http://139.199.183.98:8080/superword/rest/file/mbupload";
-            urlpath = "http://192.168.56.1:8081/rest/file/mbupload";
+            String urlpath = Config.DOMAIN + "/rest/cloud/mbupload";
             final long stime = System.currentTimeMillis();
             RequestParams params = new RequestParams();
-
-            System.out.println("备份文件大小:"
-                    + BasicFileUtil.getFileSize(file.getAbsolutePath()));
-
-            SyncHttpClient client = new SyncHttpClient();
             params.put("file", file);
+            System.out.println("备份文件大小:" + file.length());
             client.post(urlpath, params, new AsyncHttpResponseHandler()
             {
-
                 @Override
                 public void onProgress(int bytesWritten, int totalSize)
                 {
@@ -85,6 +109,57 @@ public class CloudDataOperation
         return up_flag;
     }
 
+    public boolean download()
+    {
+        try
+        {
+            String urlpath = Config.DOMAIN + "/rest/file/download";
+            final long stime = System.currentTimeMillis();
+            SyncHttpClient client = new SyncHttpClient();
+            RequestParams params = new RequestParams();
+            params.add("user_id", Config.LOGIN_ID);
+            params.add("device_id", Config.DEVICE_ID);
+            client.post(urlpath, params, new AsyncHttpResponseHandler()
+            {
+                @Override
+                public void onFailure(int statusCode, Header[] headers,
+                        byte[] errorResponse, Throwable e)
+                {
+                    Log.e("download", "download获取数据异常 ", e);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers,
+                        byte[] response)
+                {
+                    final String resp = new String(response);
+                    final String string = Config.DOMAIN + resp;
+                    System.out.println("download成功显示:" + string);
+                    System.out.println("耗时:"
+                            + (System.currentTimeMillis() - stime) / 1000);
+                    try
+                    {
+                        UrlPicDownloader.download(string, MyAppParams
+                                .getInstance().getWorkPath()
+                                + "/test/"
+                                + BasicFileUtil.getFileName(string));
+                        down_flag = true;
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return down_flag;
+    }
+
     /**
      * 返回一个zip文件,包含一个数据json文件,和多媒体文件
      * 
@@ -101,10 +176,12 @@ public class CloudDataOperation
         final String zipFilePath = MyAppParams.getInstance().getWorkPath()
                 + "uplaod" + System.currentTimeMillis() + ".zip";
         FsService fsService = new FsService();
-        List<FootStepInfo> findAll = fsService.findAll();
+        List<FootStepInfo> findAll = fsService
+                .findAllNeedUpload(lastUploadTime);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("user_id", Config.LOGIN_ID);
-        jsonObject.put("update_time", BasicDateUtil.getCurrentDateTimeString());
+        jsonObject.put("device_id", Config.DEVICE_ID);
+        jsonObject.put("upload_time", BasicDateUtil.getCurrentDateTimeString());
         jsonObject.put("data", findAll);
 
         BasicFileUtil.writeFileString(dataFile, jsonObject.toString(), null,

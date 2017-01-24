@@ -36,11 +36,12 @@ public class FsDao
             openDatabase();
             database.beginTransaction();
             database.execSQL(
-                    "INSERT INTO FOOTSTEPS(uuid,day,fs_desc,tag_names,create_time,update_time,create_by) VALUES (?,?,?,?,?,?,?)",
+                    "INSERT INTO FOOTSTEPS(uuid,day,fs_desc,tag_names,create_time,update_time,create_by,device_id) VALUES (?,?,?,?,?,?,?,?)",
                     new Object[]
                     { fsInfo.getUuid(), fsInfo.getDay(), fsInfo.getFs_desc(),
                             tag_names.toString(), fsInfo.getCreate_time(),
-                            fsInfo.getUpdate_time(), fsInfo.getCreate_by() });
+                            fsInfo.getUpdate_time(), fsInfo.getCreate_by(),
+                            fsInfo.getDeviceId() });
             for (int i = 0; i < medias.size(); i++)
             {
                 FsMedia fsMedia = medias.get(i);
@@ -90,10 +91,10 @@ public class FsDao
                 info.setCreate_by(c.getString(c.getColumnIndex("create_by")));
                 info.setUpdate_by(c.getString(c.getColumnIndex("update_by")));
                 info.setIs_deleted(c.getInt(c.getColumnIndex("is_deleted")));
+                info.setDeviceId(c.getString(c.getColumnIndex("device_id")));
                 list.add(info);
                 List<FsMedia> findMedias = findMedias(info.getUuid());
                 info.setMedias(findMedias);
-                System.out.println(info.getId());
                 // System.out.println("找到的媒体数:" + findMedias.size());
                 c.moveToNext();
             }
@@ -116,8 +117,8 @@ public class FsDao
         {
             openDatabase();
             Cursor c = database.rawQuery(
-                    "SELECT fm.* FROM FS_MEDIAS fm WHERE FS_UUID='" + uuid
-                            + "'", null);
+                    "SELECT * FROM FS_MEDIAS WHERE FS_UUID='" + uuid + "'",
+                    null);
             c.moveToFirst();
             FsMedia info = new FsMedia();
             while (!c.isAfterLast())
@@ -127,6 +128,7 @@ public class FsDao
                 info.setMedia_size(c.getInt(c.getColumnIndex("media_size")));
                 info.setMedia_type(c.getString(c.getColumnIndex("media_type")));
                 info.setCreate_time(c.getString(c.getColumnIndex("create_time")));
+                info.setSn(c.getInt(c.getColumnIndex("sn")));
                 info.setMedia_fullpath(c.getString(c
                         .getColumnIndex("media_fullpath")));
                 info.setFs_uuid(uuid);
@@ -163,11 +165,11 @@ public class FsDao
             openDatabase();
             database.beginTransaction();
             database.execSQL(
-                    "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=?,UPDATE_By=?,DAY=? WHERE UUID=?",
+                    "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=?,UPDATE_By=?,DAY=?,DEVICE_ID=? WHERE UUID=?",
                     new Object[]
                     { fsInfo.getFs_desc(), tag_names.toString(),
                             fsInfo.getUpdate_time(), fsInfo.getUpdate_by(),
-                            fsInfo.getDay(), uuid });
+                            fsInfo.getDay(), fsInfo.getDeviceId(), uuid });
             database.delete("FS_MEDIAS", "FS_UUID=?", new String[]
             { uuid });
             for (int i = 0; i < medias.size(); i++)
