@@ -32,7 +32,6 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONArray;
 import com.king.photo.util.BitmapCache;
 import com.king.photo.util.BitmapCache.ImageCallback;
 import com.king.photo.util.FileUtils;
@@ -97,8 +96,8 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                         FootStepInfo footStepInfo2 = isExistFs.get(uuid);
                         footStepInfo2.setMedias(footStepInfo.getMedias());
                         footStepInfo2.setDay(footStepInfo.getDay());
-                        footStepInfo2.setFs_desc(footStepInfo.getFs_desc());
-                        footStepInfo2.setTag_names(footStepInfo.getTag_names());
+                        footStepInfo2.setFsDesc(footStepInfo.getFsDesc());
+                        footStepInfo2.setTagNames(footStepInfo.getTagNames());
                         updateFsLayout(footStepInfo);
                     }
                 }
@@ -178,6 +177,15 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
 
     private void toggleRightSliding()
     {// 该方法控制右侧边栏的显示和隐藏
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                boolean ret = new CloudDataOperation().download();
+            }
+        }).start();
+
         if (drawerLayout.isDrawerOpen(Gravity.END))
         {
             drawerLayout.closeDrawer(Gravity.END);
@@ -330,13 +338,6 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 final long s = System.currentTimeMillis();
                 System.out.println("开始查数据库:" + s);
                 List<FootStepInfo> findAll = new FsService().findAll();
-                System.out.println("findAll:" + findAll);
-                List<FootStepInfo> parseObject = JSONArray.parseArray(
-                        findAll.toString(), FootStepInfo.class);
-                for (FootStepInfo footStepInfo : parseObject)
-                {
-                    System.out.println("uuid:" + footStepInfo.getUuid());
-                }
                 System.out.println("查数据库耗时:" + (System.currentTimeMillis() - s));
                 Message msg = new Message();
                 msg.what = 10;
@@ -370,12 +371,10 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
     {
         TextView memoTv = (TextView) findViewById(generateId(footStepInfo,
                 memo_offset));
-        System.out.println("memoTv:" + memoTv.getText().toString());
-        memoTv.setText(footStepInfo.getFs_desc());
+        memoTv.setText(footStepInfo.getFsDesc());
 
         TextView wdTv = (TextView) findViewById(generateId(footStepInfo,
                 weekday_offset));
-        System.out.println("wdTv:" + wdTv.getText().toString());
 
         String weekdaystr = "星期六";
         weekdaystr = BasicDateUtil.getGBWeekString(
@@ -511,7 +510,7 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
         lp_tv.addRule(RelativeLayout.RIGHT_OF, weekdayTv.getId());
         lp_tv.leftMargin = 30;
         tv_memo.setTextSize(12);
-        tv_memo.setText(footStepInfo.getFs_desc());
+        tv_memo.setText(footStepInfo.getFsDesc());
         tv_memo.setLayoutParams(lp_tv);
         return tv_memo;
     }
@@ -634,9 +633,9 @@ public class HomeActivity extends Activity implements UncaughtExceptionHandler
                 // 进入图片浏览模块
                 startActivity(new Intent(HomeActivity.this,
                         MediaViewActivity.class)
-                        .putExtra("memo", imgTag.getFootStepInfo().getFs_desc())
+                        .putExtra("memo", imgTag.getFootStepInfo().getFsDesc())
                         .putExtra("tags",
-                                imgTag.getFootStepInfo().getTag_names())
+                                imgTag.getFootStepInfo().getTagNames())
                         .putExtra("index", imgTag.getIndex())
                         .putStringArrayListExtra("medias", imgs));
             }

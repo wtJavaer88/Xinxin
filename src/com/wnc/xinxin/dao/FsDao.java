@@ -29,7 +29,7 @@ public class FsDao
     }
 
     public synchronized static boolean insertComplicateFs(FootStepInfo fsInfo,
-            List<FsMedia> medias, Set<String> tag_names)
+            String tag_names)
     {
         try
         {
@@ -38,10 +38,11 @@ public class FsDao
             database.execSQL(
                     "INSERT INTO FOOTSTEPS(uuid,day,fs_desc,tag_names,create_time,update_time,create_by,device_id) VALUES (?,?,?,?,?,?,?,?)",
                     new Object[]
-                    { fsInfo.getUuid(), fsInfo.getDay(), fsInfo.getFs_desc(),
-                            tag_names.toString(), fsInfo.getCreate_time(),
-                            fsInfo.getUpdate_time(), fsInfo.getCreate_by(),
+                    { fsInfo.getUuid(), fsInfo.getDay(), fsInfo.getFsDesc(),
+                            tag_names.toString(), fsInfo.getCreateTime(),
+                            fsInfo.getUpdateTime(), fsInfo.getCreateBy(),
                             fsInfo.getDeviceId() });
+            List<FsMedia> medias = fsInfo.getMedias();
             for (int i = 0; i < medias.size(); i++)
             {
                 FsMedia fsMedia = medias.get(i);
@@ -59,7 +60,7 @@ public class FsDao
         }
         catch (Exception e)
         {
-            log.error(fsInfo.getFs_desc(), e);
+            log.error(fsInfo.getFsDesc(), e);
         }
         finally
         {
@@ -67,6 +68,12 @@ public class FsDao
             closeDatabase();
         }
         return false;
+    }
+
+    public synchronized static boolean insertComplicateFs(FootStepInfo fsInfo,
+            Set<String> tag_names)
+    {
+        return insertComplicateFs(fsInfo, tag_names.toString());
     }
 
     public synchronized static List<FootStepInfo> findAllFsBySql(String sql)
@@ -84,13 +91,13 @@ public class FsDao
                 info.setId(c.getInt(c.getColumnIndex("id")));
                 info.setUuid(c.getString(c.getColumnIndex("uuid")));
                 info.setDay(c.getString(c.getColumnIndex("day")));
-                info.setFs_desc(c.getString(c.getColumnIndex("fs_desc")));
-                info.setTag_names(c.getString(c.getColumnIndex("tag_names")));
-                info.setCreate_time(c.getString(c.getColumnIndex("create_time")));
-                info.setUpdate_time(c.getString(c.getColumnIndex("update_time")));
-                info.setCreate_by(c.getString(c.getColumnIndex("create_by")));
-                info.setUpdate_by(c.getString(c.getColumnIndex("update_by")));
-                info.setIs_deleted(c.getInt(c.getColumnIndex("is_deleted")));
+                info.setFsDesc(c.getString(c.getColumnIndex("fs_desc")));
+                info.setTagNames(c.getString(c.getColumnIndex("tag_names")));
+                info.setCreateTime(c.getString(c.getColumnIndex("create_time")));
+                info.setUpdateTime(c.getString(c.getColumnIndex("update_time")));
+                info.setCreateBy(c.getString(c.getColumnIndex("create_by")));
+                info.setUpdateBy(c.getString(c.getColumnIndex("update_by")));
+                info.setIsDeleted(c.getInt(c.getColumnIndex("is_deleted")));
                 info.setDeviceId(c.getString(c.getColumnIndex("device_id")));
                 list.add(info);
                 List<FsMedia> findMedias = findMedias(info.getUuid());
@@ -125,7 +132,7 @@ public class FsDao
             {
                 info = new FsMedia();
                 info.setMedia_name(c.getString(c.getColumnIndex("media_name")));
-                info.setMedia_size(c.getInt(c.getColumnIndex("media_size")));
+                info.setMedia_size(c.getLong(c.getColumnIndex("media_size")));
                 info.setMedia_type(c.getString(c.getColumnIndex("media_type")));
                 info.setCreate_time(c.getString(c.getColumnIndex("create_time")));
                 info.setSn(c.getInt(c.getColumnIndex("sn")));
@@ -167,8 +174,8 @@ public class FsDao
             database.execSQL(
                     "UPDATE FOOTSTEPS SET FS_DESC = ?,TAG_NAMES=?,UPDATE_TIME=?,UPDATE_By=?,DAY=?,DEVICE_ID=? WHERE UUID=?",
                     new Object[]
-                    { fsInfo.getFs_desc(), tag_names.toString(),
-                            fsInfo.getUpdate_time(), fsInfo.getUpdate_by(),
+                    { fsInfo.getFsDesc(), tag_names.toString(),
+                            fsInfo.getUpdateTime(), fsInfo.getUpdateBy(),
                             fsInfo.getDay(), fsInfo.getDeviceId(), uuid });
             database.delete("FS_MEDIAS", "FS_UUID=?", new String[]
             { uuid });
@@ -189,7 +196,7 @@ public class FsDao
         }
         catch (Exception e)
         {
-            log.error(fsInfo.getFs_desc(), e);
+            log.error(fsInfo.getFsDesc(), e);
         }
         finally
         {

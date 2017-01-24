@@ -8,11 +8,11 @@ public class FootStepInfo implements Serializable
     /**
      * 
      */
-    private static final long serialVersionUID = -3274963893488139409L;
-    private int id;
+    private static final Long serialVersionUID = -3274963893488139409L;
+    private Integer id;
     private String uuid;
     private String fsDesc;
-    private int isDeleted;
+    private Integer isDeleted;
     private String tagNames;
     private String day;
     private String createTime;
@@ -21,116 +21,6 @@ public class FootStepInfo implements Serializable
     private String createBy;
     private String deviceId;
     private List<FsMedia> medias;
-
-    public int getId()
-    {
-        return id;
-    }
-
-    public void setId(int id)
-    {
-        this.id = id;
-    }
-
-    public String getFs_desc()
-    {
-        return fsDesc;
-    }
-
-    public void setFs_desc(String desc)
-    {
-        this.fsDesc = desc;
-    }
-
-    public String getCreate_time()
-    {
-        return createTime;
-    }
-
-    public void setCreate_time(String create_time)
-    {
-        this.createTime = create_time;
-    }
-
-    public String getUpdate_time()
-    {
-        return updateTime;
-    }
-
-    public void setUpdate_time(String update_time)
-    {
-        this.updateTime = update_time;
-    }
-
-    public List<FsMedia> getMedias()
-    {
-        return medias;
-    }
-
-    public void setMedias(List<FsMedia> medias)
-    {
-        this.medias = medias;
-    }
-
-    public String getTag_names()
-    {
-        return tagNames;
-    }
-
-    public void setTag_names(String tag_names)
-    {
-        this.tagNames = tag_names;
-    }
-
-    public String getDay()
-    {
-        return day;
-    }
-
-    public void setDay(String day)
-    {
-        this.day = day;
-    }
-
-    public String getUpdate_by()
-    {
-        return updateBy;
-    }
-
-    public void setUpdate_by(String update_by)
-    {
-        this.updateBy = update_by;
-    }
-
-    public String getCreate_by()
-    {
-        return createBy;
-    }
-
-    public void setCreate_by(String create_by)
-    {
-        this.createBy = create_by;
-    }
-
-    public String getUuid()
-    {
-        return uuid;
-    }
-
-    public void setUuid(String uuid)
-    {
-        this.uuid = uuid;
-    }
-
-    public int getIs_deleted()
-    {
-        return isDeleted;
-    }
-
-    public void setIs_deleted(int is_deleted)
-    {
-        this.isDeleted = is_deleted;
-    }
 
     @Override
     public String toString()
@@ -143,6 +33,106 @@ public class FootStepInfo implements Serializable
                 + createBy + "\", medias:" + medias + "}";
     }
 
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
+
+    public String getUuid()
+    {
+        return uuid;
+    }
+
+    public void setUuid(String uuid)
+    {
+        this.uuid = uuid;
+    }
+
+    public String getFsDesc()
+    {
+        return fsDesc;
+    }
+
+    public void setFsDesc(String fsDesc)
+    {
+        this.fsDesc = fsDesc;
+    }
+
+    public Integer getIsDeleted()
+    {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted)
+    {
+        this.isDeleted = isDeleted;
+    }
+
+    public String getTagNames()
+    {
+        return tagNames;
+    }
+
+    public void setTagNames(String tagNames)
+    {
+        this.tagNames = tagNames;
+    }
+
+    public String getDay()
+    {
+        return day;
+    }
+
+    public void setDay(String day)
+    {
+        this.day = day;
+    }
+
+    public String getCreateTime()
+    {
+        return createTime;
+    }
+
+    public void setCreateTime(String createTime)
+    {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateTime()
+    {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime)
+    {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateBy()
+    {
+        return updateBy;
+    }
+
+    public void setUpdateBy(String updateBy)
+    {
+        this.updateBy = updateBy;
+    }
+
+    public String getCreateBy()
+    {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy)
+    {
+        this.createBy = createBy;
+    }
+
     public String getDeviceId()
     {
         return deviceId;
@@ -151,6 +141,16 @@ public class FootStepInfo implements Serializable
     public void setDeviceId(String deviceId)
     {
         this.deviceId = deviceId;
+    }
+
+    public List<FsMedia> getMedias()
+    {
+        return medias;
+    }
+
+    public void setMedias(List<FsMedia> medias)
+    {
+        this.medias = medias;
     }
 
 }

@@ -16,6 +16,18 @@ public class Bimp
     public static String memo = "";
     public static String day = "";
     public static String tags = "[]";
+
+    public static String tmp_memo = "";
+    public static String tmp_day = "";
+    public static String tmp_tags = "[]";
+
+    public static void tmpDataRecord(String m, String d, String t)
+    {
+        tmp_memo = m;
+        tmp_day = d;
+        tmp_tags = t;
+    }
+
     public static String fs_uuid = "";
     // 是否有已修改的数据没保存
     public static boolean need_save = false;

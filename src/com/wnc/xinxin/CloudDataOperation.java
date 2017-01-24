@@ -20,7 +20,6 @@ import com.wnc.xinxin.pojo.FsMedia;
 import com.wnc.xinxin.service.FsService;
 import common.uihelper.MyAppParams;
 import common.utils.FileTypeUtil;
-import common.utils.UrlPicDownloader;
 import common.utils.ZipUtils;
 
 public class CloudDataOperation
@@ -67,6 +66,11 @@ public class CloudDataOperation
             queryLastUploadTime();
             System.out.println("cloud:" + lastUploadTime);
             File file = freshDataToFile();
+            if (file == null)
+            {
+                up_flag = true;
+                return true;
+            }
             String urlpath = Config.DOMAIN + "/rest/cloud/mbupload";
             final long stime = System.currentTimeMillis();
             RequestParams params = new RequestParams();
@@ -113,7 +117,7 @@ public class CloudDataOperation
     {
         try
         {
-            String urlpath = Config.DOMAIN + "/rest/file/download";
+            String urlpath = Config.DOMAIN + "/rest/cloud/download";
             final long stime = System.currentTimeMillis();
             SyncHttpClient client = new SyncHttpClient();
             RequestParams params = new RequestParams();
@@ -135,20 +139,20 @@ public class CloudDataOperation
                     final String resp = new String(response);
                     final String string = Config.DOMAIN + resp;
                     System.out.println("download成功显示:" + string);
-                    System.out.println("耗时:"
-                            + (System.currentTimeMillis() - stime) / 1000);
-                    try
-                    {
-                        UrlPicDownloader.download(string, MyAppParams
-                                .getInstance().getWorkPath()
-                                + "/test/"
-                                + BasicFileUtil.getFileName(string));
-                        down_flag = true;
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    // System.out.println("耗时:"
+                    // + (System.currentTimeMillis() - stime) / 1000);
+                    // try
+                    // {
+                    // UrlPicDownloader.download(string, MyAppParams
+                    // .getInstance().getWorkPath()
+                    // + "/test/"
+                    // + BasicFileUtil.getFileName(string));
+                    // down_flag = true;
+                    // }
+                    // catch (Exception e)
+                    // {
+                    // e.printStackTrace();
+                    // }
                 }
 
             });
@@ -174,10 +178,14 @@ public class CloudDataOperation
         final String dataFile = MyAppParams.getInstance().getWorkPath()
                 + "data.json";
         final String zipFilePath = MyAppParams.getInstance().getWorkPath()
-                + "uplaod" + System.currentTimeMillis() + ".zip";
+                + System.currentTimeMillis() + ".zip";
         FsService fsService = new FsService();
         List<FootStepInfo> findAll = fsService
                 .findAllNeedUpload(lastUploadTime);
+        if (findAll.size() == 0)
+        {
+            return null;
+        }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("user_id", Config.LOGIN_ID);
         jsonObject.put("device_id", Config.DEVICE_ID);

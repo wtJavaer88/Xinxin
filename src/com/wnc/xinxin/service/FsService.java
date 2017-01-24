@@ -22,16 +22,22 @@ public class FsService
             Set<String> tags)
     {
         FootStepInfo fsInfo = new FootStepInfo();
-        fsInfo.setFs_desc(fs_desc);
+        fsInfo.setFsDesc(fs_desc);
         fsInfo.setDay(day);
+        fsInfo.setIsDeleted(0);
         fsInfo.setUuid(UUIDUtil.getUUID());
-        fsInfo.setCreate_by(Config.LOGIN_ID);
+        fsInfo.setCreateBy(Config.LOGIN_ID);
         fsInfo.setDeviceId(Config.DEVICE_ID);
-        fsInfo.setCreate_time(BasicDateUtil.getCurrentDateTimeString());
-        fsInfo.setUpdate_time(BasicDateUtil.getCurrentDateTimeString());
-
+        fsInfo.setCreateTime(BasicDateUtil.getCurrentDateTimeString());
+        fsInfo.setUpdateTime(BasicDateUtil.getCurrentDateTimeString());
         List<FsMedia> medias = getFsMedias(media_files);
-        return FsDao.insertComplicateFs(fsInfo, medias, tags);
+        fsInfo.setMedias(medias);
+        return FsDao.insertComplicateFs(fsInfo, tags);
+    }
+
+    public boolean save(FootStepInfo fsInfo)
+    {
+        return FsDao.insertComplicateFs(fsInfo, fsInfo.getTagNames());
     }
 
     private List<FsMedia> getFsMedias(List<String> media_files)
@@ -123,10 +129,10 @@ public class FsService
         FootStepInfo fsInfo = new FootStepInfo();
         fsInfo.setUuid(uuid);
         fsInfo.setDay(day);
-        fsInfo.setFs_desc(fs_desc);
-        fsInfo.setUpdate_by(Config.LOGIN_ID);
+        fsInfo.setFsDesc(fs_desc);
+        fsInfo.setUpdateBy(Config.LOGIN_ID);
         fsInfo.setDeviceId(Config.DEVICE_ID);
-        fsInfo.setUpdate_time(BasicDateUtil.getCurrentDateTimeString());
+        fsInfo.setUpdateTime(BasicDateUtil.getCurrentDateTimeString());
 
         List<FsMedia> medias = getFsMedias(media_files);
         return FsDao.updateComplicateFs(fsInfo, medias, tags);

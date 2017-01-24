@@ -7,23 +7,23 @@ public class FsMedia implements Serializable
     /**
      * 
      */
-    private static final long serialVersionUID = 8001226207947247024L;
-    private int id;
+    private static final Long serialVersionUID = 8001226207947247024L;
+    private Integer id;
     private String fs_uuid;
     private String mediaName;
     private String mediaFullpath;
     private String mediaType;
-    private int sn;
-    private long mediaSize;
+    private Integer sn;
+    private Long mediaSize;
     private String createTime;
-    private int isDeleted;
+    private Integer isDeleted;
 
-    public int getId()
+    public Integer getId()
     {
         return id;
     }
 
-    public void setId(int id)
+    public void setId(Integer id)
     {
         this.id = id;
     }
@@ -68,22 +68,22 @@ public class FsMedia implements Serializable
         this.mediaType = media_type;
     }
 
-    public int getSn()
+    public Integer getSn()
     {
         return sn;
     }
 
-    public void setSn(int sn)
+    public void setSn(Integer sn)
     {
         this.sn = sn;
     }
 
-    public long getMedia_size()
+    public Long getMedia_size()
     {
         return mediaSize;
     }
 
-    public void setMedia_size(long media_size)
+    public void setMedia_size(Long media_size)
     {
         this.mediaSize = media_size;
     }
@@ -98,12 +98,12 @@ public class FsMedia implements Serializable
         this.createTime = create_time;
     }
 
-    public int getIs_deleted()
+    public Integer getIs_deleted()
     {
         return isDeleted;
     }
 
-    public void setIs_deleted(int is_deleted)
+    public void setIs_deleted(Integer is_deleted)
     {
         this.isDeleted = is_deleted;
     }
