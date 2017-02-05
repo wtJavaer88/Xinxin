@@ -4,118 +4,125 @@ import java.io.Serializable;
 
 public class FsMedia implements Serializable
 {
-    /**
+	/**
      * 
      */
-    private static final Long serialVersionUID = 8001226207947247024L;
-    private Integer id;
-    private String fs_uuid;
-    private String mediaName;
-    private String mediaFullpath;
-    private String mediaType;
-    private Integer sn;
-    private Long mediaSize;
-    private String createTime;
-    private Integer isDeleted;
+	private static final Long serialVersionUID = 8001226207947247024L;
+	private Integer id;
+	private String fsUuid;
+	private String mediaName;
+	private String mediaFullpath;
+	private String mediaType;
+	private Long mediaSize;
+	private Integer isDeleted;
+	private Integer sn;
+	private String createTime;
+	private String saveFolder;
 
-    public Integer getId()
-    {
-        return id;
-    }
+	public String getMediaName()
+	{
+		return mediaName;
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	public void setMediaName(String mediaName)
+	{
+		this.mediaName = mediaName;
+	}
 
-    public String getFs_uuid()
-    {
-        return fs_uuid;
-    }
+	public String getMediaType()
+	{
+		return mediaType;
+	}
 
-    public void setFs_uuid(String fs_uuid)
-    {
-        this.fs_uuid = fs_uuid;
-    }
+	public void setMediaType(String mediaType)
+	{
+		this.mediaType = mediaType;
+	}
 
-    public String getMedia_name()
-    {
-        return mediaName;
-    }
+	public Long getMediaSize()
+	{
+		return mediaSize;
+	}
 
-    public void setMedia_name(String media_name)
-    {
-        this.mediaName = media_name;
-    }
+	public void setMediaSize(Long mediaSize)
+	{
+		this.mediaSize = mediaSize;
+	}
 
-    public String getMedia_fullpath()
-    {
-        return mediaFullpath;
-    }
+	public String getCreateTime()
+	{
+		return createTime;
+	}
 
-    public void setMedia_fullpath(String media_fullpath)
-    {
-        this.mediaFullpath = media_fullpath;
-    }
+	public void setCreateTime(String createTime)
+	{
+		this.createTime = createTime;
+	}
 
-    public String getMedia_type()
-    {
-        return mediaType;
-    }
+	public String getFsUuid()
+	{
+		return fsUuid;
+	}
 
-    public void setMedia_type(String media_type)
-    {
-        this.mediaType = media_type;
-    }
+	public void setFsUuid(String fsUuid)
+	{
+		this.fsUuid = fsUuid;
+	}
 
-    public Integer getSn()
-    {
-        return sn;
-    }
+	public Integer getIsDeleted()
+	{
+		return isDeleted;
+	}
 
-    public void setSn(Integer sn)
-    {
-        this.sn = sn;
-    }
+	public void setIsDeleted(Integer isDeleted)
+	{
+		this.isDeleted = isDeleted;
+	}
 
-    public Long getMedia_size()
-    {
-        return mediaSize;
-    }
+	public Integer getId()
+	{
+		return id;
+	}
 
-    public void setMedia_size(Long media_size)
-    {
-        this.mediaSize = media_size;
-    }
+	public void setId(Integer id)
+	{
+		this.id = id;
+	}
 
-    public String getCreate_time()
-    {
-        return createTime;
-    }
+	@Override
+	public String toString()
+	{
+		return "{id:\"" + id + "\", mediaName:\"" + mediaName + "\", mediaFullpath:\"" + mediaFullpath + "\", mediaType:\"" + mediaType + "\", sn:\"" + sn + "\", mediaSize:\"" + mediaSize + "\", createTime:\"" + createTime + "\", isDeleted:\"" + isDeleted + "\"}";
+	}
 
-    public void setCreate_time(String create_time)
-    {
-        this.createTime = create_time;
-    }
+	public String getMediaFullpath()
+	{
+		return mediaFullpath;
+	}
 
-    public Integer getIs_deleted()
-    {
-        return isDeleted;
-    }
+	public void setMediaFullpath(String mediaFullpath)
+	{
+		this.mediaFullpath = mediaFullpath;
+	}
 
-    public void setIs_deleted(Integer is_deleted)
-    {
-        this.isDeleted = is_deleted;
-    }
+	public Integer getSn()
+	{
+		return sn;
+	}
 
-    @Override
-    public String toString()
-    {
-        return "{id:\"" + id + "\", mediaName:\"" + mediaName
-                + "\", mediaFullpath:\"" + mediaFullpath + "\", mediaType:\""
-                + mediaType + "\", sn:\"" + sn + "\", mediaSize:\"" + mediaSize
-                + "\", createTime:\"" + createTime + "\", isDeleted:\""
-                + isDeleted + "\"}";
-    }
+	public void setSn(Integer sn)
+	{
+		this.sn = sn;
+	}
+
+	public String getSaveFolder()
+	{
+		return saveFolder;
+	}
+
+	public void setSaveFolder(String saveFolder)
+	{
+		this.saveFolder = saveFolder;
+	}
 
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="#000000"
     android:orientation="vertical" >
 
     <ScrollView
@@ -42,8 +42,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="今天"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
+                        android:textColor="@+color/red"
+                        android:textSize="16dp"/>
                 </RelativeLayout>
 
                 <TextView

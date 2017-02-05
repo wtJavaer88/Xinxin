@@ -200,7 +200,7 @@ public class MainActivity extends Activity implements UncaughtExceptionHandler,
             List<String> medias = new ArrayList<String>();
             for (FsMedia media : fsInfo.getMedias())
             {
-                medias.add(media.getMedia_fullpath());
+                medias.add(media.getMediaFullpath());
             }
             long s = System.currentTimeMillis();
             System.out.println("medias加载开始:" + s);

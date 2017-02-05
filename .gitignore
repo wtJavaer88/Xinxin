@@ -38,6 +38,7 @@ $RECYCLE.BIN/
 *.cache
 *.apk
 *.class
+gen/
 
 bin/
 bin/classes/com/wnc/srtlearn/R$id.class

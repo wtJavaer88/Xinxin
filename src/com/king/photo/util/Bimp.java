@@ -12,117 +12,113 @@ import android.graphics.BitmapFactory.Options;
 
 public class Bimp
 {
-    public static int max = 0;
-    public static String memo = "";
-    public static String day = "";
-    public static String tags = "[]";
+	public static int max = 0;
+	public static String memo = "";
+	public static String day = "";
+	public static String tags = "[]";
 
-    public static String tmp_memo = "";
-    public static String tmp_day = "";
-    public static String tmp_tags = "[]";
+	public static String tmp_memo = "";
+	public static String tmp_day = "";
+	public static String tmp_tags = "[]";
 
-    public static void tmpDataRecord(String m, String d, String t)
-    {
-        tmp_memo = m;
-        tmp_day = d;
-        tmp_tags = t;
-    }
+	public static void tmpDataRecord(String m, String d, String t)
+	{
+		tmp_memo = m;
+		tmp_day = d;
+		tmp_tags = t;
+	}
 
-    public static String fs_uuid = "";
-    // 是否有已修改的数据没保存
-    public static boolean need_save = false;
-    public static boolean imageChanged = false;
+	public static String fs_uuid = "";
+	// 是否有已修改的数据没保存
+	public static boolean need_save = false;
+	public static boolean imageChanged = false;
 
-    private static ArrayList<ImageItem> tempSelectBitmap = new ArrayList<ImageItem>(); // 选择的图片的临时列表
+	private static ArrayList<ImageItem> tempSelectBitmap = new ArrayList<ImageItem>(); // 选择的图片的临时列表
 
-    public static void setImageChanged(boolean b)
-    {
-        imageChanged = b;
-    }
+	public static void setImageChanged(boolean b)
+	{
+		imageChanged = b;
+	}
 
-    public static boolean isImageChanged()
-    {
-        return imageChanged;
-    }
+	public static boolean isImageChanged()
+	{
+		return imageChanged;
+	}
 
-    public static void addImageItem(ImageItem item)
-    {
-        tempSelectBitmap.add(item);
-        imageChanged = true;
-    }
+	public static void addImageItem(ImageItem item)
+	{
+		tempSelectBitmap.add(item);
+		imageChanged = true;
+	}
 
-    public static void removeImageItem(ImageItem item)
-    {
-        tempSelectBitmap.remove(item);
-        imageChanged = true;
-    }
+	public static void removeImageItem(ImageItem item)
+	{
+		tempSelectBitmap.remove(item);
+		imageChanged = true;
+	}
 
-    public static void removeImageItem(int index)
-    {
-        tempSelectBitmap.remove(index);
-        need_save = true;
-    }
+	public static void removeImageItem(int index)
+	{
+		tempSelectBitmap.remove(index);
+		need_save = true;
+	}
 
-    public static void clearAllBitmap()
-    {
-        imageChanged = false;
-        for (ImageItem item : getTempSelectBitmap())
-        {
-            Bitmap bitmap = item.getBitmap();
-            if (!bitmap.isRecycled())
-            {
-                bitmap.recycle(); // 回收图片所占的内存
-                bitmap = null;
-                System.gc(); // 提醒系统及时回收
-            }
-        }
-        tempSelectBitmap.clear();
-        System.gc();
-    }
+	public static void clearAllBitmap()
+	{
+		imageChanged = false;
+		for (ImageItem item : getTempSelectBitmap())
+		{
+			Bitmap bitmap = item.getBitmap();
+			if (bitmap != null && !bitmap.isRecycled())
+			{
+				bitmap.recycle(); // 回收图片所占的内存
+				bitmap = null;
+				System.gc(); // 提醒系统及时回收
+			}
+		}
+		tempSelectBitmap.clear();
+		System.gc();
+	}
 
-    public static Options getBitmapOption(int inSampleSize)
-    {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPurgeable = true;
-        options.inSampleSize = inSampleSize;
-        return options;
-    }
+	public static Options getBitmapOption(int inSampleSize)
+	{
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inPurgeable = true;
+		options.inSampleSize = inSampleSize;
+		return options;
+	}
 
-    public static Bitmap revitionImageSize(String path, int size)
-            throws IOException
-    {
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-                new File(path)));
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(in, null, options);
-        in.close();
-        int i = 0;
-        Bitmap bitmap = null;
-        while (true)
-        {
-            if ((options.outWidth >> i <= size)
-                    && (options.outHeight >> i <= size))
-            {
-                in = new BufferedInputStream(
-                        new FileInputStream(new File(path)));
-                options.inSampleSize = (int) Math.pow(2.0D, i);
-                options.inJustDecodeBounds = false;
-                bitmap = BitmapFactory.decodeStream(in, null, options);
-                break;
-            }
-            i += 1;
-        }
-        return bitmap;
-    }
+	public static Bitmap revitionImageSize(String path, int size) throws IOException
+	{
+		BufferedInputStream in = new BufferedInputStream(new FileInputStream(new File(path)));
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeStream(in, null, options);
+		in.close();
+		int i = 0;
+		Bitmap bitmap = null;
+		while (true)
+		{
+			if ((options.outWidth >> i <= size) && (options.outHeight >> i <= size))
+			{
+				in = new BufferedInputStream(new FileInputStream(new File(path)));
+				options.inSampleSize = (int) Math.pow(2.0D, i);
+				options.inJustDecodeBounds = false;
+				bitmap = BitmapFactory.decodeStream(in, null, options);
+				break;
+			}
+			i += 1;
+		}
+		return bitmap;
+	}
 
-    public static ArrayList<ImageItem> getTempSelectBitmap()
-    {
-        return tempSelectBitmap;
-    }
+	public static ArrayList<ImageItem> getTempSelectBitmap()
+	{
+		return tempSelectBitmap;
+	}
 
-    public static void setTempSelectBitmap(ArrayList<ImageItem> tempSelectBitmap)
-    {
-        Bimp.tempSelectBitmap = tempSelectBitmap;
-    }
+	public static void setTempSelectBitmap(ArrayList<ImageItem> tempSelectBitmap)
+	{
+		Bimp.tempSelectBitmap = tempSelectBitmap;
+	}
 }
