@@ -33,7 +33,8 @@ public class FsService
 		return FsDao.existFs(uuid, update_tiem);
 	}
 
-	public boolean save(String day, String fs_desc, List<String> media_files, Set<String> tags)
+	public boolean save(String day, String fs_desc, List<String> media_files,
+			Set<String> tags)
 	{
 		FootStepInfo fsInfo = new FootStepInfo();
 		fsInfo.setFsDesc(fs_desc);
@@ -68,7 +69,8 @@ public class FsService
 			media.setMediaSize(BasicFileUtil.getFileSize(mFileStr));
 			media.setMediaType(BasicFileUtil.getFileType(mFileStr));
 			media.setMediaFullpath(mFileStr);
-			media.setCreateTime(BasicDateUtil.getDateTimeFromLongTime(new File(mFileStr).lastModified()));
+			media.setCreateTime(BasicDateUtil.getDateTimeFromLongTime(new File(
+					mFileStr).lastModified()));
 			medias.add(media);
 		}
 		return medias;
@@ -76,17 +78,20 @@ public class FsService
 
 	public List<FootStepInfo> findAll()
 	{
-		List<FootStepInfo> findAllFsBySql = FsDao.findAllFsBySql("SELECT * FROM FOOTSTEPS where is_deleted=0 order by id asc limit 0,20");
+		List<FootStepInfo> findAllFsBySql = FsDao
+				.findAllFsBySql("SELECT * FROM FOOTSTEPS where is_deleted=0 order by id asc");
 		for (FootStepInfo footStepInfo : findAllFsBySql)
 		{
 			List<FsMedia> medias = footStepInfo.getMedias();
 			for (FsMedia fsMedia : medias)
 			{
 				final String absulute_path = fsMedia.getMediaFullpath();
-				if (FileTypeUtil.isVideoFile(absulute_path) || FileTypeUtil.isVoiceFile(absulute_path))
+				if (FileTypeUtil.isVideoFile(absulute_path)
+						|| FileTypeUtil.isVoiceFile(absulute_path))
 				{
 					System.out.println("需要添加jpg后缀");
-					fsMedia.setMediaFullpath(fsMedia.getMediaFullpath() + ".jpg");
+					fsMedia.setMediaFullpath(fsMedia.getMediaFullpath()
+							+ ".jpg");
 				}
 			}
 		}
@@ -99,17 +104,25 @@ public class FsService
 
 	public List<FootStepInfo> findAllNeedUpload(String last_upload_time)
 	{
-		List<FootStepInfo> findAllFsBySql = FsDao.findAllFsBySql("SELECT * FROM FOOTSTEPS where is_deleted=0 and update_time > '" + last_upload_time + "' and create_by='" + Config.LOGIN_ID + "' and device_id='" + Config.DEVICE_ID + "' order by id asc");
+		List<FootStepInfo> findAllFsBySql = FsDao
+				.findAllFsBySql("SELECT * FROM FOOTSTEPS where is_deleted=0 and update_time > '"
+						+ last_upload_time
+						+ "' and create_by='"
+						+ Config.LOGIN_ID
+						+ "' and device_id='"
+						+ Config.DEVICE_ID + "' order by id asc");
 		for (FootStepInfo footStepInfo : findAllFsBySql)
 		{
 			List<FsMedia> medias = footStepInfo.getMedias();
 			for (FsMedia fsMedia : medias)
 			{
 				final String absulute_path = fsMedia.getMediaFullpath();
-				if (FileTypeUtil.isVideoFile(absulute_path) || FileTypeUtil.isVoiceFile(absulute_path))
+				if (FileTypeUtil.isVideoFile(absulute_path)
+						|| FileTypeUtil.isVoiceFile(absulute_path))
 				{
 					System.out.println("需要添加jpg后缀");
-					fsMedia.setMediaFullpath(fsMedia.getMediaFullpath() + ".jpg");
+					fsMedia.setMediaFullpath(fsMedia.getMediaFullpath()
+							+ ".jpg");
 				}
 			}
 		}
@@ -131,7 +144,8 @@ public class FsService
 
 	}
 
-	public boolean update(String uuid, String day, String fs_desc, List<String> media_files, Set<String> tags)
+	public boolean update(String uuid, String day, String fs_desc,
+			List<String> media_files, Set<String> tags)
 	{
 		FootStepInfo fsInfo = new FootStepInfo();
 		fsInfo.setUuid(uuid);
