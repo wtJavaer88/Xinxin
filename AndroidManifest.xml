@@ -51,8 +51,8 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="com.wnc.xinxin.ui.MovieActivity"></activity>
-        <activity android:name="com.wnc.xinxin.ui.MediaViewActivity"></activity>
+        <activity android:name="com.wnc.xinxin.ui.MovieActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name="com.wnc.xinxin.ui.MediaViewActivity" android:screenOrientation="portrait"></activity>
         <activity android:name="com.wnc.xinxin.ui.MainActivity"></activity>
          <activity
             android:name="com.king.photo.activity.PhotoActivity"
